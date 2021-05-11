@@ -1,5 +1,6 @@
 /* eslint-disable no-warning-comments */
 import Command from '@oclif/command'
+import {Config} from './config'
 
 import {client} from './ecs/client'
 
@@ -15,10 +16,27 @@ export class AwsCommand extends Command {
     return AWS_PROFILE
   }
 
+  configuration(variables: any = {}) {
+    const config = new Config()
+    return config.read(variables)
+  }
+
   ecs_client() {
     this.ensure_aws_profile()
 
     return client
+  }
+
+  variables() {
+    const {flags} = this.parse() as any
+
+    const variables: { [key: string]: string } = {}
+    for (const pair of flags.var) {
+      const [key, value] = pair.split('=')
+      variables[key] = value
+    }
+
+    return variables
   }
 
   async run() {
