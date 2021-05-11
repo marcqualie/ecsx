@@ -1,3 +1,4 @@
+import { RegisterTaskDefinitionCommandInput } from '@aws-sdk/client-ecs'
 import flatten from 'lodash/flatten'
 
 import {ConfigurationTaskDefinition} from '../types/configuration'
@@ -32,18 +33,25 @@ const portMappingsFromConfiguration = (config: ConfigurationTaskDefinition) => {
   return undefined
 }
 
-export const fromTaskDefinitionConfiguration = (family: string, task: string, variables: any, config: ConfigurationTaskDefinition) => {
+export const fromTaskDefinitionConfiguration = (family: string, task: string, variables: any, config: ConfigurationTaskDefinition): RegisterTaskDefinitionCommandInput => {
   return {
     family: `${family}-${task}-${variables.environment}`,
+    taskRoleArn: config.taskRoleArn,
+    executionRoleArn: config.executionRoleArn,
+    networkMode: 'awsvpc',
+    requiresCompatibilities: [
+      'FARGATE'
+    ],
+    cpu: config.cpu.toString(),
+    memory: config.memory.toString(),
     containerDefinitions: [
       {
         name: task,
+        image: config.image,
         command: config.command,
         portMappings: portMappingsFromConfiguration(config),
         environment: environmentFromConfiguration(config),
         secrets: secretsFromConfiguration(config),
-        cpu: config.cpu,
-        memory: config.memory,
         essential: true,
       },
     ],

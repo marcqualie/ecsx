@@ -1,4 +1,4 @@
-import { ECSClient, ListTaskDefinitionsCommand } from "@aws-sdk/client-ecs"
+import { ECSClient, ListTaskDefinitionsCommand, RegisterTaskDefinitionCommand, RegisterTaskDefinitionCommandInput } from "@aws-sdk/client-ecs"
 
 export const ecsClient = new ECSClient({
   region: process.env.AWS_REGION || 'eu-central-1',
@@ -10,6 +10,12 @@ export const listTaskDefinitions = (params: any = {}) => {
   return ecsClient.send(command)
 }
 
+export const registerTaskDefinition = (params: RegisterTaskDefinitionCommandInput) => {
+  const command = new RegisterTaskDefinitionCommand(params)
+  return ecsClient.send(command)
+}
+
 export const client = {
   listTaskDefinitions,
+  registerTaskDefinition,
 }

@@ -9,6 +9,8 @@ export interface ConfigurationTaskDefinition {
     keys: string[]
   }>
   ports?: number[]
+  taskRoleArn?: string
+  executionRoleArn: string
 }
 
 export interface ConfigurationService {

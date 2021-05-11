@@ -29,7 +29,20 @@ export default class RegisterTaskDefinitions extends AwsCommand {
     const variables = this.variables()
     const config = this.configuration({variables})
     const taskDefinitionConfig = config.taskDefinitions[task]
-    const taskDefinition = fromTaskDefinitionConfiguration(family, task, variables, taskDefinitionConfig)
-    this.log(JSON.stringify(taskDefinition, undefined, 2))
+
+    // Generate task definition input and send request to AWS API
+    const taskDefinitionInput = fromTaskDefinitionConfiguration(family, task, variables, taskDefinitionConfig)
+    const response = await this.ecs_client().registerTaskDefinition(taskDefinitionInput)
+    const { taskDefinition } = response
+    if (taskDefinition === undefined) {
+      this.error(`Could not create task definition: ${response}`)
+    }
+
+    // Handy JSON output
+    this.log(JSON.stringify({
+      arn: taskDefinition.taskDefinitionArn,
+      family: taskDefinition.family,
+      revision: taskDefinition.revision,
+    }, undefined, 2))
   }
 }
