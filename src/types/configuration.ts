@@ -30,6 +30,18 @@ export interface Variables {
 export interface Configuration {
   version: string
   variables: Variables
+  clusters: {
+    [environment: string]: {
+      targetGroups: Array<{
+        arn: string
+        task: string
+        port: number
+      }>
+      securityGroups: string[]
+      publicSubnets: string[]
+      privateSubnets: string[]
+    }
+  }
   taskDefinitions: {
     [name: string]: ConfigurationTaskDefinition
   }
