@@ -6,7 +6,7 @@ export default class CreateService extends AwsCommand {
   static description = 'Create AWS service from task definition'
 
   static examples = [
-    `$ ecsy create-service lh-flightpass puma -e staging -r 7`
+    `$ ecsy create-service [task] -e [environment] -r [revision]`
   ]
 
   static flags = {
@@ -29,25 +29,20 @@ export default class CreateService extends AwsCommand {
 
   static args = [
     {
-      name: 'family',
-      type: 'string',
-    },
-    {
       name: 'task',
       type: 'string',
     },
   ]
 
   async run() {
-    const {args: {family, task},flags:{environment, revision}} = this.parse(CreateService)
+    const {args: {task},flags:{environment, revision}} = this.parse(CreateService)
     const client = this.ecs_client()
     const { config, variables } = this.configWithVariables()
+    const { project, region } = variables
 
     // // Generate task definition input and send request to AWS API
     const serviceInput = serviceFromConfiguration({
-      family,
       task,
-      environment,
       revision,
       variables,
       config,
@@ -62,7 +57,7 @@ export default class CreateService extends AwsCommand {
     // Handy JSON output
     this.log(JSON.stringify({
       arn: service.serviceArn,
-      url: `https://${variables.region}.console.aws.amazon.com/ecs/v2/clusters/${family}-${environment}/services/${task}/health?region=${client.region}`,
+      url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${task}/health?region=${region}`,
     }, undefined, 2))
   }
 }

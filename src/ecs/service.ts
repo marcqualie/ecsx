@@ -1,19 +1,17 @@
 import { CreateServiceCommandInput } from '@aws-sdk/client-ecs'
-import flatten from 'lodash/flatten'
 
-import {Configuration, ConfigurationTaskDefinition, Variables} from '../types/configuration'
+import {Configuration, ConfiguredVariables} from '../types/configuration'
 
 interface Params {
-  family: string
   task: string
-  environment: string
   revision: string
-  variables: Variables
+  variables: ConfiguredVariables
   config: Configuration
 }
 
 export const serviceFromConfiguration = (params: Params): CreateServiceCommandInput => {
-  const { family, task, environment, revision, variables, config } = params
+  const { task, revision, variables, config } = params
+  const { project, environment } = variables
 
   const clusterConfig = config.clusters[environment]
   const targetGroups = clusterConfig.targetGroups
@@ -22,8 +20,8 @@ export const serviceFromConfiguration = (params: Params): CreateServiceCommandIn
 
   return {
     serviceName: task,
-    cluster: `${family}-${environment}`,
-    taskDefinition: `${family}-${task}-${environment}:${revision}`,
+    cluster: `${project}-${environment}`,
+    taskDefinition: `${project}-${task}-${environment}:${revision}`,
     desiredCount: 1,
     launchType: 'FARGATE',
     loadBalancers: targetGroups.map(targetGroup => ({

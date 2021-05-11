@@ -8,7 +8,7 @@ export default class RegisterTaskDefinitions extends AwsCommand {
   static description = 'List all task definitions'
 
   static examples = [
-    '$ ecsy deploy [family] [task] -e [environment] -t [dockerTag]'
+    '$ ecsy deploy [task] -e [environment] -t [dockerTag]'
   ]
 
   static flags = {
@@ -29,29 +29,24 @@ export default class RegisterTaskDefinitions extends AwsCommand {
 
   static args = [
     {
-      name: 'family',
-      type: 'string',
-    },
-    {
       name: 'task',
       type: 'string',
     },
   ]
 
   async run() {
-    const {args: {family, task}, flags: {environment,dockerTag}} = this.parse(RegisterTaskDefinitions)
+    const {args: {task}, flags: {environment,dockerTag}} = this.parse(RegisterTaskDefinitions)
     const client = this.ecs_client()
     const { config, variables } = this.configWithVariables({
       environment,
       dockerTag,
     })
-    const taskDefinitionConfig = config.tasks[task]
+    const { project, region } = variables
 
     // Generate Task Definition
+    const taskDefinitionConfig = config.tasks[task]
     const taskDefinitionInput = taskDefinitionfromConfiguration({
-      family,
       task,
-      environment,
       variables,
       config: taskDefinitionConfig,
     })
@@ -63,9 +58,7 @@ export default class RegisterTaskDefinitions extends AwsCommand {
 
     // Create/Update Service
     const serviceInput = serviceFromConfiguration({
-      family,
       task,
-      environment,
       revision: taskDefinition.revision?.toString() || '',
       variables,
       config,
@@ -86,7 +79,7 @@ export default class RegisterTaskDefinitions extends AwsCommand {
     this.log(JSON.stringify({
       serviceArn: service.serviceArn,
       taskDefinitionArn: taskDefinition.taskDefinitionArn,
-      url: `https://${client.region}.console.aws.amazon.com/ecs/v2/clusters/${family}-${environment}/services/${task}/health?region=${client.region}`,
+      url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${task}/health?region=${region}`,
     }, undefined, 2))
   }
 }

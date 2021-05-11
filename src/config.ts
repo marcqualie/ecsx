@@ -1,6 +1,6 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
-import {Configuration, Variables} from './types/configuration'
+import {Configuration, ConfiguredVariables, Variables} from './types/configuration'
 
 export class Config {
   path: string
@@ -9,7 +9,7 @@ export class Config {
     this.path = path
   }
 
-  parse(variables: Variables): { config: Configuration, variables: Variables } {
+  parse(variables: Variables): { config: Configuration, variables: ConfiguredVariables } {
     let content = fs.readFileSync(this.path, 'utf-8')
 
     // Read config to get global variables, which can replace other variables
@@ -19,9 +19,10 @@ export class Config {
       accountId: data.accountId,
       project: data.project,
     }
-    const combinedVariables: Variables = {
+    const combinedVariables: ConfiguredVariables = {
       ...defaultVariables,
       ...variables,
+      environment: variables.environment || 'development',
     }
 
     // Ensure all required variables are present

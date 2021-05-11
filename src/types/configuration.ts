@@ -27,6 +27,13 @@ export interface Variables {
   [key: string]: string | undefined
 }
 
+export interface ConfiguredVariables extends Variables {
+  project: string
+  environment: string
+  accountId: string
+  region: string
+}
+
 export interface Configuration {
   version: string
   region: string

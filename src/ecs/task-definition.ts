@@ -1,7 +1,7 @@
 import { RegisterTaskDefinitionCommandInput } from '@aws-sdk/client-ecs'
 import flatten from 'lodash/flatten'
 
-import {ConfigurationTaskDefinition, Variables} from '../types/configuration'
+import {ConfigurationTaskDefinition, ConfiguredVariables, Variables} from '../types/configuration'
 
 const environmentFromConfiguration = (config: ConfigurationTaskDefinition) => {
   return Object.entries(config.environment).map(([key, value]) => (
@@ -33,13 +33,13 @@ const portMappingsFromConfiguration = (config: ConfigurationTaskDefinition) => {
   return undefined
 }
 
-const logConfigurationFromConfiguration = (family: string, task: string, variables: Variables) => {
+const logConfigurationFromConfiguration = (task: string, variables: ConfiguredVariables) => {
   return {
     logDriver: 'awslogs',
     secretOptions: [],
     options: {
       "awslogs-create-group": "true",
-      "awslogs-group": `/ecs/${family}/${task}`,
+      "awslogs-group": `/ecs/${variables.project}/${task}`,
       "awslogs-region": variables.region,
       "awslogs-stream-prefix": `${variables.environment}`,
     }
@@ -47,18 +47,17 @@ const logConfigurationFromConfiguration = (family: string, task: string, variabl
 }
 
 interface Params {
-  family: string
   task: string
-  environment: string
-  variables: Variables
+  variables: ConfiguredVariables
   config: ConfigurationTaskDefinition
 }
 
 export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
-  const { family, task, environment, variables, config } = params
+  const { task, variables, config } = params
+  const { project, environment } = variables
 
   return {
-    family: `${family}-${task}-${variables.environment}`,
+    family: `${project}-${task}-${environment}`,
     taskRoleArn: config.taskRoleArn,
     executionRoleArn: config.executionRoleArn,
     networkMode: 'awsvpc',
@@ -75,7 +74,7 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
         portMappings: portMappingsFromConfiguration(config),
         environment: environmentFromConfiguration(config),
         secrets: secretsFromConfiguration(config),
-        logConfiguration: logConfigurationFromConfiguration(family, task, variables),
+        logConfiguration: logConfigurationFromConfiguration(task, variables),
         essential: true,
       },
     ],

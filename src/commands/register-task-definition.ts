@@ -6,7 +6,7 @@ export default class RegisterTaskDefinitions extends AwsCommand {
   static description = 'List all task definitions'
 
   static examples = [
-    '$ ecsy register-task-definition [family] [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"'
+    '$ ecsy register-task-definition [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"'
   ]
 
   static flags = {
@@ -27,17 +27,13 @@ export default class RegisterTaskDefinitions extends AwsCommand {
 
   static args = [
     {
-      name: 'family',
-      type: 'string',
-    },
-    {
       name: 'task',
       type: 'string',
     },
   ]
 
   async run() {
-    const {args: {family, task}, flags:{environment,dockerTag}} = this.parse(RegisterTaskDefinitions)
+    const {args: {task}, flags:{environment,dockerTag}} = this.parse(RegisterTaskDefinitions)
     const client = this.ecs_client()
     const { config, variables } = this.configWithVariables({
       dockerTag,
@@ -47,10 +43,8 @@ export default class RegisterTaskDefinitions extends AwsCommand {
 
     // Generate task definition input and send request to AWS API
     const taskDefinitionInput = taskDefinitionfromConfiguration({
-      family,
       task,
       variables,
-      environment,
       config: taskDefinitionConfig,
     })
     const response = await client.registerTaskDefinition(taskDefinitionInput)
@@ -62,7 +56,6 @@ export default class RegisterTaskDefinitions extends AwsCommand {
     // Handy JSON output
     this.log(JSON.stringify({
       arn: taskDefinition.taskDefinitionArn,
-      family: taskDefinition.family,
       revision: taskDefinition.revision,
     }, undefined, 2))
   }
