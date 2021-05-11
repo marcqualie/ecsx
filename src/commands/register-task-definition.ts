@@ -1,15 +1,27 @@
 import {flags} from '@oclif/command'
 import {AwsCommand} from '../command'
-import {fromTaskDefinitionConfiguration} from '../ecs/task-definition'
+import {taskDefinitionfromConfiguration} from '../ecs/task-definition'
 
 export default class RegisterTaskDefinitions extends AwsCommand {
   static description = 'List all task definitions'
+
+  static examples = [
+    '$ ecsy register-task-definition [family] [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"'
+  ]
 
   static flags = {
     help: flags.help({char: 'h'}),
     var: flags.string({
       multiple: true,
       default: [],
+    }),
+    environment: flags.string({
+      char: 'e',
+      required: true,
+    }),
+    dockerTag: flags.string({
+      char: 't',
+      required: true,
     }),
   }
 
@@ -25,17 +37,25 @@ export default class RegisterTaskDefinitions extends AwsCommand {
   ]
 
   async run() {
-    const {args: {family, task}} = this.parse(RegisterTaskDefinitions)
+    const {args: {family, task}, flags:{environment,dockerTag}} = this.parse(RegisterTaskDefinitions)
     const client = this.ecs_client()
     const variables = {
-      region: client.region,
       ...this.variables(),
+      region: client.region,
+      dockerTag,
+      environment,
     }
     const config = this.configuration({variables})
-    const taskDefinitionConfig = config.taskDefinitions[task]
+    const taskDefinitionConfig = config.tasks[task]
 
     // Generate task definition input and send request to AWS API
-    const taskDefinitionInput = fromTaskDefinitionConfiguration(family, task, variables, taskDefinitionConfig)
+    const taskDefinitionInput = taskDefinitionfromConfiguration({
+      family,
+      task,
+      variables,
+      environment,
+      config: taskDefinitionConfig,
+    })
     const response = await client.registerTaskDefinition(taskDefinitionInput)
     const { taskDefinition } = response
     if (taskDefinition === undefined) {

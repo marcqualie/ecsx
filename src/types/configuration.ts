@@ -42,13 +42,7 @@ export interface Configuration {
       privateSubnets: string[]
     }
   }
-  taskDefinitions: {
+  tasks: {
     [name: string]: ConfigurationTaskDefinition
-  }
-  services: {
-    [name: string]: ConfigurationService
-  }
-  tasks?: {
-    [name: string]: ConfigurationTask
   }
 }

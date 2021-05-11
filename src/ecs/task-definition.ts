@@ -33,7 +33,7 @@ const portMappingsFromConfiguration = (config: ConfigurationTaskDefinition) => {
   return undefined
 }
 
-const logConfigurationFromConfiguration = (family: string, task: string, config: ConfigurationTaskDefinition, variables: Variables) => {
+const logConfigurationFromConfiguration = (family: string, task: string, variables: Variables) => {
   return {
     logDriver: 'awslogs',
     secretOptions: [],
@@ -46,7 +46,17 @@ const logConfigurationFromConfiguration = (family: string, task: string, config:
   }
 }
 
-export const fromTaskDefinitionConfiguration = (family: string, task: string, variables: any, config: ConfigurationTaskDefinition): RegisterTaskDefinitionCommandInput => {
+interface Params {
+  family: string
+  task: string
+  environment: string
+  variables: Variables
+  config: ConfigurationTaskDefinition
+}
+
+export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
+  const { family, task, environment, variables, config } = params
+
   return {
     family: `${family}-${task}-${variables.environment}`,
     taskRoleArn: config.taskRoleArn,
@@ -65,7 +75,7 @@ export const fromTaskDefinitionConfiguration = (family: string, task: string, va
         portMappings: portMappingsFromConfiguration(config),
         environment: environmentFromConfiguration(config),
         secrets: secretsFromConfiguration(config),
-        logConfiguration: logConfigurationFromConfiguration(family, task, config, variables),
+        logConfiguration: logConfigurationFromConfiguration(family, task, variables),
         essential: true,
       },
     ],

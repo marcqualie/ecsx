@@ -1,6 +1,6 @@
 import {flags} from '@oclif/command'
 import {AwsCommand} from '../command'
-import {fromTaskDefinitionConfiguration} from '../ecs/service'
+import {serviceFromConfiguration} from '../ecs/service'
 
 export default class CreateService extends AwsCommand {
   static description = 'Create AWS service from task definition'
@@ -48,7 +48,7 @@ export default class CreateService extends AwsCommand {
     const config = this.configuration({variables})
 
     // // Generate task definition input and send request to AWS API
-    const serviceInput = fromTaskDefinitionConfiguration({
+    const serviceInput = serviceFromConfiguration({
       family,
       task,
       environment,
@@ -63,7 +63,7 @@ export default class CreateService extends AwsCommand {
       this.error(`Could not create task definition: ${response}`)
     }
 
-    // // Handy JSON output
+    // Handy JSON output
     this.log(JSON.stringify({
       arn: service.serviceArn,
       url: `https://${client.region}.console.aws.amazon.com/ecs/v2/clusters/${family}-${environment}/services/${task}/health?region=${client.region}`,

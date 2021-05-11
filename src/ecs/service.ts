@@ -12,7 +12,7 @@ interface Params {
   config: Configuration
 }
 
-export const fromTaskDefinitionConfiguration = (params: Params): CreateServiceCommandInput => {
+export const serviceFromConfiguration = (params: Params): CreateServiceCommandInput => {
   const { family, task, environment, revision, variables, config } = params
 
   const clusterConfig = config.clusters[environment]
