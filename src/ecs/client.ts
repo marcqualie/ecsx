@@ -1,4 +1,4 @@
-import { CreateServiceCommand, CreateServiceCommandInput, ECSClient, ListTaskDefinitionsCommand, RegisterTaskDefinitionCommand, RegisterTaskDefinitionCommandInput, UpdateServiceCommand, UpdateServiceCommandInput } from "@aws-sdk/client-ecs"
+import { CreateServiceCommand, CreateServiceCommandInput, ECSClient, ListTaskDefinitionsCommand, RegisterTaskDefinitionCommand, RegisterTaskDefinitionCommandInput, RunTaskCommand, RunTaskCommandInput, UpdateServiceCommand, UpdateServiceCommandInput } from "@aws-sdk/client-ecs"
 
 export const AWS_REGION = process.env.AWS_REGION || 'eu-central-1'
 
@@ -27,10 +27,16 @@ export const updateService = (params: UpdateServiceCommandInput) => {
   return ecsClient.send(command)
 }
 
+export const runTask = (params: RunTaskCommandInput) => {
+  const command = new RunTaskCommand(params)
+  return ecsClient.send(command)
+}
+
 export const client = {
   region: AWS_REGION,
   createService,
   listTaskDefinitions,
   registerTaskDefinition,
+  runTask,
   updateService,
 }
