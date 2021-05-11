@@ -3,6 +3,7 @@ import Command from '@oclif/command'
 import {Config} from './config'
 
 import {client} from './ecs/client'
+import { Variables } from './types/configuration'
 
 export class AwsCommand extends Command {
   // Ensure AWS_PROFILE is set, otherwise we may connect to the wrong account
@@ -16,9 +17,13 @@ export class AwsCommand extends Command {
     return AWS_PROFILE
   }
 
-  configuration(variables: any = {}) {
-    const config = new Config()
-    return config.read(variables)
+  configWithVariables(variables: Variables = {}) {
+    const initialVariables = {
+      ...this.variables(),
+      ...variables,
+    }
+    const configParser = new Config()
+    return configParser.parse(initialVariables)
   }
 
   ecs_client() {

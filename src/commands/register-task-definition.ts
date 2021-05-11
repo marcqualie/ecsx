@@ -39,12 +39,10 @@ export default class RegisterTaskDefinitions extends AwsCommand {
   async run() {
     const {args: {family, task}, flags:{environment,dockerTag}} = this.parse(RegisterTaskDefinitions)
     const client = this.ecs_client()
-    const variables = {
-      ...this.variables(),
+    const { config, variables } = this.configWithVariables({
       dockerTag,
       environment,
-    }
-    const config = this.configuration({variables})
+    })
     const taskDefinitionConfig = config.tasks[task]
 
     // Generate task definition input and send request to AWS API

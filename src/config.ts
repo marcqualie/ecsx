@@ -9,7 +9,7 @@ export class Config {
     this.path = path
   }
 
-  read({variables = {}}: { variables: Variables}): Configuration {
+  parse(variables: Variables): { config: Configuration, variables: Variables } {
     let content = fs.readFileSync(this.path, 'utf-8')
 
     // Read config to get global variables, which can replace other variables
@@ -39,6 +39,9 @@ export class Config {
     }
 
     data = yaml.load(content)
-    return data as any
+    return {
+      config: data,
+      variables: combinedVariables,
+    }
   }
 }

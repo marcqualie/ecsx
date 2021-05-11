@@ -13,7 +13,7 @@ export default class Config extends AwsCommand {
   }
 
   async run() {
-    const config = this.configuration({variables: this.variables()})
+    const { config, variables } = this.configWithVariables()
     this.log(JSON.stringify(config, undefined, 2))
   }
 }
