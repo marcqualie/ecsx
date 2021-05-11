@@ -1,7 +1,6 @@
-import * as flatten from 'lodash/flatten'
-import * as compact from 'lodash/compact'
+import flatten from 'lodash/flatten'
 
-import {ConfigurationTask, ConfigurationTaskDefinition} from '../types/configuration'
+import {ConfigurationTaskDefinition} from '../types/configuration'
 
 const environmentFromConfiguration = (config: ConfigurationTaskDefinition) => {
   return Object.entries(config.environment).map(([key, value]) => (
