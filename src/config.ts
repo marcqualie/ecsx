@@ -35,7 +35,7 @@ export class Config {
 
     // Replace variables in raw content before decoding to YAML
     for (const [key, value] of Object.entries(combinedVariables)) {
-      content = content.replace(new RegExp(`{{ ${key} }}`, 'g'), value)
+      content = content.replace(new RegExp(`{{ ${key} }}`, 'g'), value || '')
     }
 
     data = yaml.load(content)

@@ -10,10 +10,17 @@ export default class Config extends AwsCommand {
       multiple: true,
       default: [],
     }),
+    environment: flags.string({
+      char: 'e',
+    })
   }
 
   async run() {
-    const { config, variables } = this.configWithVariables()
+    const {flags:{environment}} = this.parse(Config)
+    const { config, variables } = this.configWithVariables({
+      environment,
+    })
+    this.log(JSON.stringify(variables, undefined, 2))
     this.log(JSON.stringify(config, undefined, 2))
   }
 }

@@ -24,7 +24,7 @@ export interface ConfigurationTask {
 }
 
 export interface Variables {
-  [key: string]: string
+  [key: string]: string | undefined
 }
 
 export interface Configuration {
