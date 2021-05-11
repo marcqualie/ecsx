@@ -2,10 +2,9 @@ import {flags} from '@oclif/command'
 import {AwsCommand} from '../command'
 import {taskDefinitionfromConfiguration} from '../ecs/task-definition'
 import {serviceFromConfiguration} from '../ecs/service'
-import { TaskDefinition } from '@aws-sdk/client-ecs'
 
-export default class RegisterTaskDefinitions extends AwsCommand {
-  static description = 'List all task definitions'
+export default class DeployCommand extends AwsCommand {
+  static description = 'Create a task definition then deploy it as a service'
 
   static examples = [
     '$ ecsx deploy [task] -e [environment] -t [dockerTag]'
@@ -35,7 +34,7 @@ export default class RegisterTaskDefinitions extends AwsCommand {
   ]
 
   async run() {
-    const {args: {task}, flags: {environment,dockerTag}} = this.parse(RegisterTaskDefinitions)
+    const {args: {task}, flags: {environment,dockerTag}} = this.parse(DeployCommand)
     const client = this.ecs_client()
     const { config, variables } = this.configWithVariables({
       environment,
