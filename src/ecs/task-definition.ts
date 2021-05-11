@@ -40,7 +40,7 @@ const logConfigurationFromConfiguration = (family: string, task: string, config:
     options: {
       "awslogs-create-group": "true",
       "awslogs-group": `/ecs/${family}/${task}`,
-      "awslogs-region": "eu-central-1",
+      "awslogs-region": variables.region,
       "awslogs-stream-prefix": `${variables.environment}`,
     }
   }
