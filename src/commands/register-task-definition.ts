@@ -6,7 +6,7 @@ export default class RegisterTaskDefinitions extends AwsCommand {
   static description = 'List all task definitions'
 
   static examples = [
-    '$ ecsy register-task-definition [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"'
+    '$ ecsx register-task-definition [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"'
   ]
 
   static flags = {

@@ -1,12 +1,12 @@
 {
-  "name": "ecsy",
+  "name": "ecsx",
   "description": "Easily create, manage and deploy ECS based applications",
   "version": "0.1.0",
   "author": "Marc Qualie @marcqualie",
   "bin": {
-    "ecsy": "./bin/run"
+    "ecsx": "./bin/run"
   },
-  "bugs": "https://github.com/marcqualie/ecsy/issues",
+  "bugs": "https://github.com/marcqualie/ecsx/issues",
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.15.0",
     "@oclif/command": "^1",
@@ -43,7 +43,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/marcqualie/ecsy",
+  "homepage": "https://github.com/marcqualie/ecsx",
   "keywords": [
     "oclif"
   ],
@@ -51,12 +51,12 @@
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "ecsy",
+    "bin": "ecsx",
     "plugins": [
       "@oclif/plugin-help"
     ]
   },
-  "repository": "marcqualie/ecsy",
+  "repository": "marcqualie/ecsx",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",

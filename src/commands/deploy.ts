@@ -8,7 +8,7 @@ export default class RegisterTaskDefinitions extends AwsCommand {
   static description = 'List all task definitions'
 
   static examples = [
-    '$ ecsy deploy [task] -e [environment] -t [dockerTag]'
+    '$ ecsx deploy [task] -e [environment] -t [dockerTag]'
   ]
 
   static flags = {

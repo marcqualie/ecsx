@@ -5,7 +5,7 @@ import {Configuration, ConfiguredVariables, Variables} from './types/configurati
 export class Config {
   path: string
 
-  constructor(path = './ecsy.yml') {
+  constructor(path = './ecsx.yml') {
     this.path = path
   }
 

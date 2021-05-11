@@ -6,7 +6,7 @@ export default class CreateService extends AwsCommand {
   static description = 'Create AWS service from task definition'
 
   static examples = [
-    `$ ecsy create-service [task] -e [environment] -r [revision]`
+    `$ ecsx create-service [task] -e [environment] -r [revision]`
   ]
 
   static flags = {
