@@ -41,10 +41,7 @@ export default class CreateService extends AwsCommand {
   async run() {
     const {args: {family, task},flags:{environment, revision}} = this.parse(CreateService)
     const client = this.ecs_client()
-    const variables = {
-      region: client.region,
-      ...this.variables(),
-    }
+    const variables = this.variables()
     const config = this.configuration({variables})
 
     // // Generate task definition input and send request to AWS API
@@ -66,7 +63,7 @@ export default class CreateService extends AwsCommand {
     // Handy JSON output
     this.log(JSON.stringify({
       arn: service.serviceArn,
-      url: `https://${client.region}.console.aws.amazon.com/ecs/v2/clusters/${family}-${environment}/services/${task}/health?region=${client.region}`,
+      url: `https://${variables.region}.console.aws.amazon.com/ecs/v2/clusters/${family}-${environment}/services/${task}/health?region=${client.region}`,
     }, undefined, 2))
   }
 }

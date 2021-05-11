@@ -43,7 +43,6 @@ export default class RegisterTaskDefinitions extends AwsCommand {
     const client = this.ecs_client()
     const variables = {
       ...this.variables(),
-      region: client.region,
       environment,
       dockerTag,
     }

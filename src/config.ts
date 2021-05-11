@@ -12,12 +12,33 @@ export class Config {
   read({variables = {}}: { variables: Variables}): Configuration {
     let content = fs.readFileSync(this.path, 'utf-8')
 
-    // TODO: Throw error if a required variable is missing
-    for (const [key, value] of Object.entries(variables)) {
+    // Read config to get global variables, which can replace other variables
+    let data = yaml.load(content) as any
+    const defaultVariables = {
+      region: data.region,
+      accountId: data.accountId,
+      project: data.project,
+    }
+    const combinedVariables: Variables = {
+      ...defaultVariables,
+      ...variables,
+    }
+
+    // Ensure all required variables are present
+    const requiredVariables = ['region', 'accountId', 'project']
+    for (const key of requiredVariables) {
+      const value = combinedVariables[key] || undefined
+      if (value === undefined || value === '') {
+        throw new Error(`Missing requied variable: ${key}`)
+      }
+    }
+
+    // Replace variables in raw content before decoding to YAML
+    for (const [key, value] of Object.entries(combinedVariables)) {
       content = content.replace(new RegExp(`{{ ${key} }}`, 'g'), value)
     }
 
-    const data = yaml.load(content)
+    data = yaml.load(content)
     return data as any
   }
 }

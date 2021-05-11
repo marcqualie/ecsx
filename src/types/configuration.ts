@@ -29,6 +29,9 @@ export interface Variables {
 
 export interface Configuration {
   version: string
+  region: string
+  accountId: string
+  project: string
   variables: Variables
   clusters: {
     [environment: string]: {
