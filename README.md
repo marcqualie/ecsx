@@ -28,28 +28,69 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`ecsx hello [FILE]`](#ecsx-hello-file)
+* [`ecsx config`](#ecsx-config)
+* [`ecsx create-service [TASK]`](#ecsx-create-service-task)
+* [`ecsx deploy [TASK]`](#ecsx-deploy-task)
 * [`ecsx help [COMMAND]`](#ecsx-help-command)
+* [`ecsx register-task-definition [TASK]`](#ecsx-register-task-definition-task)
+* [`ecsx run [TASK]`](#ecsx-run-task)
+* [`ecsx task-definitions`](#ecsx-task-definitions)
 
-## `ecsx hello [FILE]`
+## `ecsx config`
 
-describe the command here
+Print out current configuration
 
 ```
 USAGE
-  $ ecsx hello [FILE]
+  $ ecsx config
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ ecsx hello
-  hello world from ./src/hello.ts!
+  -e, --environment=environment
+  -h, --help                     show CLI help
+  --var=var                      [default: ]
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/marcqualie/ecsx/blob/v0.1.0/src/commands/hello.ts)_
+_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.1.0/src/commands/config.ts)_
+
+## `ecsx create-service [TASK]`
+
+Create a new service from a task definition
+
+```
+USAGE
+  $ ecsx create-service [TASK]
+
+OPTIONS
+  -e, --environment=environment  (required)
+  -h, --help                     show CLI help
+  -r, --revision=revision        [default: LATEST]
+  --var=var                      [default: ]
+
+EXAMPLE
+  $ ecsx create-service [task] -e [environment] -r [revision]
+```
+
+_See code: [src/commands/create-service.ts](https://github.com/marcqualie/ecsx/blob/v0.1.0/src/commands/create-service.ts)_
+
+## `ecsx deploy [TASK]`
+
+Create a task definition then deploy it as a service
+
+```
+USAGE
+  $ ecsx deploy [TASK]
+
+OPTIONS
+  -e, --environment=environment  (required)
+  -h, --help                     show CLI help
+  -t, --dockerTag=dockerTag      (required)
+  --var=var                      [default: ]
+
+EXAMPLE
+  $ ecsx deploy [task] -e [environment] -t [dockerTag]
+```
+
+_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.1.0/src/commands/deploy.ts)_
 
 ## `ecsx help [COMMAND]`
 
@@ -67,4 +108,61 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+
+## `ecsx register-task-definition [TASK]`
+
+Register a new task definitions based on ecsx.yml
+
+```
+USAGE
+  $ ecsx register-task-definition [TASK]
+
+OPTIONS
+  -e, --environment=environment  (required)
+  -h, --help                     show CLI help
+  -t, --dockerTag=dockerTag      (required)
+  --var=var                      [default: ]
+
+EXAMPLE
+  $ ecsx register-task-definition [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"
+```
+
+_See code: [src/commands/register-task-definition.ts](https://github.com/marcqualie/ecsx/blob/v0.1.0/src/commands/register-task-definition.ts)_
+
+## `ecsx run [TASK]`
+
+Run a one off task on the cluster
+
+```
+USAGE
+  $ ecsx run [TASK]
+
+OPTIONS
+  -e, --environment=environment  (required)
+  -h, --help                     show CLI help
+  -t, --dockerTag=dockerTag      (required)
+  --var=var                      [default: ]
+
+EXAMPLE
+  $ ecsx run [task] -e [environment] -t [dockerTag]
+```
+
+_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.1.0/src/commands/run.ts)_
+
+## `ecsx task-definitions`
+
+List all task definitions
+
+```
+USAGE
+  $ ecsx task-definitions
+
+OPTIONS
+  -h, --help  show CLI help
+
+EXAMPLE
+  $ ecsx task-definitions
+```
+
+_See code: [src/commands/task-definitions.ts](https://github.com/marcqualie/ecsx/blob/v0.1.0/src/commands/task-definitions.ts)_
 <!-- commandsstop -->
