@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "composite": true,
     "declaration": true,
     "esModuleInterop": true,
     "importHelpers": true,
@@ -15,7 +16,8 @@
     "target": "es6"
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "**/*.test.ts"
   ],
   "exclude": [
     "node_modules",
