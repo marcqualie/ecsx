@@ -59,11 +59,11 @@
   "repository": "marcqualie/ecsx",
   "scripts": {
     "build": "tsc",
+    "clean": "tsc --build --clean",
     "lint": "eslint src --ext .ts --config .eslintrc",
-    "postinstall": "tsc",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "yarn lint",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "prepack": "tsc -b --clean && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha -r ts-node/register --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
   },
