@@ -1,12 +1,12 @@
-import {flags} from '@oclif/command'
-import {AwsCommand} from '../command'
-import {serviceFromConfiguration} from '../ecs/service'
+import { flags } from '@oclif/command'
+import { AwsCommand } from '../command'
+import { serviceFromConfiguration } from '../ecs/service'
 
 export default class CreateServiceCommand extends AwsCommand {
   static description = 'Create a new service from a task definition'
 
   static examples = [
-    `$ ecsx create-service [task] -e [environment] -r [revision]`
+    '$ ecsx create-service [task] -e [environment] -r [revision]',
   ]
 
   static flags = {
@@ -35,7 +35,7 @@ export default class CreateServiceCommand extends AwsCommand {
   ]
 
   async run() {
-    const {args: {task},flags:{environment, revision}} = this.parse(CreateServiceCommand)
+    const { args: { task }, flags: { environment, revision } } = this.parse(CreateServiceCommand)
     const client = this.ecs_client()
     const { config, variables } = this.configWithVariables()
     const { project, region } = variables

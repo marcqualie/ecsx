@@ -1,7 +1,7 @@
 import { RegisterTaskDefinitionCommandInput } from '@aws-sdk/client-ecs'
 import flatten from 'lodash/flatten'
 
-import {ConfigurationTaskDefinition, ConfiguredVariables, Variables} from '../types/configuration'
+import { ConfigurationTaskDefinition, ConfiguredVariables } from '../types/configuration'
 
 const environmentFromConfiguration = (config: ConfigurationTaskDefinition) => {
   return Object.entries(config.environment).map(([key, value]) => (
@@ -38,11 +38,11 @@ const logConfigurationFromConfiguration = (task: string, variables: ConfiguredVa
     logDriver: 'awslogs',
     secretOptions: [],
     options: {
-      "awslogs-create-group": "true",
-      "awslogs-group": `/ecs/${variables.project}/${task}`,
-      "awslogs-region": variables.region,
-      "awslogs-stream-prefix": `${variables.environment}`,
-    }
+      'awslogs-create-group': 'true',
+      'awslogs-group': `/ecs/${variables.project}/${task}`,
+      'awslogs-region': variables.region,
+      'awslogs-stream-prefix': `${variables.environment}`,
+    },
   }
 }
 
@@ -62,7 +62,7 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
     executionRoleArn: config.executionRoleArn,
     networkMode: 'awsvpc',
     requiresCompatibilities: [
-      'FARGATE'
+      'FARGATE',
     ],
     cpu: config.cpu.toString(),
     memory: config.memory.toString(),

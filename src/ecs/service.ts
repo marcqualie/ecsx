@@ -1,6 +1,6 @@
 import { CreateServiceCommandInput } from '@aws-sdk/client-ecs'
 
-import {Configuration, ConfiguredVariables} from '../types/configuration'
+import { Configuration, ConfiguredVariables } from '../types/configuration'
 
 interface Params {
   task: string

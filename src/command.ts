@@ -1,8 +1,8 @@
 /* eslint-disable no-warning-comments */
 import Command from '@oclif/command'
-import {Config} from './config'
+import { Config } from './config'
 
-import {client} from './ecs/client'
+import { client } from './ecs/client'
 import { Variables } from './types/configuration'
 
 export class AwsCommand extends Command {
@@ -33,7 +33,7 @@ export class AwsCommand extends Command {
   }
 
   variables() {
-    const {flags} = this.parse() as any
+    const { flags } = this.parse() as any
 
     const variables: { [key: string]: string } = {}
     for (const pair of flags.var) {

@@ -1,17 +1,17 @@
-import {flags} from '@oclif/command'
-import {AwsCommand} from '../command'
-import {taskDefinitionfromConfiguration} from '../ecs/task-definition'
+import { flags } from '@oclif/command'
+import { AwsCommand } from '../command'
+import { taskDefinitionfromConfiguration } from '../ecs/task-definition'
 import { taskFromConfiguration } from '../ecs/task'
 
 export default class RunCommand extends AwsCommand {
-  static description = "Run a one off task on the cluster"
+  static description = 'Run a one off task on the cluster'
 
   static examples = [
-    '$ ecsx run [task] -e [environment] -t [dockerTag]'
+    '$ ecsx run [task] -e [environment] -t [dockerTag]',
   ]
 
   static flags = {
-    help: flags.help({char: 'h'}),
+    help: flags.help({ char: 'h' }),
     var: flags.string({
       multiple: true,
       default: [],
@@ -34,7 +34,7 @@ export default class RunCommand extends AwsCommand {
   ]
 
   async run() {
-    const {args: {task}, flags: {environment,dockerTag}} = this.parse(RunCommand)
+    const { args: { task }, flags: { environment, dockerTag } } = this.parse(RunCommand)
     const client = this.ecs_client()
     const { config, variables } = this.configWithVariables({
       environment,

@@ -1,16 +1,16 @@
-import {flags} from '@oclif/command'
-import {AwsCommand} from '../command'
-import {taskDefinitionfromConfiguration} from '../ecs/task-definition'
+import { flags } from '@oclif/command'
+import { AwsCommand } from '../command'
+import { taskDefinitionfromConfiguration } from '../ecs/task-definition'
 
 export default class RegisterTaskDefinitionCommand extends AwsCommand {
   static description = 'Register a new task definitions based on ecsx.yml'
 
   static examples = [
-    '$ ecsx register-task-definition [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"'
+    '$ ecsx register-task-definition [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"',
   ]
 
   static flags = {
-    help: flags.help({char: 'h'}),
+    help: flags.help({ char: 'h' }),
     var: flags.string({
       multiple: true,
       default: [],
@@ -33,7 +33,7 @@ export default class RegisterTaskDefinitionCommand extends AwsCommand {
   ]
 
   async run() {
-    const {args: {task}, flags:{environment,dockerTag}} = this.parse(RegisterTaskDefinitionCommand)
+    const { args: { task }, flags: { environment, dockerTag } } = this.parse(RegisterTaskDefinitionCommand)
     const client = this.ecs_client()
     const { config, variables } = this.configWithVariables({
       dockerTag,

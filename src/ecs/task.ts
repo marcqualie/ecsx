@@ -1,6 +1,6 @@
 import { RunTaskCommandInput } from '@aws-sdk/client-ecs'
 
-import {Configuration, ConfiguredVariables} from '../types/configuration'
+import { Configuration, ConfiguredVariables } from '../types/configuration'
 
 interface Params {
   task: string
@@ -14,7 +14,6 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
   const { project, environment } = variables
 
   const clusterConfig = config.clusters[environment]
-  const targetGroups = clusterConfig.targetGroups
   const subnets = clusterConfig.publicSubnets
   const securityGroups = clusterConfig.securityGroups
 

@@ -1,5 +1,4 @@
-import {Command, flags} from '@oclif/command'
-import { client, listTaskDefinitions } from '../ecs/client'
+import { flags } from '@oclif/command'
 import { AwsCommand } from '../command'
 
 export default class TaskDefinitionsCommand extends AwsCommand {
@@ -10,7 +9,7 @@ export default class TaskDefinitionsCommand extends AwsCommand {
   ]
 
   static flags = {
-    help: flags.help({char: 'h'}),
+    help: flags.help({ char: 'h' }),
   }
 
   async run() {

@@ -1,4 +1,12 @@
 {
+  "root": true,
   "extends": [
-  ]
+    "oclif",
+    "oclif-typescript"
+  ],
+  "rules": {
+    "@typescript-eslint/member-delimiter-style": "none",
+    "@typescript-eslint/no-unused-vars": [1],
+    "object-curly-spacing": [1, "always"]
+  }
 }

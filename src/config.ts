@@ -1,6 +1,6 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
-import {Configuration, ConfiguredVariables, Variables} from './types/configuration'
+import { Configuration, ConfiguredVariables, Variables } from './types/configuration'
 
 export class Config {
   path: string
