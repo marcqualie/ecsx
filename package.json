@@ -60,6 +60,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint src --ext .ts --config .eslintrc",
+    "postinstall": "tsc",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "yarn lint",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
