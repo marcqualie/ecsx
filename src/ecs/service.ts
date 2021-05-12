@@ -24,7 +24,7 @@ export const serviceFromConfiguration = (params: Params): CreateServiceCommandIn
     taskDefinition: `${project}-${task}-${environment}:${revision}`,
     desiredCount: 1,
     launchType: 'FARGATE',
-    loadBalancers: targetGroups.map(targetGroup => ({
+    loadBalancers: targetGroups.filter(targetGroup => targetGroup.task === task).map(targetGroup => ({
       containerName: targetGroup.task,
       containerPort: targetGroup.port,
       targetGroupArn: targetGroup.arn,
