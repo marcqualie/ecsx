@@ -5,7 +5,7 @@ export interface ConfigurationTaskDefinition {
   cpu: 256 | 512 | 1024
   memory: 512 | 1024 | 2048
   secrets: Array<{
-    arn: string
+    name: string
     keys: string[]
   }>
   ports?: number[]
@@ -50,6 +50,9 @@ export interface Configuration {
       securityGroups: string[]
       publicSubnets: string[]
       privateSubnets: string[]
+      secrets: {
+        [name: string]: string
+      }
     }
   }
   tasks: {

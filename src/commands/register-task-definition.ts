@@ -39,13 +39,12 @@ export default class RegisterTaskDefinitionCommand extends AwsCommand {
       dockerTag,
       environment,
     })
-    const taskDefinitionConfig = config.tasks[task]
 
     // Generate task definition input and send request to AWS API
     const taskDefinitionInput = taskDefinitionfromConfiguration({
       task,
       variables,
-      config: taskDefinitionConfig,
+      config,
     })
     const response = await client.registerTaskDefinition(taskDefinitionInput)
     const { taskDefinition } = response

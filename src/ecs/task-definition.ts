@@ -1,7 +1,7 @@
 import { RegisterTaskDefinitionCommandInput } from '@aws-sdk/client-ecs'
 import flatten from 'lodash/flatten'
 
-import { ConfigurationTaskDefinition, ConfiguredVariables } from '../types/configuration'
+import { Configuration, ConfigurationTaskDefinition, ConfiguredVariables } from '../types/configuration'
 
 const environmentFromConfiguration = (config: ConfigurationTaskDefinition) => {
   return Object.entries(config.environment).map(([key, value]) => (
@@ -12,12 +12,15 @@ const environmentFromConfiguration = (config: ConfigurationTaskDefinition) => {
   ))
 }
 
-const secretsFromConfiguration = (config: ConfigurationTaskDefinition) => {
-  return flatten(config.secrets.map(entry => {
+export const secretsFromConfiguration = (task: string, environment: string, config: Configuration) => {
+  const taskConfig = config.tasks[task]
+  const clusterConfig = config.clusters[environment]
+  return flatten(taskConfig.secrets.map(entry => {
+    const arn = clusterConfig.secrets[entry.name]
     return entry.keys.map(key => {
       return {
         name: key,
-        valueFrom: `${entry.arn}:${key}::`,
+        valueFrom: `${arn}:${key}::`,
       }
     })
   }))
@@ -49,31 +52,32 @@ const logConfigurationFromConfiguration = (task: string, variables: ConfiguredVa
 interface Params {
   task: string
   variables: ConfiguredVariables
-  config: ConfigurationTaskDefinition
+  config: Configuration
 }
 
 export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
   const { task, variables, config } = params
   const { project, environment } = variables
+  const taskConfig = config.tasks[task]
 
   return {
     family: `${project}-${task}-${environment}`,
-    taskRoleArn: config.taskRoleArn,
-    executionRoleArn: config.executionRoleArn,
+    taskRoleArn: taskConfig.taskRoleArn,
+    executionRoleArn: taskConfig.executionRoleArn,
     networkMode: 'awsvpc',
     requiresCompatibilities: [
       'FARGATE',
     ],
-    cpu: config.cpu.toString(),
-    memory: config.memory.toString(),
+    cpu: taskConfig.cpu.toString(),
+    memory: taskConfig.memory.toString(),
     containerDefinitions: [
       {
         name: task,
-        image: config.image,
-        command: config.command,
-        portMappings: portMappingsFromConfiguration(config),
-        environment: environmentFromConfiguration(config),
-        secrets: secretsFromConfiguration(config),
+        image: taskConfig.image,
+        command: taskConfig.command,
+        portMappings: portMappingsFromConfiguration(taskConfig),
+        environment: environmentFromConfiguration(taskConfig),
+        secrets: secretsFromConfiguration(task, environment, config),
         logConfiguration: logConfigurationFromConfiguration(task, variables),
         essential: true,
       },

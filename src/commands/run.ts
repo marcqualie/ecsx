@@ -43,11 +43,10 @@ export default class RunCommand extends AwsCommand {
     const { accountId, project, region } = variables
 
     // Generate Task Definition
-    const taskDefinitionConfig = config.tasks[task]
     const taskDefinitionInput = taskDefinitionfromConfiguration({
       task,
       variables,
-      config: taskDefinitionConfig,
+      config,
     })
     const taskDefinitionResponse = await client.registerTaskDefinition(taskDefinitionInput)
     const { taskDefinition } = taskDefinitionResponse
