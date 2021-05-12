@@ -54,30 +54,56 @@ export default class DeployCommand extends AwsCommand {
       this.error(`Could not create task definition: ${taskDefinitionResponse}`)
     }
 
-    // Create/Update Service
+    // Check if a service already exists
+    // NOTE: Inactive services need to created again, rather than updated
     const serviceInput = serviceFromConfiguration({
       task,
       revision: taskDefinition.revision?.toString() || '',
       variables,
       config,
     })
-    // console.log(JSON.stringify(serviceInput, undefined, 2))
-    const updateServiceResponse = await client.updateService({
-      service: serviceInput.serviceName,
+    const { services: existingServices = [] } = await client.describeServices({
       cluster: serviceInput.cluster,
-      taskDefinition: serviceInput.taskDefinition,
-      desiredCount: serviceInput.desiredCount,
+      services: [
+        serviceInput.serviceName || '',
+      ],
     })
-    const { service } = updateServiceResponse
-    if (service === undefined) {
-      this.error(`Could not create task definition: ${updateServiceResponse}`)
-    }
+    const serviceIsActive = existingServices.filter(service => service.status === 'ACTIVE').length > 0
 
-    // Handy JSON output
-    this.log(JSON.stringify({
-      serviceArn: service.serviceArn,
-      taskDefinitionArn: taskDefinition.taskDefinitionArn,
-      url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${task}/health?region=${region}`,
-    }, undefined, 2))
+    // Create a new service
+    if (serviceIsActive === false) {
+      const createServiceResponse = await client.createService(serviceInput)
+      const { service } = createServiceResponse
+      if (service === undefined) {
+        this.error(`Could not create service: ${createServiceResponse}`)
+      }
+
+      // Handy JSON output
+      this.log(JSON.stringify({
+        serviceArn: service.serviceArn,
+        taskDefinitionArn: taskDefinition.taskDefinitionArn,
+        url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${task}/health?region=${region}`,
+      }, undefined, 2))
+
+    // Update existing service
+    } else {
+      const updateServiceResponse = await client.updateService({
+        service: serviceInput.serviceName,
+        cluster: serviceInput.cluster,
+        taskDefinition: serviceInput.taskDefinition,
+        desiredCount: serviceInput.desiredCount,
+      })
+      const { service } = updateServiceResponse
+      if (service === undefined) {
+        this.error(`Could not update service: ${updateServiceResponse}`)
+      }
+
+      // Handy JSON output
+      this.log(JSON.stringify({
+        serviceArn: service.serviceArn,
+        taskDefinitionArn: taskDefinition.taskDefinitionArn,
+        url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${task}/health?region=${region}`,
+      }, undefined, 2))
+    }
   }
 }
