@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Create services if they are new or inactive
 - Config path can be set via `ECSX_CONFIG_PATH` environment variable
+- CLI: scale command to quickly adjust cluster resources
 
 ### Fixed
 
