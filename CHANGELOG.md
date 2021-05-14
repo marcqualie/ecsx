@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Filter load balancers to only include targeted task on deploy
+- `desiredCount` will not reset back to 1 on each deploy
 
 ### Changed
 

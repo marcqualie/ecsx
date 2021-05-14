@@ -15,12 +15,10 @@ export interface ConfigurationTaskDefinition {
 
 export interface ConfigurationService {
   taskDefinition: string
-  replicas: number
 }
 
 export interface ConfigurationTask {
   taskDefinition: string
-  replicas: number
 }
 
 export interface Variables {

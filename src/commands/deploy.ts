@@ -84,14 +84,12 @@ export default class DeployCommand extends AwsCommand {
         taskDefinitionArn: taskDefinition.taskDefinitionArn,
         url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${task}/health?region=${region}`,
       }, undefined, 2))
-
     // Update existing service
     } else {
       const updateServiceResponse = await client.updateService({
         service: serviceInput.serviceName,
         cluster: serviceInput.cluster,
         taskDefinition: serviceInput.taskDefinition,
-        desiredCount: serviceInput.desiredCount,
       })
       const { service } = updateServiceResponse
       if (service === undefined) {
