@@ -2,10 +2,12 @@ import fs from 'fs'
 import yaml from 'js-yaml'
 import { Configuration, ConfiguredVariables, Variables } from './types/configuration'
 
+const { ECSX_CONFIG_PATH } = process.env
+
 export class Config {
   path: string
 
-  constructor(path = './ecsx.yml') {
+  constructor(path = ECSX_CONFIG_PATH || './ecsx.yml') {
     this.path = path
   }
 
