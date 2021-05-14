@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Filter load balancers to only include targeted task on deploy
 
+### Changed
+
+- No longer require `AWS_PROFILE` environment variable to be set
+
 
 
 ## [0.1.1] - 2021-05-12
