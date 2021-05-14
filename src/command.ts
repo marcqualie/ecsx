@@ -34,9 +34,10 @@ export class AwsCommand extends Command {
 
   variables() {
     const { flags } = this.parse() as any
+    const flagVars = flags.var || []
 
     const variables: { [key: string]: string } = {}
-    for (const pair of flags.var) {
+    for (const pair of flagVars) {
       const [key, value] = pair.split('=')
       variables[key] = value
     }
