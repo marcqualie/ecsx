@@ -51,7 +51,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.2.0/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/main/src/commands/config.ts)_
 
 ## `ecsx create-service [TASK]`
 
@@ -71,7 +71,7 @@ EXAMPLE
   $ ecsx create-service [task] -e [environment] -r [revision]
 ```
 
-_See code: [src/commands/create-service.ts](https://github.com/marcqualie/ecsx/blob/v0.2.0/src/commands/create-service.ts)_
+_See code: [src/commands/create-service.ts](https://github.com/marcqualie/ecsx/blob/main/src/commands/create-service.ts)_
 
 ## `ecsx deploy [TASK]`
 
@@ -91,7 +91,7 @@ EXAMPLE
   $ ecsx deploy [task] -e [environment] -t [dockerTag]
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.2.0/src/commands/deploy.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/main/src/commands/deploy.ts)_
 
 ## `ecsx help [COMMAND]`
 
@@ -128,7 +128,7 @@ EXAMPLE
   $ ecsx register-task-definition [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"
 ```
 
-_See code: [src/commands/register-task-definition.ts](https://github.com/marcqualie/ecsx/blob/v0.2.0/src/commands/register-task-definition.ts)_
+_See code: [src/commands/register-task-definition.ts](https://github.com/marcqualie/ecsx/blob/main/src/commands/register-task-definition.ts)_
 
 ## `ecsx run [TASK]`
 
@@ -148,7 +148,7 @@ EXAMPLE
   $ ecsx run [task] -e [environment] -t [dockerTag]
 ```
 
-_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.2.0/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/main/src/commands/run.ts)_
 
 ## `ecsx scale [TASK] [COUNT]`
 
@@ -166,7 +166,7 @@ EXAMPLE
   $ ecsx scale [task] [count] -e [environment]
 ```
 
-_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.2.0/src/commands/scale.ts)_
+_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/main/src/commands/scale.ts)_
 
 ## `ecsx task-definitions`
 
@@ -183,5 +183,5 @@ EXAMPLE
   $ ecsx task-definitions
 ```
 
-_See code: [src/commands/task-definitions.ts](https://github.com/marcqualie/ecsx/blob/v0.2.0/src/commands/task-definitions.ts)_
+_See code: [src/commands/task-definitions.ts](https://github.com/marcqualie/ecsx/blob/main/src/commands/task-definitions.ts)_
 <!-- commandsstop -->
