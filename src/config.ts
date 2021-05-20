@@ -38,7 +38,7 @@ export class Config {
     for (const key of requiredVariables) {
       const value = combinedVariables[key] || undefined
       if (value === undefined || value === '') {
-        throw new Error(`Missing requied variable: ${key}`)
+        throw new Error(`Missing required variable: ${key} (Please define globally, or per cluster)`)
       }
     }
 

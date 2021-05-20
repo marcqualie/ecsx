@@ -1,8 +1,17 @@
+import pickBy from 'lodash/pickBy'
+import identity from 'lodash/identity'
 import { Configuration } from '../types/configuration'
 
-export const variablesFromCluster = (clusterName: string, config: Configuration) => {
+interface VariablesFromCluster {
+  environment: string
+  project?: string
+  [key: string]: string | undefined
+}
+
+export const variablesFromCluster = (clusterName: string, config: Configuration): VariablesFromCluster => {
   const clusterConfig = config.clusters[clusterName] || {}
-  return {
+  return pickBy({
     environment: clusterConfig.environment,
-  }
+    project: clusterConfig.project,
+  }, identity) as VariablesFromCluster
 }
