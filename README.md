@@ -46,7 +46,7 @@ USAGE
   $ ecsx config
 
 OPTIONS
-  -e, --environment=environment
+  -c, --clusterName=clusterName  (required)
   -h, --help                     show CLI help
   --var=var                      [default: ]
 ```
@@ -62,7 +62,7 @@ USAGE
   $ ecsx create-service [TASK]
 
 OPTIONS
-  -e, --environment=environment  (required)
+  -c, --clusterName=clusterName  (required)
   -h, --help                     show CLI help
   -r, --revision=revision        [default: LATEST]
   --var=var                      [default: ]
@@ -82,7 +82,7 @@ USAGE
   $ ecsx deploy [TASK]
 
 OPTIONS
-  -e, --environment=environment  (required)
+  -c, --clusterName=clusterName  (required)
   -h, --help                     show CLI help
   -t, --dockerTag=dockerTag      (required)
   --var=var                      [default: ]
@@ -119,7 +119,7 @@ USAGE
   $ ecsx register-task-definition [TASK]
 
 OPTIONS
-  -e, --environment=environment  (required)
+  -c, --clusterName=clusterName  (required)
   -h, --help                     show CLI help
   -t, --dockerTag=dockerTag      (required)
   --var=var                      [default: ]
@@ -139,7 +139,7 @@ USAGE
   $ ecsx run [TASK]
 
 OPTIONS
-  -e, --environment=environment  (required)
+  -c, --clusterName=clusterName  (required)
   -h, --help                     show CLI help
   -t, --dockerTag=dockerTag      (required)
   --var=var                      [default: ]
@@ -159,7 +159,7 @@ USAGE
   $ ecsx scale [TASK] [COUNT]
 
 OPTIONS
-  -e, --environment=environment  (required)
+  -c, --clusterName=clusterName  (required)
   -h, --help                     show CLI help
 
 EXAMPLE
