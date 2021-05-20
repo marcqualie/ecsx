@@ -5,7 +5,6 @@
   "additionalProperties": false,
   "required": [
     "accountId",
-    "project",
     "region",
     "clusters",
     "tasks"
@@ -47,6 +46,10 @@
             "type": "string",
             "description": "Application environment for containers. This will be available $environment variabe",
             "example": "production"
+          },
+          "project": {
+            "type": "string",
+            "description": "Override for the global project definition"
           },
           "targetGroups": {
             "type": "array",

@@ -47,6 +47,7 @@ export interface Configuration {
   clusters: {
     [clusterName: string]: {
       environment: string
+      project?: string
       targetGroups: Array<{
         arn: string
         task: string
