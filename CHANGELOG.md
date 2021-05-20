@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added json-schema to validate config files
+- Project variable can be overriden at the cluster level
 
 ### Changed
 
