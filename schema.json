@@ -1,0 +1,188 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ECSX Configuration File",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accountId",
+    "project",
+    "region",
+    "clusters",
+    "tasks"
+  ],
+  "properties": {
+    "version": {
+      "deprcated": true,
+      "type": "number",
+      "description": "Schema version for ecsx"
+    },
+    "accountId": {
+      "type": "integer",
+      "description": "Numeric AWS account ID"
+    },
+    "project": {
+      "type": "string",
+      "description": "Unique for the project. Usually paired with terraform to link to generated infrastructure"
+    },
+    "region": {
+      "type": "string",
+      "description": "AWS region to execute commands against"
+    },
+    "clusters": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "targetGroups",
+          "privateSubnets",
+          "publicSubnets",
+          "secrets",
+          "securityGroups"
+        ],
+        "properties": {
+          "targetGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TargetGroup"
+            }
+          },
+          "secrets": {
+            "type": "object",
+            "description": "List of aws secrets ARNs to register in the cluster",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "securityGroups": {
+            "type": "array",
+            "description": "List of security group IDs to associate with containers",
+            "items": {
+              "type": "string"
+            }
+          },
+          "publicSubnets": {
+            "type": "array",
+            "description": "List of public subnets to associate with containers. Usually for use with a bastion or load balancer.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "privateSubnets": {
+            "type": "array",
+            "description": "List of private subnets to associate with containers. Used for internal services behind a load balancer.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "tasks": {
+      "type": "object",
+      "description": "Definition for tasks which can run as services or one off commands.",
+      "additionalProperties": {
+        "$ref": "#/components/schemas/Task"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TargetGroup": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "arn",
+          "port",
+          "task"
+        ],
+        "properties": {
+          "arn": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer"
+          },
+          "task": {
+            "type": "string"
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "command",
+          "executionRoleArn",
+          "image",
+          "taskRoleArn"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "description": "Docker image to load for this task",
+            "example": "00000000.dkr.ecr.us-east-1.amazonaws.com/myapp:latest"
+          },
+          "taskRoleArn": {
+            "type": "string"
+          },
+          "executionRoleArn": {
+            "type": "string"
+          },
+          "cpu": {
+            "type": "integer"
+          },
+          "memory": {
+            "type": "integer"
+          },
+          "command": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ports": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "service": {
+            "type": "boolean",
+            "default": true
+          },
+          "environment": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "secrets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "keys",
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Reference to the cluster secret, which is defined via #/clusters/*/secrets/[name]"
+                },
+                "keys": {
+                  "type": "array",
+                  "description": "List of keys to extract and make available as ENV variables inside task containers",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
