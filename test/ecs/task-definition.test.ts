@@ -1,60 +1,25 @@
+process.env.ECSX_CONFIG_PATH = './test/ecsx.yml'
+
 import { describe } from 'mocha'
 import { expect } from 'chai'
 
-import { Configuration } from '../../src/types/configuration'
 import { secretsFromConfiguration } from '../../src/ecs/task-definition'
-
-const mockConfig: Configuration = {
-  version: '0.1',
-  region: 'us-east-1',
-  accountId: 'act-xxx',
-  project: 'test',
-  variables: {},
-  clusters: {
-    test: {
-      secrets: {
-        app: 'arn:123:app/test-xxx',
-      },
-      targetGroups: [],
-      securityGroups: [],
-      publicSubnets: [],
-      privateSubnets: [],
-    },
-  },
-  tasks: {
-    mocha: {
-      image: '',
-      command: [],
-      cpu: 256,
-      memory: 512,
-      environment: {},
-      executionRoleArn: 'role-1',
-      secrets: [
-        {
-          name: 'app',
-          keys: [
-            'NODE_ENV',
-            'SOME_VAR',
-          ],
-        },
-      ],
-    },
-  },
-}
+import { configWithVariables } from '../../src/utils/config-with-variables'
 
 describe('ecs', () => {
   describe('task-definition', () => {
     describe('secretsFromConfiguration', () => {
       it('translate secrets to task definition format', () => {
-        const output = secretsFromConfiguration('mocha', 'test', mockConfig)
+        const { config } = configWithVariables({ clusterName: 'ecsx-test-cluster' })
+        const output = secretsFromConfiguration('mocha', 'ecsx-test-cluster', config)
         expect(output).to.deep.equal([
           {
             name: 'NODE_ENV',
-            valueFrom: 'arn:123:app/test-xxx:NODE_ENV::',
+            valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:NODE_ENV::',
           },
           {
             name: 'SOME_VAR',
-            valueFrom: 'arn:123:app/test-xxx:SOME_VAR::',
+            valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:SOME_VAR::',
           },
         ])
       })

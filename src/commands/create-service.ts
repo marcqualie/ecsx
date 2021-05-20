@@ -17,8 +17,8 @@ export default class CreateServiceCommand extends AwsCommand {
       multiple: true,
       default: [],
     }),
-    environment: flags.string({
-      char: 'e',
+    clusterName: flags.string({
+      char: 'c',
       required: true,
     }),
     revision: flags.string({
@@ -35,10 +35,10 @@ export default class CreateServiceCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { task }, flags: { environment, revision } } = this.parse(CreateServiceCommand)
+    const { args: { task }, flags: { clusterName, revision } } = this.parse(CreateServiceCommand)
     const client = this.ecs_client()
-    const { config, variables } = this.configWithVariables()
-    const { project, region } = variables
+    const { config, variables } = this.configWithVariables({ clusterName })
+    const { environment, project, region } = variables
 
     // // Generate task definition input and send request to AWS API
     const serviceInput = serviceFromConfiguration({

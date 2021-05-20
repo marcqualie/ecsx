@@ -1,6 +1,7 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
 import { Configuration, ConfiguredVariables, Variables } from './types/configuration'
+import { variablesFromCluster } from './utils/variables-from-cluster'
 
 const { ECSX_CONFIG_PATH } = process.env
 
@@ -11,7 +12,7 @@ export class Config {
     this.path = path
   }
 
-  parse(variables: Variables): { config: Configuration, variables: ConfiguredVariables } {
+  parse(variables: Variables & { clusterName: string }): { config: Configuration, variables: ConfiguredVariables } {
     let content = fs.readFileSync(this.path, 'utf-8')
 
     // Read config to get global variables, which can replace other variables
@@ -24,11 +25,16 @@ export class Config {
     const combinedVariables: ConfiguredVariables = {
       ...defaultVariables,
       ...variables,
-      environment: variables.environment || 'development',
+      ...variablesFromCluster(variables.clusterName, data),
     }
 
     // Ensure all required variables are present
-    const requiredVariables = ['region', 'accountId', 'project']
+    const requiredVariables = [
+      'region',
+      'accountId',
+      'project',
+      'clusterName',
+    ]
     for (const key of requiredVariables) {
       const value = combinedVariables[key] || undefined
       if (value === undefined || value === '') {

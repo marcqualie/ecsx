@@ -12,8 +12,8 @@ export default class DeployCommand extends AwsCommand {
     help: flags.help({
       char: 'h',
     }),
-    environment: flags.string({
-      char: 'e',
+    clusterName: flags.string({
+      char: 'c',
       required: true,
     }),
   }
@@ -30,10 +30,10 @@ export default class DeployCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { task, count }, flags: { environment } } = this.parse(DeployCommand)
+    const { args: { task, count }, flags: { clusterName } } = this.parse(DeployCommand)
     const client = this.ecs_client()
-    const { variables: { project, region } } = this.configWithVariables({
-      environment,
+    const { variables: { environment, project, region } } = this.configWithVariables({
+      clusterName,
     })
 
     // Find running service matching task name

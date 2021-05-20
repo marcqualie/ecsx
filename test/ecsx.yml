@@ -1,0 +1,36 @@
+version: 0.1
+
+region: 'us-east-1'
+accountId: 1234
+project: 'ecsx'
+
+clusters:
+  ecsx-test-cluster:
+    environment: test
+    targetGroups:
+      - arn: arn:xxx
+        port: 3000
+        task: mocha
+    securityGroups:
+      - "sg-1"
+    publicSubnets:
+      - "subnet-1"
+    privateSubnets:
+      - "subnet-2"
+    secrets:
+      app: arn:aws:secretsmanager:{{ region }}:{{ accountId }}:secret:{{ project }}/app/test-xxx
+
+tasks:
+  mocha:
+    taskRoleArn: 'somerole'
+    executionRoleArn: 'somerole'
+    image: ''
+    command: []
+    cpu: 256
+    memory: 512
+    environment: {}
+    secrets:
+      - name: 'app'
+        keys:
+          - NODE_ENV
+          - SOME_VAR

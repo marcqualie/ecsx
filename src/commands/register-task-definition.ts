@@ -15,8 +15,8 @@ export default class RegisterTaskDefinitionCommand extends AwsCommand {
       multiple: true,
       default: [],
     }),
-    environment: flags.string({
-      char: 'e',
+    clusterName: flags.string({
+      char: 'c',
       required: true,
     }),
     dockerTag: flags.string({
@@ -33,11 +33,11 @@ export default class RegisterTaskDefinitionCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { task }, flags: { environment, dockerTag } } = this.parse(RegisterTaskDefinitionCommand)
+    const { args: { task }, flags: { clusterName, dockerTag } } = this.parse(RegisterTaskDefinitionCommand)
     const client = this.ecs_client()
     const { config, variables } = this.configWithVariables({
+      clusterName,
       dockerTag,
-      environment,
     })
 
     // Generate task definition input and send request to AWS API

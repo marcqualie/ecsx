@@ -32,8 +32,10 @@
       "type": "object",
       "additionalProperties": {
         "type": "object",
+        "description": "The key must be the cluster name inside the AWS API",
         "additionalProperties": false,
         "required": [
+          "environment",
           "targetGroups",
           "privateSubnets",
           "publicSubnets",
@@ -41,6 +43,11 @@
           "securityGroups"
         ],
         "properties": {
+          "environment": {
+            "type": "string",
+            "description": "Application environment for containers. This will be available $environment variabe",
+            "example": "production"
+          },
           "targetGroups": {
             "type": "array",
             "items": {

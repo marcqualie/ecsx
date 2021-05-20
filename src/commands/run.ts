@@ -16,8 +16,8 @@ export default class RunCommand extends AwsCommand {
       multiple: true,
       default: [],
     }),
-    environment: flags.string({
-      char: 'e',
+    clusterName: flags.string({
+      char: 'c',
       required: true,
     }),
     dockerTag: flags.string({
@@ -34,13 +34,13 @@ export default class RunCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { task }, flags: { environment, dockerTag } } = this.parse(RunCommand)
+    const { args: { task }, flags: { clusterName, dockerTag } } = this.parse(RunCommand)
     const client = this.ecs_client()
     const { config, variables } = this.configWithVariables({
-      environment,
+      clusterName,
       dockerTag,
     })
-    const { accountId, project, region } = variables
+    const { accountId, environment, project, region } = variables
 
     // Generate Task Definition
     const taskDefinitionInput = taskDefinitionfromConfiguration({
