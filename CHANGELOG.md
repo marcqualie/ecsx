@@ -16,7 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Config is now parsed based on `clusterName` instead of `environment` for flexibility
+- Breaking: Config is now parsed based on `clusterName` instead of `environment` for flexibility
+- Internal: combined tsconfigs to simplify test config
 
 
 
