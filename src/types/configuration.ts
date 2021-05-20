@@ -25,9 +25,15 @@ export interface Variables {
   [key: string]: string | undefined
 }
 
+export interface ClusterVariables {
+  clusterName: string
+  [key: string]: string
+}
+
 export interface ConfiguredVariables extends Variables {
+  clusterName: string // should be passed in via CLI flags
+  environment: string // defined via cluster config
   project: string
-  environment: string
   accountId: string
   region: string
 }
@@ -39,7 +45,8 @@ export interface Configuration {
   project: string
   variables: Variables
   clusters: {
-    [environment: string]: {
+    [clusterName: string]: {
+      environment: string
       targetGroups: Array<{
         arn: string
         task: string

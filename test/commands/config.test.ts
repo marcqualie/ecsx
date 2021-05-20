@@ -4,9 +4,9 @@ describe('command', () => {
   describe('config', () => {
     test
     .stdout()
-    .command(['config'])
+    .command(['config', '-c', 'test-cluster'])
     .it('sets the correct region', ctx => {
-      expect(ctx.stdout).to.contain('"region": "eu-central-1",')
+      expect(ctx.stdout).to.contain('"region": "us-east-1",')
     })
   })
 })

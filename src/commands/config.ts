@@ -10,15 +10,16 @@ export default class Config extends AwsCommand {
       multiple: true,
       default: [],
     }),
-    environment: flags.string({
-      char: 'e',
+    clusterName: flags.string({
+      char: 'c',
+      required: true,
     }),
   }
 
   async run() {
-    const { flags: { environment } } = this.parse(Config)
+    const { flags: { clusterName } } = this.parse(Config)
     const { config, variables } = this.configWithVariables({
-      environment,
+      clusterName,
     })
     this.log(JSON.stringify(variables, undefined, 2))
     this.log(JSON.stringify(config, undefined, 2))

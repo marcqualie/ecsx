@@ -1,18 +1,17 @@
 /* eslint-disable no-warning-comments */
 import Command from '@oclif/command'
-import { Config } from './config'
 
 import { client } from './ecs/client'
-import { Variables } from './types/configuration'
+import { ClusterVariables } from './types/configuration'
+import { configWithVariables } from './utils/config-with-variables'
 
 export class AwsCommand extends Command {
-  configWithVariables(variables: Variables = {}) {
+  configWithVariables(variables: ClusterVariables) {
     const initialVariables = {
       ...this.variables(),
       ...variables,
     }
-    const configParser = new Config()
-    return configParser.parse(initialVariables)
+    return configWithVariables(initialVariables)
   }
 
   ecs_client() {

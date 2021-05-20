@@ -12,9 +12,9 @@ const environmentFromConfiguration = (config: ConfigurationTaskDefinition) => {
   ))
 }
 
-export const secretsFromConfiguration = (task: string, environment: string, config: Configuration) => {
+export const secretsFromConfiguration = (task: string, clusterName: string, config: Configuration) => {
   const taskConfig = config.tasks[task]
-  const clusterConfig = config.clusters[environment]
+  const clusterConfig = config.clusters[clusterName]
   return flatten(taskConfig.secrets.map(entry => {
     const arn = clusterConfig.secrets[entry.name]
     return entry.keys.map(key => {
