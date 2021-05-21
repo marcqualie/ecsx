@@ -176,7 +176,11 @@ To publish to npm:
 ```shell
 yarn test # to verify everything works
 yarn build # to ensure the projcet builds properly and outputs
-# bump version in package.json
+```
+
+Then, manually bump version in `package.json`. Once the version is updated:
+
+```shell
 oclif-dev readme # updates the readme with new version
 git commit -am "version 1.2.3"
 git tag v1.2.3
