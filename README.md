@@ -29,13 +29,10 @@ USAGE
 # Commands
 <!-- commands -->
 * [`ecsx config`](#ecsx-config)
-* [`ecsx create-service TASK`](#ecsx-create-service-task)
 * [`ecsx deploy TASK`](#ecsx-deploy-task)
 * [`ecsx help [COMMAND]`](#ecsx-help-command)
-* [`ecsx register-task-definition TASK`](#ecsx-register-task-definition-task)
 * [`ecsx run TASK`](#ecsx-run-task)
 * [`ecsx scale TASK COUNT`](#ecsx-scale-task-count)
-* [`ecsx task-definitions`](#ecsx-task-definitions)
 
 ## `ecsx config`
 
@@ -52,23 +49,6 @@ OPTIONS
 ```
 
 _See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/config.ts)_
-
-## `ecsx create-service TASK`
-
-Create a new service from a task definition
-
-```
-USAGE
-  $ ecsx create-service TASK
-
-OPTIONS
-  -c, --clusterName=clusterName  (required)
-  -h, --help                     show CLI help
-  -r, --revision=revision        [default: LATEST]
-  --var=var                      [default: ]
-```
-
-_See code: [src/commands/create-service.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/create-service.ts)_
 
 ## `ecsx deploy TASK`
 
@@ -104,23 +84,6 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
-## `ecsx register-task-definition TASK`
-
-Register a new task definitions based on ecsx.yml
-
-```
-USAGE
-  $ ecsx register-task-definition TASK
-
-OPTIONS
-  -c, --clusterName=clusterName  (required)
-  -h, --help                     show CLI help
-  -t, --dockerTag=dockerTag      (required)
-  --var=var                      [default: ]
-```
-
-_See code: [src/commands/register-task-definition.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/register-task-definition.ts)_
-
 ## `ecsx run TASK`
 
 Run a one off task on the cluster
@@ -152,20 +115,6 @@ OPTIONS
 ```
 
 _See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/scale.ts)_
-
-## `ecsx task-definitions`
-
-List all task definitions
-
-```
-USAGE
-  $ ecsx task-definitions
-
-OPTIONS
-  -h, --help  show CLI help
-```
-
-_See code: [src/commands/task-definitions.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/task-definitions.ts)_
 <!-- commandsstop -->
 
 
