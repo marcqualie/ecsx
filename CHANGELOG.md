@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [Unreleased]
+
+### Fixed
+
+- Some commands (deploy, create-task) were not using the new cluster name for lookups
+- Required task argument for deploys, it was possible to run without
+
+
+
 ## [0.3.0] - 2021-05-20
 
 ### Added

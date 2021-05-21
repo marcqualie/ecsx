@@ -30,14 +30,13 @@ export default class DeployCommand extends AwsCommand {
     {
       name: 'task',
       type: 'string',
+      required: true,
     },
   ]
 
   async run() {
     const client = this.ecs_client()
     const { args: { task }, flags: { clusterName, dockerTag } } = this.parse(DeployCommand)
-    const cluster = await client.describeCluster(clusterName)
-    global.console.log({ cluster })
     const { config, variables } = this.configWithVariables({
       clusterName,
       dockerTag,
@@ -46,6 +45,7 @@ export default class DeployCommand extends AwsCommand {
 
     // Generate Task Definition
     const taskDefinitionInput = taskDefinitionfromConfiguration({
+      clusterName,
       task,
       variables,
       config,
@@ -59,13 +59,14 @@ export default class DeployCommand extends AwsCommand {
     // Check if a service already exists
     // NOTE: Inactive services need to created again, rather than updated
     const serviceInput = serviceFromConfiguration({
+      clusterName,
       task,
       revision: taskDefinition.revision?.toString() || '',
       variables,
       config,
     })
     const { services: existingServices = [] } = await client.describeServices({
-      cluster: serviceInput.cluster,
+      cluster: clusterName,
       services: [
         serviceInput.serviceName || '',
       ],

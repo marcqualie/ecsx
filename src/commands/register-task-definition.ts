@@ -42,6 +42,7 @@ export default class RegisterTaskDefinitionCommand extends AwsCommand {
 
     // Generate task definition input and send request to AWS API
     const taskDefinitionInput = taskDefinitionfromConfiguration({
+      clusterName,
       task,
       variables,
       config,

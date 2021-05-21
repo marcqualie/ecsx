@@ -50,13 +50,14 @@ const logConfigurationFromConfiguration = (task: string, variables: ConfiguredVa
 }
 
 interface Params {
+  clusterName: string
   task: string
   variables: ConfiguredVariables
   config: Configuration
 }
 
 export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
-  const { task, variables, config } = params
+  const { clusterName, task, variables, config } = params
   const { project, environment } = variables
   const taskConfig = config.tasks[task]
 
@@ -77,7 +78,7 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
         command: taskConfig.command,
         portMappings: portMappingsFromConfiguration(taskConfig),
         environment: environmentFromConfiguration(taskConfig),
-        secrets: secretsFromConfiguration(task, environment, config),
+        secrets: secretsFromConfiguration(task, clusterName, config),
         logConfiguration: logConfigurationFromConfiguration(task, variables),
         essential: true,
       },
