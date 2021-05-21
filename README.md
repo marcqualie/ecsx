@@ -185,3 +185,19 @@ EXAMPLE
 
 _See code: [src/commands/task-definitions.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/task-definitions.ts)_
 <!-- commandsstop -->
+
+
+## Publishing
+
+To publish to npm:
+
+```shell
+yarn test # to verify everything works
+yarn build # to ensure the projcet builds properly and outputs
+# bump version in package.json
+oclif-dev readme # updates the readme with new version
+git commit -am "version 1.2.3"
+git tag v1.2.3
+git push && git push --tags
+npm publish
+```
