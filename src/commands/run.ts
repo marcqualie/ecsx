@@ -44,6 +44,7 @@ export default class RunCommand extends AwsCommand {
 
     // Generate Task Definition
     const taskDefinitionInput = taskDefinitionfromConfiguration({
+      clusterName,
       task,
       variables,
       config,
@@ -56,6 +57,7 @@ export default class RunCommand extends AwsCommand {
 
     // Run task using created definition
     const taskInput = taskFromConfiguration({
+      clusterName,
       task,
       revision: taskDefinition.revision?.toString() || '',
       variables,

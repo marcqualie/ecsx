@@ -42,6 +42,7 @@ export default class CreateServiceCommand extends AwsCommand {
 
     // // Generate task definition input and send request to AWS API
     const serviceInput = serviceFromConfiguration({
+      clusterName,
       task,
       revision,
       variables,

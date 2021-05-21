@@ -3,6 +3,7 @@ import { CreateServiceCommandInput } from '@aws-sdk/client-ecs'
 import { Configuration, ConfiguredVariables } from '../types/configuration'
 
 interface Params {
+  clusterName: string
   task: string
   revision: string
   variables: ConfiguredVariables
@@ -10,17 +11,17 @@ interface Params {
 }
 
 export const serviceFromConfiguration = (params: Params): CreateServiceCommandInput => {
-  const { task, revision, variables, config } = params
+  const { clusterName, task, revision, variables, config } = params
   const { project, environment } = variables
 
-  const clusterConfig = config.clusters[environment]
+  const clusterConfig = config.clusters[clusterName]
   const targetGroups = clusterConfig.targetGroups
   const subnets = clusterConfig.publicSubnets
   const securityGroups = clusterConfig.securityGroups
 
   return {
     serviceName: task,
-    cluster: `${project}-${environment}`,
+    cluster: clusterName,
     taskDefinition: `${project}-${task}-${environment}:${revision}`,
     desiredCount: 1,
     launchType: 'FARGATE',
