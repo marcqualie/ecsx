@@ -22,10 +22,12 @@ export default class DeployCommand extends AwsCommand {
     {
       name: 'task',
       type: 'string',
+      required: true,
     },
     {
       name: 'count',
       type: 'integer',
+      required: true,
     },
   ]
 

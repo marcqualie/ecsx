@@ -31,6 +31,7 @@ export default class CreateServiceCommand extends AwsCommand {
     {
       name: 'task',
       type: 'string',
+      required: true,
     },
   ]
 

@@ -29,6 +29,7 @@ export default class RegisterTaskDefinitionCommand extends AwsCommand {
     {
       name: 'task',
       type: 'string',
+      required: true,
     },
   ]
 

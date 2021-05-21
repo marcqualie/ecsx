@@ -30,6 +30,7 @@ export default class RunCommand extends AwsCommand {
     {
       name: 'task',
       type: 'string',
+      required: true,
     },
   ]
 

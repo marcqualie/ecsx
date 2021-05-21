@@ -29,12 +29,12 @@ USAGE
 # Commands
 <!-- commands -->
 * [`ecsx config`](#ecsx-config)
-* [`ecsx create-service [TASK]`](#ecsx-create-service-task)
-* [`ecsx deploy [TASK]`](#ecsx-deploy-task)
+* [`ecsx create-service TASK`](#ecsx-create-service-task)
+* [`ecsx deploy TASK`](#ecsx-deploy-task)
 * [`ecsx help [COMMAND]`](#ecsx-help-command)
-* [`ecsx register-task-definition [TASK]`](#ecsx-register-task-definition-task)
-* [`ecsx run [TASK]`](#ecsx-run-task)
-* [`ecsx scale [TASK] [COUNT]`](#ecsx-scale-task-count)
+* [`ecsx register-task-definition TASK`](#ecsx-register-task-definition-task)
+* [`ecsx run TASK`](#ecsx-run-task)
+* [`ecsx scale TASK COUNT`](#ecsx-scale-task-count)
 * [`ecsx task-definitions`](#ecsx-task-definitions)
 
 ## `ecsx config`
@@ -53,13 +53,13 @@ OPTIONS
 
 _See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.3.0/src/commands/config.ts)_
 
-## `ecsx create-service [TASK]`
+## `ecsx create-service TASK`
 
 Create a new service from a task definition
 
 ```
 USAGE
-  $ ecsx create-service [TASK]
+  $ ecsx create-service TASK
 
 OPTIONS
   -c, --clusterName=clusterName  (required)
@@ -73,13 +73,13 @@ EXAMPLE
 
 _See code: [src/commands/create-service.ts](https://github.com/marcqualie/ecsx/blob/v0.3.0/src/commands/create-service.ts)_
 
-## `ecsx deploy [TASK]`
+## `ecsx deploy TASK`
 
 Create a task definition then deploy it as a service
 
 ```
 USAGE
-  $ ecsx deploy [TASK]
+  $ ecsx deploy TASK
 
 OPTIONS
   -c, --clusterName=clusterName  (required)
@@ -110,13 +110,13 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
-## `ecsx register-task-definition [TASK]`
+## `ecsx register-task-definition TASK`
 
 Register a new task definitions based on ecsx.yml
 
 ```
 USAGE
-  $ ecsx register-task-definition [TASK]
+  $ ecsx register-task-definition TASK
 
 OPTIONS
   -c, --clusterName=clusterName  (required)
@@ -130,13 +130,13 @@ EXAMPLE
 
 _See code: [src/commands/register-task-definition.ts](https://github.com/marcqualie/ecsx/blob/v0.3.0/src/commands/register-task-definition.ts)_
 
-## `ecsx run [TASK]`
+## `ecsx run TASK`
 
 Run a one off task on the cluster
 
 ```
 USAGE
-  $ ecsx run [TASK]
+  $ ecsx run TASK
 
 OPTIONS
   -c, --clusterName=clusterName  (required)
@@ -150,13 +150,13 @@ EXAMPLE
 
 _See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.3.0/src/commands/run.ts)_
 
-## `ecsx scale [TASK] [COUNT]`
+## `ecsx scale TASK COUNT`
 
 Scale services up or down to the desired count
 
 ```
 USAGE
-  $ ecsx scale [TASK] [COUNT]
+  $ ecsx scale TASK COUNT
 
 OPTIONS
   -c, --clusterName=clusterName  (required)
