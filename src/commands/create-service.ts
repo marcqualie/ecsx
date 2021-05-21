@@ -5,10 +5,6 @@ import { serviceFromConfiguration } from '../ecs/service'
 export default class CreateServiceCommand extends AwsCommand {
   static description = 'Create a new service from a task definition'
 
-  static examples = [
-    '$ ecsx create-service [task] -e [environment] -r [revision]',
-  ]
-
   static flags = {
     help: flags.help({
       char: 'h',

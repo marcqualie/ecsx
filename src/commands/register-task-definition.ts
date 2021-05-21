@@ -5,10 +5,6 @@ import { taskDefinitionfromConfiguration } from '../ecs/task-definition'
 export default class RegisterTaskDefinitionCommand extends AwsCommand {
   static description = 'Register a new task definitions based on ecsx.yml'
 
-  static examples = [
-    '$ ecsx register-task-definition [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"',
-  ]
-
   static flags = {
     help: flags.help({ char: 'h' }),
     var: flags.string({

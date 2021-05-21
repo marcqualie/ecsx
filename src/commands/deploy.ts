@@ -6,10 +6,6 @@ import { serviceFromConfiguration } from '../ecs/service'
 export default class DeployCommand extends AwsCommand {
   static description = 'Create a task definition then deploy it as a service'
 
-  static examples = [
-    '$ ecsx deploy [task] -e [environment] -t [dockerTag]',
-  ]
-
   static flags = {
     help: flags.help({ char: 'h' }),
     var: flags.string({

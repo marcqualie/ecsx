@@ -66,9 +66,6 @@ OPTIONS
   -h, --help                     show CLI help
   -r, --revision=revision        [default: LATEST]
   --var=var                      [default: ]
-
-EXAMPLE
-  $ ecsx create-service [task] -e [environment] -r [revision]
 ```
 
 _See code: [src/commands/create-service.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/create-service.ts)_
@@ -86,9 +83,6 @@ OPTIONS
   -h, --help                     show CLI help
   -t, --dockerTag=dockerTag      (required)
   --var=var                      [default: ]
-
-EXAMPLE
-  $ ecsx deploy [task] -e [environment] -t [dockerTag]
 ```
 
 _See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/deploy.ts)_
@@ -123,9 +117,6 @@ OPTIONS
   -h, --help                     show CLI help
   -t, --dockerTag=dockerTag      (required)
   --var=var                      [default: ]
-
-EXAMPLE
-  $ ecsx register-task-definition [task] -e [environment] -t [docker_tag] --var="secrets_key=rails/staging-vuBav5"
 ```
 
 _See code: [src/commands/register-task-definition.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/register-task-definition.ts)_
@@ -143,9 +134,6 @@ OPTIONS
   -h, --help                     show CLI help
   -t, --dockerTag=dockerTag      (required)
   --var=var                      [default: ]
-
-EXAMPLE
-  $ ecsx run [task] -e [environment] -t [dockerTag]
 ```
 
 _See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/run.ts)_
@@ -161,9 +149,6 @@ USAGE
 OPTIONS
   -c, --clusterName=clusterName  (required)
   -h, --help                     show CLI help
-
-EXAMPLE
-  $ ecsx scale [task] [count] -e [environment]
 ```
 
 _See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/scale.ts)_
@@ -178,9 +163,6 @@ USAGE
 
 OPTIONS
   -h, --help  show CLI help
-
-EXAMPLE
-  $ ecsx task-definitions
 ```
 
 _See code: [src/commands/task-definitions.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/task-definitions.ts)_

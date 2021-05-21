@@ -6,10 +6,6 @@ import { taskFromConfiguration } from '../ecs/task'
 export default class RunCommand extends AwsCommand {
   static description = 'Run a one off task on the cluster'
 
-  static examples = [
-    '$ ecsx run [task] -e [environment] -t [dockerTag]',
-  ]
-
   static flags = {
     help: flags.help({ char: 'h' }),
     var: flags.string({

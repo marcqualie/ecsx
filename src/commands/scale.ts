@@ -4,10 +4,6 @@ import { AwsCommand } from '../command'
 export default class DeployCommand extends AwsCommand {
   static description = 'Scale services up or down to the desired count'
 
-  static examples = [
-    '$ ecsx scale [task] [count] -e [environment]',
-  ]
-
   static flags = {
     help: flags.help({
       char: 'h',
