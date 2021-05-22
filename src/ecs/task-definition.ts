@@ -81,6 +81,7 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
         secrets: secretsFromConfiguration(task, clusterName, config),
         logConfiguration: logConfigurationFromConfiguration(task, variables),
         essential: true,
+        readonlyRootFilesystem: false,
       },
     ],
   }
