@@ -3,6 +3,7 @@ import { Task } from '@aws-sdk/client-ecs'
 import { flags } from '@oclif/command'
 import { AwsCommand } from '../command'
 import { taskFromConfiguration } from '../ecs/task'
+import cli from 'cli-ux'
 
 export default class ConsoleCommand extends AwsCommand {
   static description = 'Scale services up or down to the desired count'
@@ -85,25 +86,26 @@ export default class ConsoleCommand extends AwsCommand {
 
     let taskStatus: string | undefined
     let taskDetails: Task | undefined = firstTask
+    cli.action.start('', taskStatus)
     while (taskStatus !== 'RUNNING') {
       taskDetails = await client.describeTask(clusterName, firstTask.taskArn)
       if (taskDetails === undefined) {
         this.error(`Could not find task details for taskArn "${firstTask.taskArn}"`)
       }
       taskStatus = taskDetails.lastStatus
-      this.log('   ', taskStatus)
+      cli.action.start('', taskStatus)
 
       // eslint-disable-next-line no-await-in-loop
       await new Promise(resolve => setTimeout(resolve, 10000))
     }
-
-    // Run exec against the running task
-    this.log('> Container is ready to connect to')
-    this.log(' ')
+    cli.action.stop(taskStatus)
 
     // TODO: Validate command input
-    this.log('> Run this:')
-    this.log(`    aws ecs execute-command --cluster ${clusterName} --task ${taskDetails.taskArn} --container ${consoleTask} --interactive --command "${command}"`)
+    // To avoid building this into the tool, just use aws cli directly
+    this.log('> Ready: Run the the following command to connect to the task')
+    this.log(' ')
+    this.log(`$ aws ecs execute-command --cluster ${clusterName} --task ${taskDetails.taskArn} --container ${consoleTask} --interactive --command "${command}"`)
+    this.log(' ')
 
     // this.log(JSON.stringify({
     //   serviceArn: updatedService.serviceArn,
