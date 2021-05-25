@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Feature: Console command to launch temporary interactive containers.
+
 ### Removed
 
 - Simplified available commands (#14)
