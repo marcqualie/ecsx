@@ -6,7 +6,7 @@ import { taskFromConfiguration } from '../ecs/task'
 import cli from 'cli-ux'
 
 export default class ConsoleCommand extends AwsCommand {
-  static description = 'Scale services up or down to the desired count'
+  static description = 'Launch a temporary interactive container'
 
   static flags = {
     help: flags.help({

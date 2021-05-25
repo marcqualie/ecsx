@@ -29,6 +29,7 @@ USAGE
 # Commands
 <!-- commands -->
 * [`ecsx config`](#ecsx-config)
+* [`ecsx console [COMMAND]`](#ecsx-console-command)
 * [`ecsx deploy TASK`](#ecsx-deploy-task)
 * [`ecsx help [COMMAND]`](#ecsx-help-command)
 * [`ecsx run TASK`](#ecsx-run-task)
@@ -49,6 +50,21 @@ OPTIONS
 ```
 
 _See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/config.ts)_
+
+## `ecsx console [COMMAND]`
+
+Launch a temporary interactive container
+
+```
+USAGE
+  $ ecsx console [COMMAND]
+
+OPTIONS
+  -c, --clusterName=clusterName  (required)
+  -h, --help                     show CLI help
+```
+
+_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/console.ts)_
 
 ## `ecsx deploy TASK`
 
@@ -116,6 +132,24 @@ OPTIONS
 
 _See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/scale.ts)_
 <!-- commandsstop -->
+
+
+
+## AWS Systems Session Manager
+
+In order to use the `console` command, you need to have [AWS System Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html) installed on your local system.
+
+
+### MacOS Quick Start
+
+These commands are taken from the [full documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html#install-plugin-macos). You can find information on how to install on other platforms there as well.
+
+```shell
+curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/mac/sessionmanager-bundle.zip" -o "sessionmanager-bundle.zip"
+unzip sessionmanager-bundle.zip
+sudo ./sessionmanager-bundle/install -i /usr/local/sessionmanagerplugin -b /usr/local/bin/session-manager-plugin
+```
+
 
 
 ## Publishing
