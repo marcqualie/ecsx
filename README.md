@@ -19,7 +19,7 @@ $ npm install -g ecsx
 $ ecsx COMMAND
 running command...
 $ ecsx (-v|--version|version)
-ecsx/0.3.1 darwin-x64 node-v14.15.5
+ecsx/0.4.0 darwin-x64 node-v14.15.5
 $ ecsx --help [COMMAND]
 USAGE
   $ ecsx COMMAND
@@ -49,7 +49,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.4.0/src/commands/config.ts)_
 
 ## `ecsx console [COMMAND]`
 
@@ -64,7 +64,7 @@ OPTIONS
   -h, --help                     show CLI help
 ```
 
-_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/console.ts)_
+_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.4.0/src/commands/console.ts)_
 
 ## `ecsx deploy TASK`
 
@@ -81,7 +81,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/deploy.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.4.0/src/commands/deploy.ts)_
 
 ## `ecsx help [COMMAND]`
 
@@ -115,7 +115,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.4.0/src/commands/run.ts)_
 
 ## `ecsx scale TASK COUNT`
 
@@ -130,7 +130,7 @@ OPTIONS
   -h, --help                     show CLI help
 ```
 
-_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.3.1/src/commands/scale.ts)_
+_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.4.0/src/commands/scale.ts)_
 <!-- commandsstop -->
 
 
