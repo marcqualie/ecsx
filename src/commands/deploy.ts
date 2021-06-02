@@ -33,7 +33,7 @@ export default class DeployCommand extends AwsCommand {
   async run() {
     const client = this.ecs_client()
     const { args: { task }, flags: { clusterName, dockerTag } } = this.parse(DeployCommand)
-    const { config, variables } = this.configWithVariables({
+    const { config, variables, envVars } = this.configWithVariables({
       clusterName,
       dockerTag,
     })
@@ -45,6 +45,7 @@ export default class DeployCommand extends AwsCommand {
       task,
       variables,
       config,
+      envVars,
     })
     const taskDefinitionResponse = await client.registerTaskDefinition(taskDefinitionInput)
     const { taskDefinition } = taskDefinitionResponse

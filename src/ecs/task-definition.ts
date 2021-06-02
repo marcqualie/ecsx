@@ -1,10 +1,10 @@
 import { RegisterTaskDefinitionCommandInput } from '@aws-sdk/client-ecs'
 import flatten from 'lodash/flatten'
 
-import { Configuration, ConfigurationTaskDefinition, ConfiguredVariables } from '../types/configuration'
+import { Configuration, ConfigurationTaskDefinition, ConfiguredVariables, KeyValuePairs } from '../types/configuration'
 
-const environmentFromConfiguration = (config: ConfigurationTaskDefinition) => {
-  return Object.entries(config.environment || {}).map(([key, value]) => (
+const environmentFromEnvVars = (envVars: KeyValuePairs) => {
+  return Object.entries(envVars).map(([key, value]) => (
     {
       name: key,
       value,
@@ -54,10 +54,11 @@ interface Params {
   task: string
   variables: ConfiguredVariables
   config: Configuration
+  envVars: KeyValuePairs
 }
 
 export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
-  const { clusterName, task, variables, config } = params
+  const { clusterName, task, variables, config, envVars } = params
   const { project, environment } = variables
   const taskConfig = config.tasks[task]
 
@@ -77,7 +78,7 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
         image: taskConfig.image,
         command: taskConfig.command,
         portMappings: portMappingsFromConfiguration(taskConfig),
-        environment: environmentFromConfiguration(taskConfig),
+        environment: environmentFromEnvVars(envVars),
         secrets: secretsFromConfiguration(task, clusterName, config),
         logConfiguration: logConfigurationFromConfiguration(task, variables),
         essential: true,
