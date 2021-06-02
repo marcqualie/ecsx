@@ -37,6 +37,7 @@ describe('ecs', () => {
 
         expect(envVars).to.deep.equal({
           CLUSTER_ENV: 'test',
+          CLUSTER_NAME: 'ecsx-test-cluster',
           APP_ENV: 'task-test',
           DEPRECATED_APP_ENV: 'invalid', // @deprecated: To be removed in next version
         })

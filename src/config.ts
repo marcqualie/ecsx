@@ -45,13 +45,23 @@ export class Config {
 
     // Replace variables in raw content before decoding to YAML
     for (const [key, value] of Object.entries(combinedVariables)) {
-      content = content.replace(new RegExp(`{{ ${key} }}`, 'g'), value ? value.toString() : '')
+      if (content.indexOf(`{{ ${key} }}`) !== -1) {
+        content = content.replace(new RegExp(`{{ ${key} }}`, 'g'), value ? value.toString() : '')
+      }
     }
 
     // Environment variables are added to container at runtime
-    const envVars = {
+    let envVars = {
       ...envVarsFromCluster(variables.clusterName, data),
       ...envVarsFromTask(variables.taskName, data),
+    }
+    for (const [envKey, envValue] of Object.entries(envVars)) {
+      for (const [key, value] of Object.entries(combinedVariables)) {
+        if (envValue.indexOf(`{{ ${key} }}`) !== -1) {
+          const newValue = envValue.replace(new RegExp(`{{ ${key} }}`, 'g'), value ? value.toString() : '')
+          envVars = { ...envVars, [envKey]: newValue }
+        }
+      }
     }
 
     data = yaml.load(content)
