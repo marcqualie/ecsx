@@ -24,7 +24,7 @@ export default class DeployCommand extends AwsCommand {
 
   static args = [
     {
-      name: 'task',
+      name: 'taskName',
       type: 'string',
       required: true,
     },
@@ -32,9 +32,10 @@ export default class DeployCommand extends AwsCommand {
 
   async run() {
     const client = this.ecs_client()
-    const { args: { task }, flags: { clusterName, dockerTag } } = this.parse(DeployCommand)
-    const { config, variables } = this.configWithVariables({
+    const { args: { taskName }, flags: { clusterName, dockerTag } } = this.parse(DeployCommand)
+    const { config, variables, envVars } = this.configWithVariables({
       clusterName,
+      taskName,
       dockerTag,
     })
     const { environment, project, region } = variables
@@ -42,9 +43,10 @@ export default class DeployCommand extends AwsCommand {
     // Generate Task Definition
     const taskDefinitionInput = taskDefinitionfromConfiguration({
       clusterName,
-      task,
+      taskName,
       variables,
       config,
+      envVars,
     })
     const taskDefinitionResponse = await client.registerTaskDefinition(taskDefinitionInput)
     const { taskDefinition } = taskDefinitionResponse
@@ -56,7 +58,7 @@ export default class DeployCommand extends AwsCommand {
     // NOTE: Inactive services need to created again, rather than updated
     const serviceInput = serviceFromConfiguration({
       clusterName,
-      task,
+      taskName,
       revision: taskDefinition.revision?.toString() || '',
       variables,
       config,
@@ -81,7 +83,7 @@ export default class DeployCommand extends AwsCommand {
       this.log(JSON.stringify({
         serviceArn: service.serviceArn,
         taskDefinitionArn: taskDefinition.taskDefinitionArn,
-        url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${task}/health?region=${region}`,
+        url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${taskName}/health?region=${region}`,
       }, undefined, 2))
     // Update existing service
     } else {
@@ -99,7 +101,7 @@ export default class DeployCommand extends AwsCommand {
       this.log(JSON.stringify({
         serviceArn: service.serviceArn,
         taskDefinitionArn: taskDefinition.taskDefinitionArn,
-        url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${task}/health?region=${region}`,
+        url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${taskName}/health?region=${region}`,
       }, undefined, 2))
     }
   }

@@ -63,7 +63,7 @@ export default class ConsoleCommand extends AwsCommand {
 
     const taskInput = taskFromConfiguration({
       clusterName,
-      task: consoleTask,
+      taskName: consoleTask,
       alias: 'console',
       revision,
       variables,
