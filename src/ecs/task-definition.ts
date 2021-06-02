@@ -4,7 +4,7 @@ import flatten from 'lodash/flatten'
 import { Configuration, ConfigurationTaskDefinition, ConfiguredVariables } from '../types/configuration'
 
 const environmentFromConfiguration = (config: ConfigurationTaskDefinition) => {
-  return Object.entries(config.environment).map(([key, value]) => (
+  return Object.entries(config.environment || {}).map(([key, value]) => (
     {
       name: key,
       value,

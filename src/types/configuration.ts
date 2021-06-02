@@ -1,7 +1,8 @@
 export interface ConfigurationTaskDefinition {
   image: string
   command: string[]
-  environment: { [key: string]: string }
+  environment?: KeyValuePairs // @deprecated: Please use envVars instead
+  envVars?: KeyValuePairs
   cpu: 256 | 512 | 1024
   memory: 512 | 1024 | 2048
   secrets: Array<{
@@ -27,9 +28,16 @@ export interface Variables {
 
 export interface ClusterVariables {
   clusterName: string
+  taskName?: string
+  [key: string]: string | undefined
+}
+
+export interface KeyValuePairs {
   [key: string]: string
 }
 
+// This is the known output after config parsing
+// We know some values will be set, because we do this in code with defaults
 export interface ConfiguredVariables extends Variables {
   clusterName: string // should be passed in via CLI flags
   environment: string // defined via cluster config
@@ -48,6 +56,7 @@ export interface Configuration {
     [clusterName: string]: {
       environment: string
       project?: string
+      envVars?: KeyValuePairs
       consoleTask: string
       targetGroups: Array<{
         arn: string
