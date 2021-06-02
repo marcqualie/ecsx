@@ -19,7 +19,7 @@ $ npm install -g ecsx
 $ ecsx COMMAND
 running command...
 $ ecsx (-v|--version|version)
-ecsx/0.4.1 darwin-x64 node-v14.15.5
+ecsx/0.4.2 darwin-x64 node-v14.15.5
 $ ecsx --help [COMMAND]
 USAGE
   $ ecsx COMMAND
@@ -30,9 +30,9 @@ USAGE
 <!-- commands -->
 * [`ecsx config`](#ecsx-config)
 * [`ecsx console [COMMAND]`](#ecsx-console-command)
-* [`ecsx deploy TASK`](#ecsx-deploy-task)
+* [`ecsx deploy TASKNAME`](#ecsx-deploy-taskname)
 * [`ecsx help [COMMAND]`](#ecsx-help-command)
-* [`ecsx run TASK`](#ecsx-run-task)
+* [`ecsx run TASKNAME`](#ecsx-run-taskname)
 * [`ecsx scale TASK COUNT`](#ecsx-scale-task-count)
 
 ## `ecsx config`
@@ -50,7 +50,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.4.1/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.4.2/src/commands/config.ts)_
 
 ## `ecsx console [COMMAND]`
 
@@ -65,15 +65,15 @@ OPTIONS
   -h, --help                     show CLI help
 ```
 
-_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.4.1/src/commands/console.ts)_
+_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.4.2/src/commands/console.ts)_
 
-## `ecsx deploy TASK`
+## `ecsx deploy TASKNAME`
 
 Create a task definition then deploy it as a service
 
 ```
 USAGE
-  $ ecsx deploy TASK
+  $ ecsx deploy TASKNAME
 
 OPTIONS
   -c, --clusterName=clusterName  (required)
@@ -82,7 +82,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.4.1/src/commands/deploy.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.4.2/src/commands/deploy.ts)_
 
 ## `ecsx help [COMMAND]`
 
@@ -101,13 +101,13 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
-## `ecsx run TASK`
+## `ecsx run TASKNAME`
 
 Run a one off task on the cluster
 
 ```
 USAGE
-  $ ecsx run TASK
+  $ ecsx run TASKNAME
 
 OPTIONS
   -c, --clusterName=clusterName  (required)
@@ -116,7 +116,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.4.1/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.4.2/src/commands/run.ts)_
 
 ## `ecsx scale TASK COUNT`
 
@@ -131,7 +131,7 @@ OPTIONS
   -h, --help                     show CLI help
 ```
 
-_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.4.1/src/commands/scale.ts)_
+_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.4.2/src/commands/scale.ts)_
 <!-- commandsstop -->
 
 

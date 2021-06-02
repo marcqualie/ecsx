@@ -7,15 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [Unreleased]
+## [0.4.2] - 2021-06-02
 
 ### Fixed
 
-- New `envVars` weren't actually being passed through to docker containers
+- `envVars` weren't actually being passed through to docker containers
 
 
 
 ## [0.4.1] - 2021-06-02
+
+NOTE: This version has a bug where `envVars` will not populate container env. Continuing to use `environment` (deprecated) will work however.
 
 ### Added
 
