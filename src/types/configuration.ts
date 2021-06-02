@@ -1,7 +1,7 @@
 export interface ConfigurationTaskDefinition {
   image: string
   command: string[]
-  environment?: KeyValuePairs// @deprecated: Please use envVars instead
+  environment?: KeyValuePairs // @deprecated: Please use envVars instead
   envVars?: KeyValuePairs
   cpu: 256 | 512 | 1024
   memory: 512 | 1024 | 2048
