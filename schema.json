@@ -51,6 +51,13 @@
             "type": "string",
             "description": "Override for the global project definition"
           },
+          "envVars": {
+            "type": "object",
+            "description": "Key/value pairs to populate the system environment variables",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
           "consoleTask": {
             "type": "string",
             "description": "Defines which task will be used when starting a console session"
@@ -167,6 +174,14 @@
           },
           "environment": {
             "type": "object",
+            "deprecated": true,
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "envVars": {
+            "type": "object",
+            "description": "Key/value pairs to populate the system environment variables",
             "additionalProperties": {
               "type": "string"
             }

@@ -7,6 +7,9 @@ project: 'ecsx'
 clusters:
   ecsx-test-cluster:
     environment: test
+    envVars:
+      CLUSTER_ENV: test
+      APP_ENV: test
     consoleTask: mocha
     targetGroups:
       - arn: arn:xxx
@@ -29,7 +32,10 @@ tasks:
     command: []
     cpu: 256
     memory: 512
-    environment: {}
+    envVars:
+      APP_ENV: task-test
+    environment:
+      DEPRECATED_APP_ENV: invalid
     secrets:
       - name: 'app'
         keys:

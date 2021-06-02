@@ -1,7 +1,8 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
-import { Configuration, ConfiguredVariables, Variables } from './types/configuration'
+import { Configuration, ConfiguredVariables, KeyValuePairs, Variables } from './types/configuration'
 import { variablesFromCluster } from './utils/variables-from-cluster'
+import { envVarsFromCluster, envVarsFromTask } from './utils/env-vars-from'
 
 const { ECSX_CONFIG_PATH } = process.env
 
@@ -12,7 +13,7 @@ export class Config {
     this.path = path
   }
 
-  parse(variables: Variables & { clusterName: string }): { config: Configuration, variables: ConfiguredVariables } {
+  parse(variables: Variables & { clusterName: string, taskName?: string }): { config: Configuration, variables: ConfiguredVariables, envVars: KeyValuePairs } {
     let content = fs.readFileSync(this.path, 'utf-8')
 
     // Read config to get global variables, which can replace other variables
@@ -44,13 +45,20 @@ export class Config {
 
     // Replace variables in raw content before decoding to YAML
     for (const [key, value] of Object.entries(combinedVariables)) {
-      content = content.replace(new RegExp(`{{ ${key} }}`, 'g'), value || '')
+      content = content.replace(new RegExp(`{{ ${key} }}`, 'g'), value ? value.toString() : '')
+    }
+
+    // Environment variables are added to container at runtime
+    const envVars = {
+      ...envVarsFromCluster(variables.clusterName, data),
+      ...envVarsFromTask(variables.taskName, data),
     }
 
     data = yaml.load(content)
     return {
       config: data,
       variables: combinedVariables,
+      envVars,
     }
   }
 }
