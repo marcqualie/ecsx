@@ -4,7 +4,7 @@ import { Configuration, ConfiguredVariables } from '../types/configuration'
 
 interface Params {
   clusterName: string
-  task: string
+  taskName: string
   revision: string
   variables: ConfiguredVariables
   config: Configuration
@@ -13,7 +13,7 @@ interface Params {
 }
 
 export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
-  const { clusterName, task, revision, variables, config, alias, enableExecuteCommand = false } = params
+  const { clusterName, taskName, revision, variables, config, alias, enableExecuteCommand = false } = params
   const { project, environment } = variables
 
   const clusterConfig = config.clusters[clusterName]
@@ -28,7 +28,7 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
     return {
       containerOverrides: [
         {
-          name: task,
+          name: taskName,
           command: [
             'sleep',
             '900',
@@ -40,9 +40,9 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
 
   return {
     cluster: clusterName,
-    taskDefinition: `${project}-${task}-${environment}:${revision}`,
+    taskDefinition: `${project}-${taskName}-${environment}:${revision}`,
     count: 1,
-    group: `task:${alias || task}`,
+    group: `task:${alias || taskName}`,
     launchType: 'FARGATE',
     enableExecuteCommand,
     networkConfiguration: {

@@ -4,14 +4,14 @@ import { Configuration, ConfiguredVariables } from '../types/configuration'
 
 interface Params {
   clusterName: string
-  task: string
+  taskName: string
   revision: string
   variables: ConfiguredVariables
   config: Configuration
 }
 
 export const serviceFromConfiguration = (params: Params): CreateServiceCommandInput => {
-  const { clusterName, task, revision, variables, config } = params
+  const { clusterName, taskName, revision, variables, config } = params
   const { project, environment } = variables
 
   const clusterConfig = config.clusters[clusterName]
@@ -20,12 +20,12 @@ export const serviceFromConfiguration = (params: Params): CreateServiceCommandIn
   const securityGroups = clusterConfig.securityGroups
 
   return {
-    serviceName: task,
+    serviceName: taskName,
     cluster: clusterName,
-    taskDefinition: `${project}-${task}-${environment}:${revision}`,
+    taskDefinition: `${project}-${taskName}-${environment}:${revision}`,
     desiredCount: 1,
     launchType: 'FARGATE',
-    loadBalancers: targetGroups.filter(targetGroup => targetGroup.task === task).map(targetGroup => ({
+    loadBalancers: targetGroups.filter(targetGroup => targetGroup.task === taskName).map(targetGroup => ({
       containerName: targetGroup.task,
       containerPort: targetGroup.port,
       targetGroupArn: targetGroup.arn,

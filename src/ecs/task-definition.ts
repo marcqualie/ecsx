@@ -51,19 +51,19 @@ const logConfigurationFromConfiguration = (task: string, variables: ConfiguredVa
 
 interface Params {
   clusterName: string
-  task: string
+  taskName: string
   variables: ConfiguredVariables
   config: Configuration
   envVars: KeyValuePairs
 }
 
 export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
-  const { clusterName, task, variables, config, envVars } = params
+  const { clusterName, taskName, variables, config, envVars } = params
   const { project, environment } = variables
-  const taskConfig = config.tasks[task]
+  const taskConfig = config.tasks[taskName]
 
   return {
-    family: `${project}-${task}-${environment}`,
+    family: `${project}-${taskName}-${environment}`,
     taskRoleArn: taskConfig.taskRoleArn,
     executionRoleArn: taskConfig.executionRoleArn,
     networkMode: 'awsvpc',
@@ -74,13 +74,13 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
     memory: taskConfig.memory.toString(),
     containerDefinitions: [
       {
-        name: task,
+        name: taskName,
         image: taskConfig.image,
         command: taskConfig.command,
         portMappings: portMappingsFromConfiguration(taskConfig),
         environment: environmentFromEnvVars(envVars),
-        secrets: secretsFromConfiguration(task, clusterName, config),
-        logConfiguration: logConfigurationFromConfiguration(task, variables),
+        secrets: secretsFromConfiguration(taskName, clusterName, config),
+        logConfiguration: logConfigurationFromConfiguration(taskName, variables),
         essential: true,
         readonlyRootFilesystem: false,
       },
