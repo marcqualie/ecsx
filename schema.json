@@ -92,6 +92,13 @@
             "items": {
               "type": "string"
             }
+          },
+          "subnets": {
+            "type": "array",
+            "description": "List of subnets to associate with containers. Can be overriden at the task level.",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
@@ -179,6 +186,13 @@
             "type": "object",
             "description": "Key/value pairs to populate the system environment variables",
             "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "subnets": {
+            "type": "array",
+            "description": "List of subnets to associate with containers. Can be overriden at the task level.",
+            "items": {
               "type": "string"
             }
           },
