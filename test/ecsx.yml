@@ -1,5 +1,3 @@
-version: 0.1
-
 region: 'us-east-1'
 accountId: 1234
 project: 'ecsx'
@@ -17,10 +15,8 @@ clusters:
         task: mocha
     securityGroups:
       - "sg-1"
-    publicSubnets:
+    subnets:
       - "subnet-1"
-    privateSubnets:
-      - "subnet-2"
     secrets:
       app: arn:aws:secretsmanager:{{ region }}:{{ accountId }}:secret:{{ project }}/app/test-xxx
 
@@ -37,6 +33,8 @@ tasks:
       CLUSTER_NAME: "{{ clusterName }}"
     environment:
       DEPRECATED_APP_ENV: invalid
+    subnets:
+      - subnet-2
     secrets:
       - name: 'app'
         keys:

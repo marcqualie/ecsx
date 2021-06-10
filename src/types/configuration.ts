@@ -12,6 +12,7 @@ export interface ConfigurationTaskDefinition {
   ports?: number[]
   taskRoleArn?: string
   executionRoleArn: string
+  subnets?: string[]
 }
 
 export interface ConfigurationClusterDefinition {

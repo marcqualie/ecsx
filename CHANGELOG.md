@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Task level `subnets` for per service network isolation.
+
 ### Changed
 
 - Allow `command` to be empty. This will use the default container CMD.
