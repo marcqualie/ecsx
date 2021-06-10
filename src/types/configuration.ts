@@ -66,7 +66,7 @@ export interface ConfiguredVariables extends Variables {
 }
 
 export interface Configuration {
-  version: string
+  version?: string // @deprecated: We have no use for this
   region: string
   accountId: string
   project: string
