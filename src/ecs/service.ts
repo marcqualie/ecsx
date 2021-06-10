@@ -16,7 +16,7 @@ export const serviceFromConfiguration = (params: Params): CreateServiceCommandIn
 
   const clusterConfig = config.clusters[clusterName]
   const targetGroups = clusterConfig.targetGroups
-  const subnets = clusterConfig.publicSubnets
+  const subnets = clusterConfig.subnets || clusterConfig.publicSubnets
   const securityGroups = clusterConfig.securityGroups
 
   return {

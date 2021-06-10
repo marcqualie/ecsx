@@ -36,8 +36,6 @@
         "required": [
           "environment",
           "targetGroups",
-          "privateSubnets",
-          "publicSubnets",
           "secrets",
           "securityGroups"
         ],

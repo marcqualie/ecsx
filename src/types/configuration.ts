@@ -64,8 +64,9 @@ export interface Configuration {
         port: number
       }>
       securityGroups: string[]
-      publicSubnets: string[]
-      privateSubnets: string[]
+      publicSubnets?: string[] // @deprecated: Please use subnets instead
+      privateSubnets?: string[] // @deprecated: Please use subnets instead
+      subnets?: string[] // TODO: make this required once other options are removed
       secrets: {
         [name: string]: string
       }
