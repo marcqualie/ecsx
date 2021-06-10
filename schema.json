@@ -133,7 +133,6 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "command",
           "executionRoleArn",
           "image",
           "taskRoleArn"
