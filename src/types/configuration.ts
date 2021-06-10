@@ -5,7 +5,7 @@ export interface ConfigurationTaskDefinition {
   envVars?: KeyValuePairs
   cpu: 256 | 512 | 1024
   memory: 512 | 1024 | 2048
-  secrets: Array<{
+  secrets?: Array<{
     name: string
     keys: string[]
   }>
@@ -67,7 +67,7 @@ export interface Configuration {
       publicSubnets?: string[] // @deprecated: Please use subnets instead
       privateSubnets?: string[] // @deprecated: Please use subnets instead
       subnets?: string[] // TODO: make this required once other options are removed
-      secrets: {
+      secrets?: {
         [name: string]: string
       }
     }

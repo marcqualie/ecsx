@@ -12,7 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Allow `command` to be empty. This will use the default container CMD.
-- Use `subnets` for services/tasks instead of private vs public.
+- Allow `secrets` to be optional, since not every service needs them.
+- Use `subnets` for services/tasks instead of private vs public groups.
+
 
 
 ## [0.4.2] - 2021-06-02
