@@ -17,7 +17,7 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
   const { project, environment } = variables
 
   const clusterConfig = config.clusters[clusterName]
-  const subnets = clusterConfig.publicSubnets
+  const subnets = clusterConfig.subnets || clusterConfig.publicSubnets
   const securityGroups = clusterConfig.securityGroups
 
   const overrides = (() => {
