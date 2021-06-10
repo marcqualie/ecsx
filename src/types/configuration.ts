@@ -14,6 +14,25 @@ export interface ConfigurationTaskDefinition {
   executionRoleArn: string
 }
 
+export interface ConfigurationClusterDefinition {
+  environment: string
+  project?: string
+  envVars?: KeyValuePairs
+  consoleTask?: string
+  targetGroups: Array<{
+    arn: string
+    task: string
+    port: number
+  }>
+  securityGroups: string[]
+  publicSubnets?: string[] // @deprecated: Please use subnets instead
+  privateSubnets?: string[] // @deprecated: Please use subnets instead
+  subnets?: string[] // TODO: make this required once other options are removed
+  secrets?: {
+    [name: string]: string
+  }
+}
+
 export interface ConfigurationService {
   taskDefinition: string
 }
@@ -47,30 +66,13 @@ export interface ConfiguredVariables extends Variables {
 }
 
 export interface Configuration {
-  version: string
+  version?: string // @deprecated: We have no use for this
   region: string
   accountId: string
   project: string
   variables: Variables
   clusters: {
-    [clusterName: string]: {
-      environment: string
-      project?: string
-      envVars?: KeyValuePairs
-      consoleTask: string
-      targetGroups: Array<{
-        arn: string
-        task: string
-        port: number
-      }>
-      securityGroups: string[]
-      publicSubnets?: string[] // @deprecated: Please use subnets instead
-      privateSubnets?: string[] // @deprecated: Please use subnets instead
-      subnets?: string[] // TODO: make this required once other options are removed
-      secrets?: {
-        [name: string]: string
-      }
-    }
+    [clusterName: string]: ConfigurationClusterDefinition
   }
   tasks: {
     [name: string]: ConfigurationTaskDefinition
