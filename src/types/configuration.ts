@@ -3,8 +3,8 @@ export interface ConfigurationTaskDefinition {
   command?: string[]
   environment?: KeyValuePairs // @deprecated: Please use envVars instead
   envVars?: KeyValuePairs
-  cpu: 256 | 512 | 1024
-  memory: 512 | 1024 | 2048
+  cpu: 256 | 512 | 1024 | 2048 | 4096
+  memory: 512 | 1024 | 2048 | 3072 | 4096 | 5120 | 6144 | 7168 | 8192 | 12288 | 16384
   secrets?: Array<{
     name: string
     keys: string[]

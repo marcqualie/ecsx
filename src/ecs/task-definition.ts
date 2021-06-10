@@ -72,8 +72,8 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
     requiresCompatibilities: [
       'FARGATE',
     ],
-    cpu: taskConfig.cpu.toString(),
-    memory: taskConfig.memory.toString(),
+    cpu: (taskConfig.cpu || 256).toString(),
+    memory: (taskConfig.memory || 512).toString(),
     containerDefinitions: [
       {
         name: taskName,

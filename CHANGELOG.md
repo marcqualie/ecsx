@@ -17,7 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Allow `command` to be empty. This will use the default container CMD.
 - Allow `secrets` to be optional, since not every service needs them.
-- Use `subnets` for services/tasks instead of private vs public groups.
+- Allow `cpu` + `memory` to be optional. Default values of `256` and `512` will be applied.
+- Use `subnets` for services/tasks instead of private vs public groups
 
 
 
