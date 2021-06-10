@@ -36,7 +36,6 @@
         "required": [
           "environment",
           "targetGroups",
-          "secrets",
           "securityGroups"
         ],
         "properties": {
