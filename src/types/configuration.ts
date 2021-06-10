@@ -18,7 +18,7 @@ export interface ConfigurationClusterDefinition {
   environment: string
   project?: string
   envVars?: KeyValuePairs
-  consoleTask: string
+  consoleTask?: string
   targetGroups: Array<{
     arn: string
     task: string
