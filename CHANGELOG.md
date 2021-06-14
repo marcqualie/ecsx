@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [Unreleased]
+
+## Changed
+
+- Increase console timeout from 15 minutes to 56 minutes (#34)
+
+
+
 ## [0.4.3] - 2021-06-11
 
 ### Added

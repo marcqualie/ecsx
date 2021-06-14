@@ -26,13 +26,15 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
       return undefined
     }
 
+    // The sleep task keep the container alive for X amount of seconds
+    // Once the sleep is finished, the container is exit gracefully and no longer be billed
     return {
       containerOverrides: [
         {
           name: taskName,
           command: [
             'sleep',
-            '900',
+            '3360', // 56 minutes. vCPU units are billed per (partial) hour
           ],
         },
       ],
