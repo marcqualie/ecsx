@@ -26,6 +26,8 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
       return undefined
     }
 
+    // The sleep task keep the container alive for X amount of seconds
+    // Once the sleep is finished, the container is exit gracefully and no longer be billed
     return {
       containerOverrides: [
         {
