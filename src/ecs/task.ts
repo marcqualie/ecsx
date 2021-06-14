@@ -34,7 +34,7 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
           name: taskName,
           command: [
             'sleep',
-            '900',
+            '3360', // 56 minutes. vCPU units are billed per (partial) hour
           ],
         },
       ],
