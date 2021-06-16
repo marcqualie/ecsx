@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { flags } from '@oclif/command'
-import { Container, Task } from '@aws-sdk/client-ecs'
+import { Task } from '@aws-sdk/client-ecs'
 import cli from 'cli-ux'
 
 import { AwsCommand } from '../command'
