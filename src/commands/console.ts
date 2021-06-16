@@ -86,8 +86,10 @@ export default class ConsoleCommand extends AwsCommand {
 
     let taskStatus: string | undefined
     let taskDetails: Task | undefined = firstTask
+    let errorReason: string | undefined
+    let stopCode: string | undefined
     cli.action.start('', taskStatus)
-    while (taskStatus !== 'RUNNING') {
+    while (taskStatus === undefined || taskStatus === 'PROVISIONING' || taskStatus === 'PENDING' || taskStatus === 'DEPROVISIONING') {
       taskDetails = await client.describeTask(clusterName, firstTask.taskArn)
       if (taskDetails === undefined) {
         this.error(`Could not find task details for taskArn "${firstTask.taskArn}"`)
@@ -95,20 +97,20 @@ export default class ConsoleCommand extends AwsCommand {
       taskStatus = taskDetails.lastStatus
       cli.action.start('', taskStatus)
 
-      // If we get STOPPED then the console could not started properly so stop checking
       if (taskStatus === 'STOPPED') {
         break
       }
 
       // eslint-disable-next-line no-await-in-loop
       await new Promise(resolve => setTimeout(resolve, 10000))
-      taskStatus = 'STOPPED'
     }
     cli.action.stop(taskStatus)
 
-    // If we did not get running
+    // If we did not get RUNNING then the console could not started properly, this should show why
     if (taskStatus !== 'RUNNING') {
-      this.error('Could not start task')
+      errorReason = taskDetails.stoppedReason
+      stopCode = taskDetails.stopCode // Not the numerical exit code
+      this.error(`Could not start task: [${stopCode}] ${errorReason}`)
     }
 
     // TODO: Validate command input
