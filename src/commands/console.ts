@@ -97,10 +97,6 @@ export default class ConsoleCommand extends AwsCommand {
       taskStatus = taskDetails.lastStatus
       cli.action.start('', taskStatus)
 
-      if (taskStatus === 'STOPPED') {
-        break
-      }
-
       // eslint-disable-next-line no-await-in-loop
       await new Promise(resolve => setTimeout(resolve, 10000))
     }
