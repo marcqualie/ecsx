@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.4.5] - 2021-06-16
 
+### Changed
+
+- `run` command will now wait until command is finished (#38)
+
 ### Fixed
 
 - envVars in task config were missed off for one off tasks (#39)
