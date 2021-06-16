@@ -1,7 +1,7 @@
 {
   "name": "ecsx",
   "description": "Easily create, manage and deploy ECS based applications",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "author": "Marc Qualie @marcqualie",
   "bin": {
     "ecsx": "./bin/run"
