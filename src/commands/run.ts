@@ -35,6 +35,7 @@ export default class RunCommand extends AwsCommand {
     const client = this.ecs_client()
     const { config, variables, envVars } = this.configWithVariables({
       clusterName,
+      taskName,
       dockerTag,
     })
     const { accountId, environment, project, region } = variables
