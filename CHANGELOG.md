@@ -9,9 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## Changed
+### Changed
 
 - Increase console timeout from 15 minutes to 56 minutes (#34)
+
+### Fixed
+
 - Prevent infinite hang when console fails to start (#37)
 
 
