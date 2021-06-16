@@ -95,10 +95,21 @@ export default class ConsoleCommand extends AwsCommand {
       taskStatus = taskDetails.lastStatus
       cli.action.start('', taskStatus)
 
+      // If we get STOPPED then the console could not started properly so stop checking
+      if (taskStatus === 'STOPPED') {
+        break
+      }
+
       // eslint-disable-next-line no-await-in-loop
       await new Promise(resolve => setTimeout(resolve, 10000))
+      taskStatus = 'STOPPED'
     }
     cli.action.stop(taskStatus)
+
+    // If we did not get running
+    if (taskStatus !== 'RUNNING') {
+      this.error('Could not start task')
+    }
 
     // TODO: Validate command input
     // To avoid building this into the tool, just use aws cli directly
