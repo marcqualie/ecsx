@@ -1,4 +1,4 @@
-import { CreateServiceCommand, CreateServiceCommandInput, DescribeClustersCommand, DescribeClustersCommandInput, DescribeServicesCommand, DescribeServicesCommandInput, DescribeTasksCommand, DescribeTasksCommandInput, ECSClient, ListTaskDefinitionsCommand, RegisterTaskDefinitionCommand, RegisterTaskDefinitionCommandInput, RunTaskCommand, RunTaskCommandInput, UpdateServiceCommand, UpdateServiceCommandInput } from '@aws-sdk/client-ecs'
+import { CreateServiceCommand, CreateServiceCommandInput, DescribeClustersCommand, DescribeClustersCommandInput, DescribeServicesCommand, DescribeServicesCommandInput, DescribeTasksCommand, DescribeTasksCommandInput, ECSClient, ListTaskDefinitionsCommand, ListTasksCommand, ListTasksCommandInput, RegisterTaskDefinitionCommand, RegisterTaskDefinitionCommandInput, RunTaskCommand, RunTaskCommandInput, UpdateServiceCommand, UpdateServiceCommandInput } from '@aws-sdk/client-ecs'
 
 export const AWS_REGION = process.env.AWS_REGION || 'eu-central-1'
 
@@ -62,6 +62,11 @@ export const describeTask = async (clusterName: string, taskArn: string) => {
   return response.tasks && response.tasks[0]
 }
 
+export const listTasks = (params: ListTasksCommandInput) => {
+  const command = new ListTasksCommand(params)
+  return ecsClient.send(command)
+}
+
 export const client = {
   region: AWS_REGION,
   createService,
@@ -69,7 +74,9 @@ export const client = {
   describeClusters,
   describeServices,
   describeTask,
+  describeTasks,
   listTaskDefinitions,
+  listTasks,
   registerTaskDefinition,
   runTask,
   updateService,
