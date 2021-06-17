@@ -17,7 +17,7 @@ export const serviceFromConfiguration = (params: Params): CreateServiceCommandIn
   const clusterConfig = config.clusters[clusterName]
   const taskConfig = config.tasks[taskName]
   const targetGroups = clusterConfig.targetGroups
-  const subnets = taskConfig.subnets || clusterConfig.subnets || clusterConfig.publicSubnets
+  const subnets = taskConfig.subnets || clusterConfig.subnets
   const securityGroups = clusterConfig.securityGroups
 
   return {
@@ -35,7 +35,7 @@ export const serviceFromConfiguration = (params: Params): CreateServiceCommandIn
       awsvpcConfiguration: {
         subnets,
         securityGroups,
-        assignPublicIp: 'ENABLED',
+        assignPublicIp: 'DISABLED',
       },
     },
   }

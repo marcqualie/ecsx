@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [Unreleased]
+
+### Removed
+
+- No longer assign public IP address or allow public/private subnet config
+
+
+
 ## [0.5.0] - 2021-06-16
 
 ### Changed

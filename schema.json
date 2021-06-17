@@ -79,20 +79,6 @@
               "type": "string"
             }
           },
-          "publicSubnets": {
-            "type": "array",
-            "description": "List of public subnets to associate with containers. Usually for use with a bastion or load balancer.",
-            "items": {
-              "type": "string"
-            }
-          },
-          "privateSubnets": {
-            "type": "array",
-            "description": "List of private subnets to associate with containers. Used for internal services behind a load balancer.",
-            "items": {
-              "type": "string"
-            }
-          },
           "subnets": {
             "type": "array",
             "description": "List of subnets to associate with containers. Can be overriden at the task level.",
