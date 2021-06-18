@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [Unreleased]
+
+### Added
+
+- `ps` command shows a list of services and tasks currently active in a cluster
+
+
+
 ## [0.5.0] - 2021-06-16
 
 ### Changed
