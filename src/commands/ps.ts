@@ -1,6 +1,9 @@
-import { Container } from '@aws-sdk/client-ecs'
 import { flags } from '@oclif/command'
-import { config } from 'process'
+import cli, { Table } from 'cli-ux'
+import { take } from 'lodash'
+import uniq from 'lodash/uniq'
+import flatten from 'lodash/uniq'
+
 import { AwsCommand } from '../command'
 
 export default class PsCommand extends AwsCommand {
@@ -28,12 +31,20 @@ export default class PsCommand extends AwsCommand {
     const ecrRepoPrefix = `${config.accountId}.dkr.ecr.${config.region}.amazonaws.com/${project}:`
 
     // Find tasks within cluster
-    const { taskArns } = await client.listTasks({
+    const { taskArns: runningTaskArns = [] } = await client.listTasks({
       cluster: clusterName,
+      desiredStatus: 'RUNNING',
+    })
+    const { taskArns: stoppedTaskArns = [] } = await client.listTasks({
+      cluster: clusterName,
+      desiredStatus: 'STOPPED',
     })
     const { tasks: existingTasks = [] } = await client.describeTasks({
       cluster: clusterName,
-      tasks: taskArns,
+      tasks: [
+        ...runningTaskArns,
+        ...stoppedTaskArns,
+      ],
     })
 
     // Find services within cluster
@@ -41,6 +52,50 @@ export default class PsCommand extends AwsCommand {
       cluster: clusterName,
       services: Object.keys(config.tasks).filter(task => !task.startsWith('$')),
     })
+
+    // Output table of services
+    const columns: Table.Columns = {
+      count: {},
+      status: {},
+      name: {},
+      image: {},
+      ports: {
+        get: (row: any) => (row.ports || []).join(','),
+      },
+      cpu: {
+        header: 'vCPU',
+      },
+      memory: {},
+      error: {},
+    }
+    const options: Table.Options = {
+      printLine: this.log,
+    }
+    cli.table(
+      existingServices.map(service => {
+        const ports = (service.loadBalancers || []).map(loadBalancer => loadBalancer.containerPort)
+        const serviceTasks = existingTasks.filter(task =>  task.group === `service:${service.serviceName}`)
+        const task = serviceTasks[serviceTasks.length - 1]
+        const container = task?.containers ? task.containers[0] : undefined
+        const image = container?.image?.replace(ecrRepoPrefix, 'ecr:')
+
+        return {
+          count: `[${service.runningCount}/${service.desiredCount}] `,
+          status: container?.lastStatus || service.status,
+          name: service.serviceName,
+          image,
+          ports,
+          cpu: task?.cpu || '',
+          memory: task?.memory || '',
+          error: task?.stoppedReason || task?.stopCode ? `[${task.stopCode}] ${container?.reason || task?.stoppedReason}` : '',
+        }
+      }),
+      columns,
+      options,
+    )
+
+    this.log(' ')
+    this.log(' ')
     for (const service of existingServices) {
       const containerPort = service.loadBalancers && service.loadBalancers[0] ? `https=${service.loadBalancers[0].containerPort}` : ''
       this.log(`[${service.runningCount}/${service.desiredCount}] ${service.status} ${service.serviceName}  ${containerPort}`)
