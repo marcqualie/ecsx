@@ -1,8 +1,5 @@
 import { flags } from '@oclif/command'
-import cli, { Table } from 'cli-ux'
-import { take } from 'lodash'
-import uniq from 'lodash/uniq'
-import flatten from 'lodash/uniq'
+import cli from 'cli-ux'
 
 import { AwsCommand } from '../command'
 
@@ -54,85 +51,72 @@ export default class PsCommand extends AwsCommand {
     })
 
     // Output table of services
-    const columns: Table.Columns = {
-      count: {},
-      status: {},
-      name: {},
-      image: {},
-      ports: {
-        get: (row: any) => (row.ports || []).join(','),
-      },
-      cpu: {
-        header: 'vCPU',
-      },
-      memory: {},
-      error: {},
-    }
-    const options: Table.Options = {
-      printLine: this.log,
-    }
-    cli.table(
-      existingServices.map(service => {
-        const ports = (service.loadBalancers || []).map(loadBalancer => loadBalancer.containerPort)
-        const serviceTasks = existingTasks.filter(task =>  task.group === `service:${service.serviceName}`)
-        const task = serviceTasks[serviceTasks.length - 1]
-        const container = task?.containers ? task.containers[0] : undefined
-        const image = container?.image?.replace(ecrRepoPrefix, 'ecr:')
-
-        return {
-          count: `[${service.runningCount}/${service.desiredCount}] `,
-          status: container?.lastStatus || service.status,
-          name: service.serviceName,
-          image,
-          ports,
-          cpu: task?.cpu || '',
-          memory: task?.memory || '',
-          error: task?.stoppedReason || task?.stopCode ? `[${task.stopCode}] ${container?.reason || task?.stoppedReason}` : '',
-        }
-      }),
-      columns,
-      options,
-    )
-
-    this.log(' ')
-    this.log(' ')
-    for (const service of existingServices) {
-      const containerPort = service.loadBalancers && service.loadBalancers[0] ? `https=${service.loadBalancers[0].containerPort}` : ''
-      this.log(`[${service.runningCount}/${service.desiredCount}] ${service.status} ${service.serviceName}  ${containerPort}`)
+    const servicesData = existingServices.map(service => {
+      const ports = (service.loadBalancers || []).map(loadBalancer => loadBalancer.containerPort)
       const serviceTasks = existingTasks.filter(task =>  task.group === `service:${service.serviceName}`)
-      for (const task of serviceTasks) {
-        const container = task.containers && task.containers[0]
-        if (container) {
-          this.log([
-            '',
-            task.lastStatus,
-            task.taskArn?.replace(taskArnPrefix, ''),
-            container.name,
-            container.image?.replace(ecrRepoPrefix, 'ecr:'),
-            `cpu=${task.cpu}`,
-            `memory=${task.memory}`,
-            container.exitCode,
-            container.reason,
-          ].join('  '))
-        }
-      }
-    }
+      const task = serviceTasks[serviceTasks.length - 1]
+      const container = task?.containers ? task.containers[0] : undefined
+      const image = container?.image?.replace(ecrRepoPrefix, 'ecr:')
 
-    // Display tasks that aren't in services
-    this.log(' ')
-    const nonServiceTasks = existingTasks.filter(task => !task.group?.startsWith('service:'))
-    for (const task of nonServiceTasks) {
-      // const containerPort = service.loadBalancers && service.loadBalancers[0] ? `https:${service.loadBalancers[0].containerPort}` : ''
-      this.log(`${task.lastStatus} ${task.taskArn?.replace(taskArnPrefix, '')} ${task.stopCode || ''} ${task.group}`)
-      for (const container of task.containers || []) {
-        this.log([
-          '',
-          container.name,
-          container.image?.replace(ecrRepoPrefix, 'ecr:'),
-          container.exitCode,
-          container.reason,
-        ].join('   '))
+      return {
+        count: `[${service.runningCount}/${service.desiredCount}] `,
+        status: container?.lastStatus ||  service.status,
+        name: service.serviceName,
+        image,
+        ports,
+        cpu: task?.cpu || '',
+        memory: task?.memory || '',
+        error: task?.stoppedReason || task?.stopCode ? `[${task.stopCode}] ${container?.reason || task?.stoppedReason}` : '',
       }
-    }
+    })
+    cli.table(
+      servicesData,
+      {
+        count: {},
+        status: {},
+        name: {},
+        image: {},
+        ports: {
+          get: row => (row.ports || []).join(','),
+        },
+        cpu: {
+          header: 'vCPU',
+        },
+        memory: {},
+        error: {},
+      },
+      {
+        printLine: this.log,
+      },
+    )
+    this.log(' ')
+
+    // LIst out any tasks that are not linked to services
+    const nonServiceTasks = existingTasks.filter(task => !task.group?.startsWith('service:'))
+    const tasksData = nonServiceTasks.map(task => {
+      const container = task?.containers ? task.containers[0] : undefined
+      const image = container?.image?.replace(ecrRepoPrefix, '')
+
+      return {
+        status: container?.lastStatus || task.lastStatus,
+        id: task.taskArn?.replace(taskArnPrefix, ''),
+        group: task.group,
+        image,
+        error: container?.reason ? `[${container?.exitCode}] ${container?.reason}` : '',
+      }
+    })
+    cli.table(
+      tasksData,
+      {
+        status: {},
+        id: {},
+        group: {},
+        image: {},
+        error: {},
+      },
+      {
+        printLine: this.log,
+      },
+    )
   }
 }
