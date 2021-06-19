@@ -20,6 +20,7 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
   const taskConfig = config.tasks[taskName]
   const subnets = taskConfig.subnets || clusterConfig.subnets
   const securityGroups = clusterConfig.securityGroups
+  const assignPublicIp = (clusterConfig.assignPublicIp === undefined ? taskConfig.assignPublicIp : clusterConfig.assignPublicIp) || false
 
   const overrides = (() => {
     if (enableExecuteCommand === false) {
@@ -52,7 +53,7 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
       awsvpcConfiguration: {
         subnets,
         securityGroups,
-        assignPublicIp: 'DISABLED',
+        assignPublicIp: assignPublicIp ? 'ENABLED' : 'DISABLED',
       },
     },
     overrides,

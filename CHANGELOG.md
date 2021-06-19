@@ -13,10 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `ps` command shows a list of services and tasks currently active in a cluster
 
+### Changed
+
+- Public IPs are off by default, but can be enabled per cluster/task
 
 ### Removed
 
-- No longer assign public IP address or allow public/private subnet config
+- No longer provide public/private subnet config
 
 
 
