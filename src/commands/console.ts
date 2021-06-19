@@ -1,9 +1,10 @@
 /* eslint-disable no-await-in-loop */
 import { Task } from '@aws-sdk/client-ecs'
 import { flags } from '@oclif/command'
+import cli from 'cli-ux'
+
 import { AwsCommand } from '../command'
 import { taskFromConfiguration } from '../ecs/task'
-import cli from 'cli-ux'
 
 export default class ConsoleCommand extends AwsCommand {
   static description = 'Launch a temporary interactive container'
@@ -34,36 +35,34 @@ export default class ConsoleCommand extends AwsCommand {
     const { config, variables } = this.configWithVariables({
       clusterName,
     })
-    const clusterConfig = config.clusters[clusterName]
 
     // Ensure there is a console task defined
-    const { consoleTask } = clusterConfig
+    const consoleTask = config.tasks.console
     if (consoleTask === undefined) {
-      this.error('Cannot find console task for cluster')
+      this.error('Could not locale console task in config. Please adjust config then try again')
     }
-    this.log(`> Running command ${command} inside ${consoleTask}`)
 
     // Find running service matching task name to get the task definition revision
-    const { services: existingServices = [] } = await client.describeServices({
+    const { services: existingWebServices = [] } = await client.describeServices({
       cluster: clusterName,
       services: [
-        consoleTask,
+        'web', // NOTE: We follow convention of web/console
       ],
     })
-    const activeServices = existingServices.filter(service => service.status === 'ACTIVE')
-    const service = activeServices[0]
-    if (service === undefined) {
-      this.error(`Could not find service mcatching name ${consoleTask}`)
+    const activeWebServices = existingWebServices.filter(service => (service.status === 'ACTIVE' || service.status === 'RUNNING'))
+    const webService = activeWebServices[0]
+    if (webService === undefined) {
+      this.error('Could not find running web service to grab container definition')
     }
 
     // Run task using created definition
-    const taskDefinitionArnParts = service.taskDefinition?.split(':') || []
+    const taskDefinitionArnParts = webService.taskDefinition?.split(':') || []
     const revision = taskDefinitionArnParts.pop() || ''
-    this.log(`> TaskDefinition: ${service.taskDefinition}`)
+    this.log('> TaskDefinition:', webService.taskDefinition)
 
     const taskInput = taskFromConfiguration({
       clusterName,
-      taskName: consoleTask,
+      taskName: 'console',
       alias: 'console',
       revision,
       variables,
@@ -81,8 +80,8 @@ export default class ConsoleCommand extends AwsCommand {
       this.error('Task not not have an arn')
     }
     const dockerTag = firstTask.containers && firstTask.containers[0].image
-    this.log(`> Image: ${dockerTag}`)
-    this.log(`> Task: ${firstTask.taskArn}`)
+    this.log('> Image:', dockerTag)
+    this.log('> Task:', firstTask.taskArn)
 
     let taskStatus: string | undefined
     let taskDetails: Task | undefined = firstTask
@@ -113,14 +112,7 @@ export default class ConsoleCommand extends AwsCommand {
     // To avoid building this into the tool, just use aws cli directly
     this.log('> Ready: Run the the following command to connect to the task')
     this.log(' ')
-    this.log(`$ aws ecs execute-command --cluster ${clusterName} --task ${taskDetails.taskArn} --container ${consoleTask} --interactive --command "${command}"`)
+    this.log(`$ aws ecs execute-command --cluster ${clusterName} --task ${taskDetails.taskArn} --container console --interactive --command "${command}"`)
     this.log(' ')
-
-    // this.log(JSON.stringify({
-    //   serviceArn: updatedService.serviceArn,
-    //   taskDefinitionArn: updatedService?.taskDefinition,
-    //   desiredCount: updatedService.desiredCount,
-    //   url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${task}/health?region=${region}`,
-    // }, undefined, 2))
   }
 }
