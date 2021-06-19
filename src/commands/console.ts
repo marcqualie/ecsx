@@ -91,7 +91,7 @@ export default class ConsoleCommand extends AwsCommand {
     let stopCode: string | undefined
     cli.action.start('', taskStatus)
     while (taskStatus === undefined || taskStatus === 'PROVISIONING' || taskStatus === 'PENDING' || taskStatus === 'DEPROVISIONING') {
-      await new Promise(resolve => setTimeout(resolve, 10000))
+      await new Promise(resolve => setTimeout(resolve, 5000))
       taskDetails = await client.describeTask(clusterName, consoleTask.taskArn)
       if (taskDetails === undefined) {
         this.error(`Could not find task details for taskArn "${consoleTask.taskArn}"`)
