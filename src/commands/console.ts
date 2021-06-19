@@ -37,9 +37,11 @@ export default class ConsoleCommand extends AwsCommand {
     })
 
     // Ensure there is a console task defined
-    const consoleTask = config.tasks.console
-    if (consoleTask === undefined) {
-      this.error('Could not locale console task in config. Please adjust config then try again')
+    // TODO: If custom console command is specified, definition may not already exist
+    const taskDefinitionName = config.tasks.web ? 'web' : 'console'
+    const consoleTaskConfig = config.tasks.taskDefinitionName
+    if (consoleTaskConfig === undefined) {
+      this.error(`Could not locale "${taskDefinitionName}" task in config. Please adjust config then try again`)
     }
 
     // Find running service matching task name to get the task definition revision
@@ -62,7 +64,7 @@ export default class ConsoleCommand extends AwsCommand {
 
     const taskInput = taskFromConfiguration({
       clusterName,
-      taskName: 'console',
+      taskName: taskDefinitionName,
       alias: 'console',
       revision,
       variables,
@@ -112,7 +114,7 @@ export default class ConsoleCommand extends AwsCommand {
     // To avoid building this into the tool, just use aws cli directly
     this.log('> Ready: Run the the following command to connect to the task')
     this.log(' ')
-    this.log(`$ aws ecs execute-command --cluster ${clusterName} --task ${taskDetails.taskArn} --container console --interactive --command "${command}"`)
+    this.log(`$ aws ecs execute-command --cluster ${clusterName} --task ${taskDetails.taskArn} --container ${taskDefinitionName} --interactive --command "${command}"`)
     this.log(' ')
   }
 }
