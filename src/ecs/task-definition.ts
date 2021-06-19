@@ -64,6 +64,12 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
   const { project, environment } = variables
   const taskConfig = config.tasks[taskName]
 
+  // We need a config to continue
+  if (taskConfig === undefined) {
+    const validTaskNames = Object.keys(config.tasks).filter(task => !task.startsWith('$')).join(', ')
+    throw new Error(`Could not locate task definition for ${taskName}. Try one of "${validTaskNames}"`)
+  }
+
   return {
     family: `${project}-${taskName}-${environment}`,
     taskRoleArn: taskConfig.taskRoleArn,
