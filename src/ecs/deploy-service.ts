@@ -9,6 +9,8 @@ interface StartServiceInput {
   variables: ConfiguredVariables
   config: Configuration
   envVars: KeyValuePairs
+  commandOverride?: string[]
+  enableExecuteCommand?: boolean
 }
 
 interface StartServiceResponse {
@@ -25,6 +27,8 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
     variables,
     config,
     envVars,
+    commandOverride,
+    enableExecuteCommand = false,
   } = params
   const {
     environment,
@@ -39,6 +43,7 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
     variables,
     config,
     envVars,
+    commandOverride,
   })
   const taskDefinitionResponse = await client.registerTaskDefinition(taskDefinitionInput)
   const { taskDefinition } = taskDefinitionResponse
@@ -54,6 +59,7 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
     revision: taskDefinition.revision?.toString() || '',
     variables,
     config,
+    enableExecuteCommand,
   })
   const { services: existingServices = [] } = await client.describeServices({
     cluster: clusterName,

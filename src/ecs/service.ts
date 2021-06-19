@@ -8,10 +8,11 @@ interface Params {
   revision: string
   variables: ConfiguredVariables
   config: Configuration
+  enableExecuteCommand?: boolean
 }
 
 export const serviceFromConfiguration = (params: Params): CreateServiceCommandInput => {
-  const { clusterName, taskName, revision, variables, config } = params
+  const { clusterName, taskName, revision, variables, config, enableExecuteCommand = false } = params
   const { project, environment } = variables
 
   const clusterConfig = config.clusters[clusterName]
@@ -39,5 +40,6 @@ export const serviceFromConfiguration = (params: Params): CreateServiceCommandIn
         assignPublicIp: assignPublicIp ? 'ENABLED' : 'DISABLED',
       },
     },
+    enableExecuteCommand,
   }
 }

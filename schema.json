@@ -60,10 +60,6 @@
               "type": "string"
             }
           },
-          "consoleTask": {
-            "type": "string",
-            "description": "Defines which task will be used when starting a console session"
-          },
           "targetGroups": {
             "type": "array",
             "items": {

@@ -1,9 +1,14 @@
 /* eslint-disable no-await-in-loop */
 import { Task } from '@aws-sdk/client-ecs'
 import { flags } from '@oclif/command'
+import flatten from 'lodash/flatten'
+import cli from 'cli-ux'
+
 import { AwsCommand } from '../command'
 import { taskFromConfiguration } from '../ecs/task'
-import cli from 'cli-ux'
+import { taskDefinitionfromConfiguration } from '../ecs/task-definition'
+import { deployService } from '../ecs/deploy-service'
+import { describeServices, describeTasks, listTasks } from '../ecs/client'
 
 export default class ConsoleCommand extends AwsCommand {
   static description = 'Launch a temporary interactive container'
@@ -31,76 +36,86 @@ export default class ConsoleCommand extends AwsCommand {
   async run() {
     const { args: { command }, flags: { clusterName } } = this.parse(ConsoleCommand)
     const client = this.ecs_client()
-    const { config, variables } = this.configWithVariables({
+    const { config, variables, envVars } = this.configWithVariables({
       clusterName,
     })
-    const clusterConfig = config.clusters[clusterName]
 
-    // Ensure there is a console task defined
-    const { consoleTask } = clusterConfig
-    if (consoleTask === undefined) {
-      this.error('Cannot find console task for cluster')
-    }
-    this.log(`> Running command ${command} inside ${consoleTask}`)
-
-    // Find running service matching task name to get the task definition revision
-    const { services: existingServices = [] } = await client.describeServices({
+    // Get docker tag from running web container
+    const { taskArns: webTaskArns } = await listTasks({
       cluster: clusterName,
-      services: [
-        consoleTask,
-      ],
+      serviceName: 'web',
     })
-    const activeServices = existingServices.filter(service => service.status === 'ACTIVE')
-    const service = activeServices[0]
-    if (service === undefined) {
-      this.error(`Could not find service mcatching name ${consoleTask}`)
-    }
-
-    // Run task using created definition
-    const taskDefinitionArnParts = service.taskDefinition?.split(':') || []
-    const revision = taskDefinitionArnParts.pop() || ''
-    this.log(`> TaskDefinition: ${service.taskDefinition}`)
-
-    const taskInput = taskFromConfiguration({
-      clusterName,
-      taskName: consoleTask,
-      alias: 'console',
-      revision,
-      variables,
-      config,
-      enableExecuteCommand: true,
+    // const activeWebServices = existingWebServices.filter(service => service.status === 'ACTIVE')
+    const { tasks: existingWebTasks = [] } = await describeTasks({
+      cluster: clusterName,
+      tasks: webTaskArns,
     })
-
-    const runTaskResponse = await client.runTask(taskInput)
-    const { tasks } = runTaskResponse
-    if (tasks === undefined || tasks.length === 0) {
-      this.error(`Could not create task definition: ${runTaskResponse}`)
+    const runningWebTasks = existingWebTasks.filter(task => task.lastStatus === 'RUNNING')
+    const latestWebTask = runningWebTasks.sort((a, b) => (a.startedAt || 0) > (b.startedAt || 0) ? 1 : -1)[0]
+    if (latestWebTask === undefined) {
+      throw new Error('Could not locate a running web task. Please deploy first.')
     }
-    const firstTask = tasks[0]
-    if (firstTask.taskArn === undefined) {
-      this.error('Task not not have an arn')
+    const image = (latestWebTask.containers && latestWebTask.containers[0].image)
+    if (image === undefined) {
+      throw new Error('Could not find a valid container image inside web task.')
     }
-    const dockerTag = firstTask.containers && firstTask.containers[0].image
+    const imageParts = image.split(':')
+    const dockerTag = imageParts[imageParts.length - 1]
     this.log(`> Image: ${dockerTag}`)
-    this.log(`> Task: ${firstTask.taskArn}`)
 
-    let taskStatus: string | undefined
-    let taskDetails: Task | undefined = firstTask
+    // Launch a new service
+    // TODO: Re-connect to an already running service
+    this.log('> Starting a service for console')
+    const service = await deployService({
+      clusterName,
+      taskName: 'console',
+      commandOverride: [
+        'sleep',
+        '3360',
+      ],
+      variables: {
+        ...variables,
+        dockerTag,
+      },
+      config,
+      envVars,
+    })
+    this.log(`> Service: ${service.serviceArn}`)
+    const { taskArns: existingConsoleTaskArns } = await listTasks({
+      cluster: clusterName,
+      serviceName: service.serviceArn,
+    })
+    const { tasks: existingConsoleTasks } = await describeTasks({
+      cluster: clusterName,
+      tasks: existingConsoleTaskArns,
+    })
+    if (existingConsoleTasks === undefined || existingConsoleTasks.length === 0 || existingConsoleTasks[0] === undefined) {
+      throw new Error('No running console tasks to connect to')
+    }
+    const task = existingConsoleTasks[0]
+    this.log(`> Task: ${task.taskArn}`)
+    this.log(`> TaskDefinition: ${task.taskDefinitionArn}`)
+
+    let taskDetails: Task | undefined = await client.describeTask(clusterName, task.taskArn || '')
+    let taskStatus: string | undefined = taskDetails?.lastStatus
     let errorReason: string | undefined
     let stopCode: string | undefined
     cli.action.start('', taskStatus)
     while (taskStatus === undefined || taskStatus === 'PROVISIONING' || taskStatus === 'PENDING' || taskStatus === 'DEPROVISIONING') {
-      taskDetails = await client.describeTask(clusterName, firstTask.taskArn)
+      await new Promise(resolve => setTimeout(resolve, 10000))
+      taskDetails = await client.describeTask(clusterName, task.taskArn || '')
       if (taskDetails === undefined) {
-        this.error(`Could not find task details for taskArn "${firstTask.taskArn}"`)
+        this.error(`Could not find task details for taskArn "${task.taskArn}"`)
       }
       taskStatus = taskDetails.lastStatus
       cli.action.start('', taskStatus)
-
-      // eslint-disable-next-line no-await-in-loop
-      await new Promise(resolve => setTimeout(resolve, 10000))
     }
     cli.action.stop(taskStatus)
+
+    // Edge cases when details were not found
+    if (taskDetails === undefined) {
+      throw new Error('Corrupt task details. Please try again.')
+    }
 
     // If we did not get RUNNING then the console could not started properly, this should show why
     if (taskStatus !== 'RUNNING') {
@@ -113,7 +128,7 @@ export default class ConsoleCommand extends AwsCommand {
     // To avoid building this into the tool, just use aws cli directly
     this.log('> Ready: Run the the following command to connect to the task')
     this.log(' ')
-    this.log(`$ aws ecs execute-command --cluster ${clusterName} --task ${taskDetails.taskArn} --container ${consoleTask} --interactive --command "${command}"`)
+    this.log(`$ aws ecs execute-command --cluster ${clusterName} --task ${taskDetails.taskArn} --container console --interactive --command "${command}"`)
     this.log(' ')
 
     // this.log(JSON.stringify({

@@ -57,10 +57,11 @@ interface Params {
   variables: ConfiguredVariables
   config: Configuration
   envVars: KeyValuePairs
+  commandOverride?: string[]
 }
 
 export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
-  const { clusterName, taskName, variables, config, envVars } = params
+  const { clusterName, commandOverride, taskName, variables, config, envVars } = params
   const { project, environment } = variables
   const taskConfig = config.tasks[taskName]
 
@@ -83,8 +84,8 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
     containerDefinitions: [
       {
         name: taskName,
-        image: taskConfig.image,
-        command: taskConfig.command,
+        image: taskConfig.image.replace('{{ dockerTag }}', variables.dockerTag || ''),
+        command: commandOverride || taskConfig.command,
         portMappings: portMappingsFromConfiguration(taskConfig),
         environment: environmentFromEnvVars(envVars),
         secrets: secretsFromConfiguration(taskName, clusterName, config),

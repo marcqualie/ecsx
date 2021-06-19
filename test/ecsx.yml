@@ -8,7 +8,6 @@ clusters:
     envVars:
       CLUSTER_ENV: test
       APP_ENV: test
-    consoleTask: mocha
     targetGroups:
       - arn: arn:xxx
         port: 3000
@@ -21,7 +20,7 @@ clusters:
       app: arn:aws:secretsmanager:{{ region }}:{{ accountId }}:secret:{{ project }}/app/test-xxx
 
 tasks:
-  mocha:
+  mocha: &mocha
     taskRoleArn: 'somerole'
     executionRoleArn: 'somerole'
     image: ''
@@ -40,3 +39,7 @@ tasks:
         keys:
           - NODE_ENV
           - SOME_VAR
+  console:
+    <<: *mocha
+    command: [ /bin/sh ]
+
