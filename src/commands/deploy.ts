@@ -1,8 +1,6 @@
 import { flags } from '@oclif/command'
 
 import { AwsCommand } from '../command'
-import { taskDefinitionfromConfiguration } from '../ecs/task-definition'
-import { serviceFromConfiguration } from '../ecs/service'
 import { deployService } from '../ecs/deploy-service'
 
 export default class DeployCommand extends AwsCommand {
@@ -40,7 +38,6 @@ export default class DeployCommand extends AwsCommand {
       dockerTag,
     })
 
-    // Generate Task Definition
     const service = await deployService({
       clusterName,
       taskName,
@@ -49,6 +46,8 @@ export default class DeployCommand extends AwsCommand {
       envVars,
     })
 
-    this.log(JSON.stringify(service, undefined, 2))
+    Object.entries(service).forEach(([key, value]) => {
+      this.log(`> ${key}: ${value}`)
+    })
   }
 }
