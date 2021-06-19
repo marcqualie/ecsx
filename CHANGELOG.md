@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `ps` command shows a list of services and tasks currently active in a cluster
+- `delete` command to remove services and tasks from a cluster
 
 ### Changed
 
