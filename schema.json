@@ -44,6 +44,11 @@
             "description": "Application environment for containers. This will be available $environment variabe",
             "example": "production"
           },
+          "assignPublicIpd": {
+            "type": "boolean",
+            "default": false,
+            "description": "If true, will assign a public IPv4 address to each container"
+          },
           "project": {
             "type": "string",
             "description": "Override for the global project definition"
@@ -160,6 +165,11 @@
           "service": {
             "type": "boolean",
             "default": true
+          },
+          "assignPublicIpd": {
+            "type": "boolean",
+            "default": false,
+            "description": "If true, will assign a public IPv4 address to each container"
           },
           "environment": {
             "type": "object",

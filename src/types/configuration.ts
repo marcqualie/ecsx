@@ -13,6 +13,7 @@ export interface ConfigurationTaskDefinition {
   taskRoleArn?: string
   executionRoleArn: string
   subnets?: string[]
+  assignPublicIp?: boolean
 }
 
 export interface ConfigurationClusterDefinition {
@@ -27,6 +28,7 @@ export interface ConfigurationClusterDefinition {
   }>
   securityGroups: string[]
   subnets: string[]
+  assignPublicIp?: boolean
   secrets?: {
     [name: string]: string
   }
