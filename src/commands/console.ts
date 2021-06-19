@@ -39,7 +39,7 @@ export default class ConsoleCommand extends AwsCommand {
     // Ensure there is a console task defined
     // TODO: If custom console command is specified, definition may not already exist
     const taskDefinitionName = config.tasks.web ? 'web' : 'console'
-    const consoleTaskConfig = config.tasks.taskDefinitionName
+    const consoleTaskConfig = config.tasks[taskDefinitionName]
     if (consoleTaskConfig === undefined) {
       this.error(`Could not locale "${taskDefinitionName}" task in config. Please adjust config then try again`)
     }
@@ -77,29 +77,27 @@ export default class ConsoleCommand extends AwsCommand {
     if (tasks === undefined || tasks.length === 0) {
       this.error(`Could not create task definition: ${runTaskResponse}`)
     }
-    const firstTask = tasks[0]
-    if (firstTask.taskArn === undefined) {
+    const consoleTask = tasks[0]
+    if (consoleTask.taskArn === undefined) {
       this.error('Task not not have an arn')
     }
-    const dockerTag = firstTask.containers && firstTask.containers[0].image
+    const dockerTag = consoleTask.containers && consoleTask.containers[0].image
     this.log('> Image:', dockerTag)
-    this.log('> Task:', firstTask.taskArn)
+    this.log('> Task:', consoleTask.taskArn)
 
-    let taskStatus: string | undefined
-    let taskDetails: Task | undefined = firstTask
+    let taskDetails: Task | undefined = consoleTask
+    let taskStatus: string | undefined = consoleTask.lastStatus
     let errorReason: string | undefined
     let stopCode: string | undefined
     cli.action.start('', taskStatus)
     while (taskStatus === undefined || taskStatus === 'PROVISIONING' || taskStatus === 'PENDING' || taskStatus === 'DEPROVISIONING') {
-      taskDetails = await client.describeTask(clusterName, firstTask.taskArn)
+      await new Promise(resolve => setTimeout(resolve, 10000))
+      taskDetails = await client.describeTask(clusterName, consoleTask.taskArn)
       if (taskDetails === undefined) {
-        this.error(`Could not find task details for taskArn "${firstTask.taskArn}"`)
+        this.error(`Could not find task details for taskArn "${consoleTask.taskArn}"`)
       }
       taskStatus = taskDetails.lastStatus
       cli.action.start('', taskStatus)
-
-      // eslint-disable-next-line no-await-in-loop
-      await new Promise(resolve => setTimeout(resolve, 10000))
     }
     cli.action.stop(taskStatus)
 
