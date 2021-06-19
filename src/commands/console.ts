@@ -96,8 +96,10 @@ export default class ConsoleCommand extends AwsCommand {
       if (taskDetails === undefined) {
         this.error(`Could not find task details for taskArn "${consoleTask.taskArn}"`)
       }
-      taskStatus = taskDetails.lastStatus
-      cli.action.start('', taskStatus)
+      if (taskStatus !== taskDetails.lastStatus) {
+        taskStatus = taskDetails.lastStatus
+        cli.action.start('', taskStatus)
+      }
     }
     cli.action.stop(taskStatus)
 
