@@ -14,6 +14,7 @@ export interface ConfigurationTaskDefinition {
   executionRoleArn: string
   subnets?: string[]
   assignPublicIp?: boolean
+  service?: boolean
 }
 
 export interface ConfigurationClusterDefinition {

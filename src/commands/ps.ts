@@ -24,37 +24,43 @@ export default class PsCommand extends AwsCommand {
       clusterName,
     })
 
-    // Common patterns we can ignore
+    // Common patterns we can ignore from outputs
     const serviceArnPrefix = `arn:aws:ecs:${region}:${accountId}:service/${project}-${environment}/`
     const taskArnPrefix = `arn:aws:ecs:${config.region}:${config.accountId}:task/${project}-${environment}/`
     const ecrRepoPrefix = `${config.accountId}.dkr.ecr.${config.region}.amazonaws.com/${project}:`
 
-    // Find tasks within cluster
+    // Find all tasks within cluster
     const { taskArns: runningTaskArns = [] } = await client.listTasks({
       cluster: clusterName,
       desiredStatus: 'RUNNING',
+      maxResults: 20,
     })
     const { taskArns: stoppedTaskArns = [] } = await client.listTasks({
       cluster: clusterName,
       desiredStatus: 'STOPPED',
+      maxResults: 20,
     })
+    const allTaskArns = [
+      ...runningTaskArns,
+      ...stoppedTaskArns,
+    ]
     const { tasks: existingTasks = [] } = await client.describeTasks({
       cluster: clusterName,
-      tasks: [
-        ...runningTaskArns,
-        ...stoppedTaskArns,
-      ],
+      tasks: allTaskArns,
     })
+
+    // Find all services/tasks defined in local config
+    const configServiceNames = Object.entries(config.tasks).filter(([taskName, taskConfig]) => !taskName.startsWith('$') && (taskConfig.service === true || taskConfig.service === undefined)).map(([taskName]) => taskName)
+    const configTaskNames = Object.entries(config.tasks).filter(([taskName, taskConfig]) => !taskName.startsWith('$') && taskConfig.service === false).map(([taskName]) => taskName)
 
     // Find services within cluster
     // TODO: Remove tasks where service=false
     const { serviceArns: existingServiceArns = [] } = await client.listServices({
       cluster: clusterName,
     })
-    const configTaskNames = Object.keys(config.tasks).filter(task => !task.startsWith('$'))
     const allServiceNames = uniq([
       ...existingServiceArns.map(arn => arn.replace(serviceArnPrefix, '')),
-      ...configTaskNames,
+      ...configServiceNames,
     ])
     const { services: existingServices = [] } = await client.describeServices({
       cluster: clusterName,
@@ -84,8 +90,12 @@ export default class PsCommand extends AwsCommand {
     cli.table(
       servicesData,
       {
-        count: {},
-        status: {},
+        count: {
+          minWidth: 8,
+        },
+        status: {
+          minWidth: 10,
+        },
         name: {},
         image: {},
         ports: {
@@ -103,27 +113,43 @@ export default class PsCommand extends AwsCommand {
     )
     this.log(' ')
 
+    // Find all tasks in cluster
+    const allNonServiceTaskArns = existingTasks.filter(task => task.group?.startsWith('service:') === false).map(task => task.taskArn || '')
+    const allTaskNames = uniq([
+      ...allNonServiceTaskArns.map(arn => arn.replace(taskArnPrefix, '')),
+      // ...configTaskNames, // TODO: These don't actually add much value in output
+    ])
+
     // LIst out any tasks that are not linked to services
-    const nonServiceTasks = existingTasks.filter(task => !task.group?.startsWith('service:'))
-    const tasksData = nonServiceTasks.map(task => {
+    const tasksData = allTaskNames.map(taskName => {
+      const task = existingTasks.find(task => task.taskArn === `${taskArnPrefix}${taskName}`)
       const container = task?.containers ? task.containers[0] : undefined
       const image = container?.image?.replace(ecrRepoPrefix, '')
+      const revision = task?.taskDefinitionArn?.split(':').pop()
 
       return {
-        status: container?.lastStatus || task.lastStatus,
-        id: task.taskArn?.replace(taskArnPrefix, ''),
-        group: task.group,
+        id: task?.taskArn?.replace(taskArnPrefix, '') || '',
+        status: container?.lastStatus || task?.lastStatus || '',
+        group: task?.group?.replace('task:', '') || '',
         image,
+        revision,
         error: container?.reason ? `[${container?.exitCode}] ${container?.reason}` : '',
       }
     })
     cli.table(
       tasksData,
       {
-        status: {},
-        id: {},
+        id: {
+          header: 'ID',
+          minWidth: 8,
+          get: row => row.id.substring(0, 7),
+        },
+        status: {
+          minWidth: 10,
+        },
         group: {},
         image: {},
+        revision: {},
         error: {},
       },
       {
