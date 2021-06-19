@@ -1,5 +1,5 @@
 import { client } from './client'
-import { Configuration, ConfiguredVariables, KeyValuePairs, Variables } from '../types/configuration'
+import { Configuration, ConfiguredVariables, KeyValuePairs } from '../types/configuration'
 import { taskDefinitionfromConfiguration } from './task-definition'
 import { serviceFromConfiguration } from './service'
 
@@ -12,6 +12,8 @@ interface StartServiceInput {
 }
 
 interface StartServiceResponse {
+  desiredCount: number
+  status: string
   serviceArn?: string
   taskDefinitionArn?: string
   url: string // Link to AWS console
@@ -73,7 +75,9 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
 
     // Handy JSON output
     return {
+      desiredCount: service.desiredCount || 0,
       serviceArn: service.serviceArn,
+      status: service.status || 'unknown',
       taskDefinitionArn: taskDefinition.taskDefinitionArn,
       url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${taskName}/health?region=${region}`,
     }
@@ -92,7 +96,9 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
 
   // Handy JSON output
   return {
+    desiredCount: service.desiredCount || 0,
     serviceArn: service.serviceArn,
+    status: service.status || 'unknown',
     taskDefinitionArn: taskDefinition.taskDefinitionArn,
     url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${taskName}/health?region=${region}`,
   }
