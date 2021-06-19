@@ -1,5 +1,6 @@
 import { flags } from '@oclif/command'
 import cli from 'cli-ux'
+import uniq from 'lodash/uniq'
 
 import { AwsCommand } from '../command'
 
@@ -19,11 +20,12 @@ export default class PsCommand extends AwsCommand {
   async run() {
     const { flags: { clusterName } } = this.parse(PsCommand)
     const client = this.ecs_client()
-    const { config, variables: { environment, project } } = this.configWithVariables({
+    const { config, variables: { accountId, environment, project, region } } = this.configWithVariables({
       clusterName,
     })
 
     // Common patterns we can ignore
+    const serviceArnPrefix = `arn:aws:ecs:${region}:${accountId}:service/${project}-${environment}/`
     const taskArnPrefix = `arn:aws:ecs:${config.region}:${config.accountId}:task/${project}-${environment}/`
     const ecrRepoPrefix = `${config.accountId}.dkr.ecr.${config.region}.amazonaws.com/${project}:`
 
@@ -45,23 +47,33 @@ export default class PsCommand extends AwsCommand {
     })
 
     // Find services within cluster
+    // TODO: Remove tasks where service=false
+    const { serviceArns: existingServiceArns = [] } = await client.listServices({
+      cluster: clusterName,
+    })
+    const configTaskNames = Object.keys(config.tasks).filter(task => !task.startsWith('$'))
+    const allServiceNames = uniq([
+      ...existingServiceArns.map(arn => arn.replace(serviceArnPrefix, '')),
+      ...configTaskNames,
+    ])
     const { services: existingServices = [] } = await client.describeServices({
       cluster: clusterName,
-      services: Object.keys(config.tasks).filter(task => !task.startsWith('$')),
+      services: allServiceNames,
     })
 
     // Output table of services
-    const servicesData = existingServices.map(service => {
-      const ports = (service.loadBalancers || []).map(loadBalancer => loadBalancer.containerPort)
-      const serviceTasks = existingTasks.filter(task =>  task.group === `service:${service.serviceName}`)
-      const task = serviceTasks[serviceTasks.length - 1]
+    const servicesData = allServiceNames.map(serviceName => {
+      const service = existingServices.find(service => service.serviceName === serviceName)
+      const ports = (service?.loadBalancers || []).map(loadBalancer => loadBalancer.containerPort)
+      const serviceTasks = existingTasks.filter(task =>  task.group === `service:${service?.serviceName}`)
+      const task = serviceTasks.sort((a, b) => (a.startedAt || 0) < (b.startedAt || 0) ? 1 : -1)[0]
       const container = task?.containers ? task.containers[0] : undefined
-      const image = container?.image?.replace(ecrRepoPrefix, 'ecr:')
+      const image = container?.image?.replace(ecrRepoPrefix, '') || ''
 
       return {
-        count: `[${service.runningCount}/${service.desiredCount}] `,
-        status: container?.lastStatus ||  service.status,
-        name: service.serviceName,
+        count: `[${service?.runningCount || 0}/${service?.desiredCount === undefined ? '-' : service?.desiredCount}] `,
+        status: container?.lastStatus || service?.status || '',
+        name: serviceName,
         image,
         ports,
         cpu: task?.cpu || '',
