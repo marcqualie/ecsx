@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Public IPs are off by default, but can be enabled per cluster/task
+- Log groups are now segmened by project + environment, stream prefixed with task name (#49)
 
 ### Removed
 
