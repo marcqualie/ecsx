@@ -44,9 +44,9 @@ const logConfigurationFromConfiguration = (task: string, variables: ConfiguredVa
     secretOptions: [],
     options: {
       'awslogs-create-group': 'true',
-      'awslogs-group': `/ecs/${variables.project}/${task}`,
+      'awslogs-group': `/ecs/${variables.project}-${variables.environment}`,
       'awslogs-region': variables.region,
-      'awslogs-stream-prefix': `${variables.environment}`,
+      'awslogs-stream-prefix': `${task}`,
     },
   }
 }
