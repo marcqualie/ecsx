@@ -19,7 +19,7 @@ $ npm install -g ecsx
 $ ecsx COMMAND
 running command...
 $ ecsx (-v|--version|version)
-ecsx/0.5.0 darwin-x64 node-v14.15.5
+ecsx/0.6.0-alpha.0 darwin-x64 node-v14.15.5
 $ ecsx --help [COMMAND]
 USAGE
   $ ecsx COMMAND
@@ -30,8 +30,10 @@ USAGE
 <!-- commands -->
 * [`ecsx config`](#ecsx-config)
 * [`ecsx console [COMMAND]`](#ecsx-console-command)
+* [`ecsx delete TASKNAME`](#ecsx-delete-taskname)
 * [`ecsx deploy TASKNAME`](#ecsx-deploy-taskname)
 * [`ecsx help [COMMAND]`](#ecsx-help-command)
+* [`ecsx ps`](#ecsx-ps)
 * [`ecsx run TASKNAME`](#ecsx-run-taskname)
 * [`ecsx scale TASK COUNT`](#ecsx-scale-task-count)
 
@@ -50,7 +52,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.5.0/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.0/src/commands/config.ts)_
 
 ## `ecsx console [COMMAND]`
 
@@ -65,7 +67,23 @@ OPTIONS
   -h, --help                     show CLI help
 ```
 
-_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.5.0/src/commands/console.ts)_
+_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.0/src/commands/console.ts)_
+
+## `ecsx delete TASKNAME`
+
+Remove a service/task from a cluster
+
+```
+USAGE
+  $ ecsx delete TASKNAME
+
+OPTIONS
+  -c, --clusterName=clusterName  (required)
+  -h, --help                     show CLI help
+  --force
+```
+
+_See code: [src/commands/delete.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.0/src/commands/delete.ts)_
 
 ## `ecsx deploy TASKNAME`
 
@@ -82,7 +100,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.5.0/src/commands/deploy.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.0/src/commands/deploy.ts)_
 
 ## `ecsx help [COMMAND]`
 
@@ -101,6 +119,21 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
+## `ecsx ps`
+
+Show running services within a cluster
+
+```
+USAGE
+  $ ecsx ps
+
+OPTIONS
+  -c, --clusterName=clusterName  (required)
+  -h, --help                     show CLI help
+```
+
+_See code: [src/commands/ps.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.0/src/commands/ps.ts)_
+
 ## `ecsx run TASKNAME`
 
 Run a one off task on the cluster
@@ -116,7 +149,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.5.0/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.0/src/commands/run.ts)_
 
 ## `ecsx scale TASK COUNT`
 
@@ -131,7 +164,7 @@ OPTIONS
   -h, --help                     show CLI help
 ```
 
-_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.5.0/src/commands/scale.ts)_
+_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.0/src/commands/scale.ts)_
 <!-- commandsstop -->
 
 
