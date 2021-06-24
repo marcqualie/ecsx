@@ -15,7 +15,6 @@ export interface ConfigurationTaskDefinition {
   subnets?: string[]
   assignPublicIp?: boolean
   service?: boolean
-  schedule?: string
 }
 
 export interface ConfigurationClusterDefinition {

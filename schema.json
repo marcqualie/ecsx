@@ -162,6 +162,10 @@
             "type": "boolean",
             "default": true
           },
+          "schedule": {
+            "type": "string",
+            "descrition": "Runs this task on a specfic schedule"
+          },
           "assignPublicIpd": {
             "type": "boolean",
             "default": false,
