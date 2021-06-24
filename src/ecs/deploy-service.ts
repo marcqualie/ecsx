@@ -34,6 +34,12 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
     region,
   } = variables
 
+  // Prevent non-services from being deployed
+  const taskConfig = config.tasks[taskName]
+  if (taskConfig.service === false) {
+    throw new Error('Only services can be deployed')
+  }
+
   // Generate Task Definition
   const taskDefinitionInput = taskDefinitionfromConfiguration({
     clusterName,
