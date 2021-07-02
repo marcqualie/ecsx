@@ -44,7 +44,7 @@
             "description": "Application environment for containers. This will be available $environment variabe",
             "example": "production"
           },
-          "assignPublicIpd": {
+          "assignPublicIp": {
             "type": "boolean",
             "default": false,
             "description": "If true, will assign a public IPv4 address to each container"
