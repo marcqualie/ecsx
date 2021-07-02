@@ -166,7 +166,7 @@
             "type": "string",
             "descrition": "Runs this task on a specfic schedule"
           },
-          "assignPublicIpd": {
+          "assignPublicIp": {
             "type": "boolean",
             "default": false,
             "description": "If true, will assign a public IPv4 address to each container"
