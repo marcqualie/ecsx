@@ -13,7 +13,9 @@ const environmentFromEnvVars = (envVars: KeyValuePairs) => {
 }
 
 export const secretsFromConfiguration = (task: string, clusterName: string, config: Configuration) => {
-  const taskConfig = config.tasks[task]
+  const services = config.services || {}
+  const tasks = config.tasks || {}
+  const taskConfig = services[task] || tasks[task]
   const clusterConfig = config.clusters[clusterName]
   const clusterSecrets = clusterConfig.secrets || {}
   const taskSecrets = taskConfig.secrets || []

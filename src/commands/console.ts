@@ -35,11 +35,12 @@ export default class ConsoleCommand extends AwsCommand {
     const { config, variables } = this.configWithVariables({
       clusterName,
     })
+    const services = config.services || {}
 
     // Ensure there is a console task defined
     // TODO: If custom console command is specified, definition may not already exist
-    const taskDefinitionName = config.tasks.web ? 'web' : 'console'
-    const consoleTaskConfig = config.tasks[taskDefinitionName]
+    const taskDefinitionName = services.web ? 'web' : 'console'
+    const consoleTaskConfig = services[taskDefinitionName]
     if (consoleTaskConfig === undefined) {
       this.error(`Could not locale "${taskDefinitionName}" task in config. Please adjust config then try again`)
     }

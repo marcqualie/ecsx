@@ -50,8 +50,8 @@ export default class PsCommand extends AwsCommand {
     })
 
     // Find all services/tasks defined in local config
-    const configServiceNames = Object.entries(config.services || []).filter(([taskName]) => !taskName.startsWith('$')).map(([taskName]) => taskName)
-    const configTaskNames = Object.entries(config.tasks || []).filter(([taskName]) => !taskName.startsWith('$')).map(([taskName]) => taskName)
+    const configServiceNames = Object.entries(config.services || {}).filter(([taskName]) => !taskName.startsWith('$')).map(([taskName]) => taskName)
+    const configTaskNames = Object.entries(config.tasks || {}).filter(([taskName]) => !taskName.startsWith('$')).map(([taskName]) => taskName)
 
     // Find services within cluster
     // TODO: Remove tasks where service=false
