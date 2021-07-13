@@ -8,7 +8,6 @@ clusters:
     envVars:
       CLUSTER_ENV: test
       APP_ENV: test
-    consoleTask: mocha
     targetGroups:
       - arn: arn:xxx
         port: 3000
@@ -33,8 +32,6 @@ tasks:
     envVars:
       APP_ENV: task-test
       CLUSTER_NAME: "{{ clusterName }}"
-    environment:
-      DEPRECATED_APP_ENV: invalid
     secrets:
       - name: 'app'
         keys:
@@ -51,8 +48,6 @@ tasks:
     envVars:
       APP_ENV: task-test
       CLUSTER_NAME: "{{ clusterName }}"
-    environment:
-      DEPRECATED_APP_ENV: invalid
     subnet: private
     secrets:
       - name: 'app'
