@@ -176,13 +176,6 @@
             "type": "string",
             "descrition": "Runs this task on a specfic schedule"
           },
-          "environment": {
-            "type": "object",
-            "deprecated": true,
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
           "envVars": {
             "type": "object",
             "description": "Key/value pairs to populate the system environment variables",

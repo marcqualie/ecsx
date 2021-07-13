@@ -1,7 +1,6 @@
 export interface ConfigurationTaskDefinition {
   image: string
   command?: string[]
-  environment?: KeyValuePairs // @deprecated: Please use envVars instead
   envVars?: KeyValuePairs
   cpu: 256 | 512 | 1024 | 2048 | 4096
   memory: 512 | 1024 | 2048 | 3072 | 4096 | 5120 | 6144 | 7168 | 8192 | 12288 | 16384
@@ -68,7 +67,6 @@ export interface ConfiguredVariables extends Variables {
 }
 
 export interface Configuration {
-  version?: string // @deprecated: We have no use for this
   region: string
   accountId: string
   project: string
