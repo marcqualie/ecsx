@@ -16,12 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Public IPs are off by default, but can be enabled per cluster/task
+- Configuration synatx for public/private subnets has been updated (#54)
+- Public IPs are allocated by default, but tasks can be spun up in a private subnet (#54)
 - Log groups are now segmened by project + environment, stream prefixed with task name (#49)
-
-### Removed
-
-- No longer provide public/private subnet config
 
 
 
