@@ -15,8 +15,9 @@ describe('ecs', () => {
         expect(config.region).to.equal('us-east-1')
         expect(config.accountId).to.equal(1234)
 
-        expect(config.clusters['ecsx-test-cluster'].subnets).to.deep.equal(['subnet-1'])
-        expect(config.tasks.mocha.subnets).to.deep.equal(['subnet-2'])
+        expect(config.clusters['ecsx-test-cluster'].subnets).to.deep.equal({ public: ['subnet-1'], private: [] })
+        expect(config.tasks.web.subnet).to.deep.equal('public')
+        expect(config.tasks.mocha.subnet).to.deep.equal('private')
 
         // Verify that variables are processed out
         expect(config.tasks.mocha.envVars?.CLUSTER_NAME).to.equal('ecsx-test-cluster')
