@@ -64,7 +64,13 @@ export class Config {
       }
     }
 
+    // Re-parse and apply defaults
+    // TODO: Find a cleaner way of applying all defaults as pre schema.json definitions
     data = yaml.load(content)
+    for (const taskName of Object.keys(data.tasks)) {
+      data.tasks[taskName].subnet = data.tasks[taskName].subnet || 'public'
+    }
+
     return {
       config: data,
       variables: combinedVariables,

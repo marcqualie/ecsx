@@ -17,9 +17,10 @@ export const serviceFromConfiguration = (params: Params): CreateServiceCommandIn
   const clusterConfig = config.clusters[clusterName]
   const taskConfig = config.tasks[taskName]
   const targetGroups = clusterConfig.targetGroups
-  const subnets = taskConfig.subnets || clusterConfig.subnets
+  const taskSubnet = taskConfig.subnet
+  const subnets = clusterConfig.subnets[taskSubnet]
   const securityGroups = clusterConfig.securityGroups
-  const assignPublicIp = (clusterConfig.assignPublicIp === undefined ? taskConfig.assignPublicIp : clusterConfig.assignPublicIp) || false
+  const assignPublicIp = taskSubnet === 'public'
 
   return {
     serviceName: taskName,

@@ -16,11 +16,30 @@ clusters:
     securityGroups:
       - "sg-1"
     subnets:
-      - "subnet-1"
+      public: [ subnet-1 ]
+      private: []
     secrets:
       app: arn:aws:secretsmanager:{{ region }}:{{ accountId }}:secret:{{ project }}/app/test-xxx
 
 tasks:
+  web:
+    taskRoleArn: 'somerole'
+    executionRoleArn: 'somerole'
+    image: ''
+    command: []
+    cpu: 256
+    memory: 512
+    service: true
+    envVars:
+      APP_ENV: task-test
+      CLUSTER_NAME: "{{ clusterName }}"
+    environment:
+      DEPRECATED_APP_ENV: invalid
+    secrets:
+      - name: 'app'
+        keys:
+          - NODE_ENV
+          - SOME_VAR
   mocha:
     taskRoleArn: 'somerole'
     executionRoleArn: 'somerole'
@@ -28,13 +47,13 @@ tasks:
     command: []
     cpu: 256
     memory: 512
+    service: false
     envVars:
       APP_ENV: task-test
       CLUSTER_NAME: "{{ clusterName }}"
     environment:
       DEPRECATED_APP_ENV: invalid
-    subnets:
-      - subnet-2
+    subnet: private
     secrets:
       - name: 'app'
         keys:

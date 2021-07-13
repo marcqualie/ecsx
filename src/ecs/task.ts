@@ -18,9 +18,10 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
 
   const clusterConfig = config.clusters[clusterName]
   const taskConfig = config.tasks[taskName]
-  const subnets = taskConfig.subnets || clusterConfig.subnets
+  const taskSubnet = taskConfig.subnet
+  const subnets = clusterConfig.subnets[taskSubnet]
   const securityGroups = clusterConfig.securityGroups
-  const assignPublicIp = (clusterConfig.assignPublicIp === undefined ? taskConfig.assignPublicIp : clusterConfig.assignPublicIp) || false
+  const assignPublicIp = taskSubnet === 'public'
 
   const overrides = (() => {
     if (enableExecuteCommand === false) {

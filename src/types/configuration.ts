@@ -12,8 +12,7 @@ export interface ConfigurationTaskDefinition {
   ports?: number[]
   taskRoleArn?: string
   executionRoleArn: string
-  subnets?: string[]
-  assignPublicIp?: boolean
+  subnet: 'public' | 'private'
   service?: boolean
 }
 
@@ -27,8 +26,10 @@ export interface ConfigurationClusterDefinition {
     port: number
   }>
   securityGroups: string[]
-  subnets: string[]
-  assignPublicIp?: boolean
+  subnets: {
+    public: string[]
+    private: string[]
+  }
   secrets?: {
     [name: string]: string
   }
