@@ -23,8 +23,5 @@ export const envVarsFromTask = (taskName: string | undefined, config: Configurat
     throw new Error(`Could not locate task with name "${taskName}"`)
   }
 
-  return {
-    ...(taskConfig.envVars || {}),
-    ...(taskConfig.environment || {}), // @deprecated: Remove in next version
-  }
+  return taskConfig.envVars || {}
 }

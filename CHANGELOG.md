@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Public IPs are allocated by default, but tasks can be spun up in a private subnet (#54)
 - Log groups are now segmened by project + environment, stream prefixed with task name (#49)
 
+## Removed
+
+- Deprecated config (`environment`, `consoleTask`, `version`) are no longer valid and will be ignored.
+
 
 
 ## [0.5.0] - 2021-06-16
