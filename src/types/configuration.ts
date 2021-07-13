@@ -1,3 +1,20 @@
+export interface ConfigurationServiceDefinition {
+  image: string
+  command?: string[]
+  envVars?: KeyValuePairs
+  cpu: 256 | 512 | 1024 | 2048 | 4096
+  memory: 512 | 1024 | 2048 | 3072 | 4096 | 5120 | 6144 | 7168 | 8192 | 12288 | 16384
+  secrets?: Array<{
+    name: string
+    keys: string[]
+  }>
+  ports?: number[]
+  taskRoleArn?: string
+  executionRoleArn: string
+  subnets?: string[]
+  assignPublicIp?: boolean
+}
+
 export interface ConfigurationTaskDefinition {
   image: string
   command?: string[]
@@ -14,7 +31,6 @@ export interface ConfigurationTaskDefinition {
   executionRoleArn: string
   subnets?: string[]
   assignPublicIp?: boolean
-  service?: boolean
 }
 
 export interface ConfigurationClusterDefinition {
@@ -75,7 +91,10 @@ export interface Configuration {
   clusters: {
     [clusterName: string]: ConfigurationClusterDefinition
   }
-  tasks: {
+  services?: {
+    [name: string]: ConfigurationServiceDefinition
+  }
+  tasks?: {
     [name: string]: ConfigurationTaskDefinition
   }
 }

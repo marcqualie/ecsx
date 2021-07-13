@@ -120,7 +120,7 @@
           }
         }
       },
-      "Task": {
+      "Service": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -158,9 +158,92 @@
               "type": "integer"
             }
           },
-          "service": {
+          "schedule": {
+            "type": "string",
+            "descrition": "Runs this task on a specfic schedule"
+          },
+          "assignPublicIp": {
             "type": "boolean",
-            "default": true
+            "default": false,
+            "description": "If true, will assign a public IPv4 address to each container"
+          },
+          "envVars": {
+            "type": "object",
+            "description": "Key/value pairs to populate the system environment variables",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "subnets": {
+            "type": "array",
+            "description": "List of subnets to associate with containers. Can be overriden at the task level.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "secrets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "keys",
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Reference to the cluster secret, which is defined via #/clusters/*/secrets/[name]"
+                },
+                "keys": {
+                  "type": "array",
+                  "description": "List of keys to extract and make available as ENV variables inside task containers",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "executionRoleArn",
+          "image",
+          "taskRoleArn"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "description": "Docker image to load for this task",
+            "example": "00000000.dkr.ecr.us-east-1.amazonaws.com/myapp:latest"
+          },
+          "taskRoleArn": {
+            "type": "string"
+          },
+          "executionRoleArn": {
+            "type": "string"
+          },
+          "cpu": {
+            "type": "integer"
+          },
+          "memory": {
+            "type": "integer"
+          },
+          "command": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ports": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
           },
           "schedule": {
             "type": "string",

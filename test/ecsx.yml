@@ -20,6 +20,25 @@ clusters:
     secrets:
       app: arn:aws:secretsmanager:{{ region }}:{{ accountId }}:secret:{{ project }}/app/test-xxx
 
+services:
+  web:
+    taskRoleArn: 'somerole'
+    executionRoleArn: 'somerole'
+    image: ''
+    command: []
+    cpu: 256
+    memory: 512
+    envVars:
+      APP_ENV: task-test
+      CLUSTER_NAME: "{{ clusterName }}"
+    environment:
+      DEPRECATED_APP_ENV: invalid
+    secrets:
+      - name: 'app'
+        keys:
+          - NODE_ENV
+          - SOME_VAR
+
 tasks:
   mocha:
     taskRoleArn: 'somerole'
