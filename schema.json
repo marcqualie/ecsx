@@ -174,7 +174,7 @@
           },
           "schedule": {
             "type": "string",
-            "descrition": "Runs this task on a specfic schedule"
+            "description": "Runs this task on a specfic schedule"
           },
           "envVars": {
             "type": "object",
