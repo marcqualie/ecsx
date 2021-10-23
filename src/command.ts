@@ -1,4 +1,3 @@
-/* eslint-disable no-warning-comments */
 import Command from '@oclif/command'
 
 import { client } from './ecs/client'
