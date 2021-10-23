@@ -96,8 +96,9 @@ export default class RunCommand extends AwsCommand {
       taskStatus = taskDetails.lastStatus
       cli.action.start('', taskStatus)
 
-      // eslint-disable-next-line no-await-in-loop
-      await new Promise(resolve => setTimeout(resolve, 10_000))
+      await new Promise(resolve => {
+        setTimeout(resolve, 10_000)
+      })
     }
 
     cli.action.stop(taskStatus)
