@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [Unreleased]
+## [0.6.0] - 2021-10-23
 
 ### Added
 
@@ -16,9 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Configuration synatx for public/private subnets has been updated (#54)
+- Configuration syntax for public/private subnets has been updated (#54)
 - Public IPs are allocated by default, but tasks can be spun up in a private subnet (#54)
-- Log groups are now segmened by project + environment, stream prefixed with task name (#49)
+- Log groups are now segmented by project + environment, stream prefixed with task name (#49)
 
 ## Removed
 
