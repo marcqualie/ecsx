@@ -19,7 +19,7 @@ $ npm install -g ecsx
 $ ecsx COMMAND
 running command...
 $ ecsx (-v|--version|version)
-ecsx/0.6.0-alpha.1 darwin-x64 node-v14.15.5
+ecsx/0.6.0 darwin-x64 node-v14.18.1
 $ ecsx --help [COMMAND]
 USAGE
   $ ecsx COMMAND
@@ -52,7 +52,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.1/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0/src/commands/config.ts)_
 
 ## `ecsx console [COMMAND]`
 
@@ -67,7 +67,7 @@ OPTIONS
   -h, --help                     show CLI help
 ```
 
-_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.1/src/commands/console.ts)_
+_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0/src/commands/console.ts)_
 
 ## `ecsx delete TASKNAME`
 
@@ -83,7 +83,7 @@ OPTIONS
   --force
 ```
 
-_See code: [src/commands/delete.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.1/src/commands/delete.ts)_
+_See code: [src/commands/delete.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0/src/commands/delete.ts)_
 
 ## `ecsx deploy TASKNAME`
 
@@ -100,7 +100,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.1/src/commands/deploy.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0/src/commands/deploy.ts)_
 
 ## `ecsx help [COMMAND]`
 
@@ -132,7 +132,7 @@ OPTIONS
   -h, --help                     show CLI help
 ```
 
-_See code: [src/commands/ps.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.1/src/commands/ps.ts)_
+_See code: [src/commands/ps.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0/src/commands/ps.ts)_
 
 ## `ecsx run TASKNAME`
 
@@ -149,7 +149,7 @@ OPTIONS
   --var=var                      [default: ]
 ```
 
-_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.1/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0/src/commands/run.ts)_
 
 ## `ecsx scale TASK COUNT`
 
@@ -164,7 +164,7 @@ OPTIONS
   -h, --help                     show CLI help
 ```
 
-_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0-alpha.1/src/commands/scale.ts)_
+_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.6.0/src/commands/scale.ts)_
 <!-- commandsstop -->
 
 
