@@ -71,10 +71,12 @@ export default class RunCommand extends AwsCommand {
     if (tasks === undefined || tasks.length === 0) {
       this.error(`Could not create task definition: ${runTaskResponse}`)
     }
+
     const firstTask = tasks[0]
     if (firstTask.taskArn === undefined) {
       this.error('Task does not have an ARN. Please try again.')
     }
+
     const taskId = firstTask.taskArn?.replace(`arn:aws:ecs:${region}:${accountId}:task/${project}-${environment}/`, '')
     const taskUrl = `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/tasks/${taskId}/logs?region=${region}`
     this.log(`> Image: ${dockerTag}`)
@@ -90,12 +92,14 @@ export default class RunCommand extends AwsCommand {
       if (taskDetails === undefined) {
         this.error(`Could not find task details for taskArn "${firstTask.taskArn}"`)
       }
+
       taskStatus = taskDetails.lastStatus
       cli.action.start('', taskStatus)
 
       // eslint-disable-next-line no-await-in-loop
-      await new Promise(resolve => setTimeout(resolve, 10000))
+      await new Promise(resolve => setTimeout(resolve, 10_000))
     }
+
     cli.action.stop(taskStatus)
 
     // If we did not get RUNNING then the console could not started properly, this should show why

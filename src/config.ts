@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import yaml from 'js-yaml'
 import { Configuration, ConfiguredVariables, KeyValuePairs, Variables } from './types/configuration'
 import { variablesFromCluster } from './utils/variables-from-cluster'
@@ -45,7 +45,7 @@ export class Config {
 
     // Replace variables in raw content before decoding to YAML
     for (const [key, value] of Object.entries(combinedVariables)) {
-      if (content.indexOf(`{{ ${key} }}`) !== -1) {
+      if (content.includes(`{{ ${key} }}`)) {
         content = content.replace(new RegExp(`{{ ${key} }}`, 'g'), value ? value.toString() : '')
       }
     }
@@ -57,7 +57,7 @@ export class Config {
     }
     for (const [envKey, envValue] of Object.entries(envVars)) {
       for (const [key, value] of Object.entries(combinedVariables)) {
-        if (envValue.indexOf(`{{ ${key} }}`) !== -1) {
+        if (envValue.includes(`{{ ${key} }}`)) {
           const newValue = envValue.replace(new RegExp(`{{ ${key} }}`, 'g'), value ? value.toString() : '')
           envVars = { ...envVars, [envKey]: newValue }
         }

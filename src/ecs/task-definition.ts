@@ -34,8 +34,6 @@ const portMappingsFromConfiguration = (config: ConfigurationTaskDefinition) => {
       containerPort: port,
     }))
   }
-
-  return undefined
 }
 
 const logConfigurationFromConfiguration = (task: string, variables: ConfiguredVariables) => {

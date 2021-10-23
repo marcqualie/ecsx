@@ -46,8 +46,8 @@ export default class DeployCommand extends AwsCommand {
       envVars,
     })
 
-    Object.entries(service).forEach(([key, value]) => {
+    for (const [key, value] of Object.entries(service)) {
       this.log(`> ${key}: ${value}`)
-    })
+    }
   }
 }

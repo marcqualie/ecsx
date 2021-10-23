@@ -142,7 +142,7 @@ export default class PsCommand extends AwsCommand {
         id: {
           header: 'ID',
           minWidth: 8,
-          get: row => row.id.substring(0, 7),
+          get: row => row.id.slice(0, 7),
         },
         status: {
           minWidth: 10,

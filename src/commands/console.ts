@@ -51,8 +51,8 @@ export default class ConsoleCommand extends AwsCommand {
         'web', // NOTE: We follow convention of web/console
       ],
     })
-    const activeWebServices = existingWebServices.filter(service => (service.status === 'ACTIVE' || service.status === 'RUNNING'))
-    const webService = activeWebServices[0]
+    const activeWebService = existingWebServices.find(service => (service.status === 'ACTIVE' || service.status === 'RUNNING'))
+    const webService = activeWebService
     if (webService === undefined) {
       this.error('Could not find running web service to grab container definition')
     }
@@ -77,10 +77,12 @@ export default class ConsoleCommand extends AwsCommand {
     if (tasks === undefined || tasks.length === 0) {
       this.error(`Could not create task definition: ${runTaskResponse}`)
     }
+
     const consoleTask = tasks[0]
     if (consoleTask.taskArn === undefined) {
       this.error('Task not not have an arn')
     }
+
     const dockerTag = consoleTask.containers && consoleTask.containers[0].image
     this.log('> Image:', dockerTag)
     this.log('> Task:', consoleTask.taskArn)
@@ -96,11 +98,13 @@ export default class ConsoleCommand extends AwsCommand {
       if (taskDetails === undefined) {
         this.error(`Could not find task details for taskArn "${consoleTask.taskArn}"`)
       }
+
       if (taskStatus !== taskDetails.lastStatus) {
         taskStatus = taskDetails.lastStatus
         cli.action.start('', taskStatus)
       }
     }
+
     cli.action.stop(taskStatus)
 
     // If we did not get RUNNING then the console could not started properly, this should show why
