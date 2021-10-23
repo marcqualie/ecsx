@@ -69,7 +69,7 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
       serviceInput.serviceName || '',
     ],
   })
-  const serviceIsActive = existingServices.filter(service => service.status === 'ACTIVE').length > 0
+  const serviceIsActive = existingServices.some(service => service.status === 'ACTIVE')
 
   // Create a new service
   if (serviceIsActive === false) {
@@ -89,6 +89,7 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
     }
     // Update existing service
   }
+
   const updateServiceResponse = await client.updateService({
     service: serviceInput.serviceName,
     cluster: serviceInput.cluster,

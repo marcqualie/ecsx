@@ -25,7 +25,7 @@ export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
 
   const overrides = (() => {
     if (enableExecuteCommand === false) {
-      return undefined
+      return
     }
 
     // The sleep task keep the container alive for X amount of seconds

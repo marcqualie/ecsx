@@ -42,8 +42,8 @@ export default class DeployCommand extends AwsCommand {
         task,
       ],
     })
-    const activeServices = existingServices.filter(service => service.status === 'ACTIVE')
-    const service = activeServices[0]
+    const activeService = existingServices.find(service => service.status === 'ACTIVE')
+    const service = activeService
     if (service === undefined) {
       this.error(`Could not find service mcatching name ${task}`)
     }
@@ -52,7 +52,7 @@ export default class DeployCommand extends AwsCommand {
     const updateServiceResponse = await client.updateService({
       service: service.serviceName,
       cluster: service.clusterArn,
-      desiredCount: parseInt(count, 10),
+      desiredCount: Number.parseInt(count, 10),
     })
     const { service: updatedService } = updateServiceResponse
     if (updatedService === undefined) {
