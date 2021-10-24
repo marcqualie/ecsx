@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [Unreleased]
+
+### Added
+
+- `list-clusters` command to see which clusters are defined in the config
+
+
+
 ## [0.6.0] - 2021-10-23
 
 ### Added
