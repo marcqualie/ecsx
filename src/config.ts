@@ -13,20 +13,20 @@ export class Config {
     this.path = path
   }
 
-  parse(variables: Variables & { clusterName: string, taskName?: string }): { config: Configuration, variables: ConfiguredVariables, envVars: KeyValuePairs } {
+  parse(variables: Variables & { clusterName?: string, taskName?: string }): { config: Configuration, variables: ConfiguredVariables, envVars: KeyValuePairs } {
     let content = fs.readFileSync(this.path, 'utf-8')
 
     // Read config to get global variables, which can replace other variables
     let data = yaml.load(content) as any
     const defaultVariables = {
-      region: data.region,
+      region: data.region || 'us-east-1',
       accountId: data.accountId,
       project: data.project,
     }
     const combinedVariables: ConfiguredVariables = {
       ...defaultVariables,
       ...variables,
-      ...variablesFromCluster(variables.clusterName, data),
+      ...(variables.clusterName ? variablesFromCluster(variables.clusterName, data) : {}),
     }
 
     // Ensure all required variables are present
@@ -34,7 +34,6 @@ export class Config {
       'region',
       'accountId',
       'project',
-      'clusterName',
     ]
     for (const key of requiredVariables) {
       const value = combinedVariables[key] || undefined
@@ -52,7 +51,7 @@ export class Config {
 
     // Environment variables are added to container at runtime
     let envVars = {
-      ...envVarsFromCluster(variables.clusterName, data),
+      ...(variables.clusterName ? envVarsFromCluster(variables.clusterName, data) : {}),
       ...envVarsFromTask(variables.taskName, data),
     }
     for (const [envKey, envValue] of Object.entries(envVars)) {
