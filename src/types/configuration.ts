@@ -47,7 +47,7 @@ export interface Variables {
 }
 
 export interface ClusterVariables {
-  clusterName: string
+  clusterName?: string
   taskName?: string
   [key: string]: string | undefined
 }
@@ -59,10 +59,10 @@ export interface KeyValuePairs {
 // This is the known output after config parsing
 // We know some values will be set, because we do this in code with defaults
 export interface ConfiguredVariables extends Variables {
-  clusterName: string // should be passed in via CLI flags
-  environment: string // defined via cluster config
-  project: string
-  accountId: string
+  clusterName?: string // should be passed in via CLI flags
+  environment?: string // defined via cluster config
+  project?: string
+  accountId?: string
   region: string
 }
 
