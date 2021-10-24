@@ -31,7 +31,13 @@ export default class DeployCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { taskName }, flags: { clusterName, dockerTag } } = this.parse(DeployCommand)
+    const { args: { taskName: taskNameString }, flags: { clusterName, dockerTag } } = this.parse(DeployCommand)
+    const taskNames = (taskNameString.toString() as string).split(',').map(taskName => taskName.trim())
+    console.log('> deploying service(s)', taskNames)
+    await Promise.all(taskNames.map(taskName => this.deployService(taskName, clusterName, dockerTag)))
+  }
+
+  async deployService(taskName: string, clusterName: string, dockerTag: string) {
     const { config, variables, envVars } = this.configWithVariables({
       clusterName,
       taskName,
