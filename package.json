@@ -9,17 +9,17 @@
   "bugs": "https://github.com/marcqualie/ecsx/issues",
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.15.0",
-    "@oclif/command": "^1",
-    "@oclif/config": "^1",
-    "@oclif/plugin-help": "^3",
+    "@oclif/command": "^1.8.16",
+    "@oclif/config": "^1.18.3",
+    "@oclif/plugin-help": "^5.1.11",
     "cli-ux": "^5.5.1",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "tslib": "^2.0"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1",
-    "@oclif/test": "^1",
+    "@oclif/dev-cli": "^1.26.10",
+    "@oclif/test": "^2.1.0",
     "@types/chai": "^4",
     "@types/js-yaml": "^4.0.1",
     "@types/lodash": "^4.14.168",
