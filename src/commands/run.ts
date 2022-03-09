@@ -55,7 +55,7 @@ export default class RunCommand extends AwsCommand {
     const taskDefinitionResponse = await client.registerTaskDefinition(taskDefinitionInput)
     const { taskDefinition } = taskDefinitionResponse
     if (taskDefinition === undefined) {
-      this.error(`Could not create task definition: ${taskDefinitionResponse}`)
+      this.error(`Could not create task definition: ${JSON.stringify(taskDefinitionResponse)}`)
     }
 
     // Run task using created definition
@@ -69,7 +69,7 @@ export default class RunCommand extends AwsCommand {
     const runTaskResponse = await client.runTask(taskInput)
     const { tasks } = runTaskResponse
     if (tasks === undefined || tasks.length === 0) {
-      this.error(`Could not create task definition: ${runTaskResponse}`)
+      this.error(`Could not run task: ${JSON.stringify(runTaskResponse)}`)
     }
 
     const firstTask = tasks[0]
@@ -106,7 +106,7 @@ export default class RunCommand extends AwsCommand {
     // If we did not get RUNNING then the console could not started properly, this should show why
     const firstContainer = taskDetails?.containers && taskDetails.containers[0]
     if (firstContainer === undefined) {
-      this.error('Could not locate container defintion')
+      this.error('Could not locate container definition')
     }
 
     // If the container failed, we want to know why

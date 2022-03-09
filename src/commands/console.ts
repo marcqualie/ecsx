@@ -75,7 +75,7 @@ export default class ConsoleCommand extends AwsCommand {
     const runTaskResponse = await client.runTask(taskInput)
     const { tasks } = runTaskResponse
     if (tasks === undefined || tasks.length === 0) {
-      this.error(`Could not create task definition: ${runTaskResponse}`)
+      this.error(`Could not run task: ${JSON.stringify(runTaskResponse)}`)
     }
 
     const consoleTask = tasks[0]

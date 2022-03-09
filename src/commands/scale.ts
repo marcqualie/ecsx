@@ -45,7 +45,7 @@ export default class DeployCommand extends AwsCommand {
     const activeService = existingServices.find(service => service.status === 'ACTIVE')
     const service = activeService
     if (service === undefined) {
-      this.error(`Could not find service mcatching name ${task}`)
+      this.error(`Could not find service matching name ${task}`)
     }
 
     // Set desired count to the running service
@@ -56,7 +56,7 @@ export default class DeployCommand extends AwsCommand {
     })
     const { service: updatedService } = updateServiceResponse
     if (updatedService === undefined) {
-      this.error(`Could not update service: ${updateServiceResponse}`)
+      this.error(`Could not update service: ${JSON.stringify(updateServiceResponse)}`)
     }
 
     this.log(JSON.stringify({
