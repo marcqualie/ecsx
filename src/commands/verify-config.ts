@@ -1,7 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 import { flags } from '@oclif/command'
-import Ajv from 'ajv'
 import { Validator } from 'jsonschema'
 import YAML from 'js-yaml'
 
