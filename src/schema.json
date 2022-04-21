@@ -24,6 +24,7 @@
       "description": "Unique for the project. Usually paired with terraform to link to generated infrastructure"
     },
     "region": {
+      "deprecated": true,
       "type": "string",
       "description": "AWS region to execute commands against"
     },
@@ -44,6 +45,10 @@
             "type": "string",
             "description": "Application environment for containers. This will be available $environment variabe",
             "example": "production"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region where the cluster is hosted"
           },
           "project": {
             "type": "string",
