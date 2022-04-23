@@ -11,7 +11,7 @@ export default class PsCommand extends AwsCommand {
     help: flags.help({
       char: 'h',
     }),
-    clusterName: flags.string({
+    clusterKey: flags.string({
       char: 'c',
       required: true,
       description: 'Name of the cluster key from the config',
@@ -19,9 +19,9 @@ export default class PsCommand extends AwsCommand {
   }
 
   async run() {
-    const { flags: { clusterName: clusterNameFlag } } = this.parse(PsCommand)
+    const { flags: { clusterKey } } = this.parse(PsCommand)
     const { config, variables: { accountId, clusterName, environment, project, region } } = this.configWithVariables({
-      clusterName: clusterNameFlag,
+      clusterKey,
     })
     const client = this.ecs_client({ region })
 

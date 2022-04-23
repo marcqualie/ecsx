@@ -9,7 +9,7 @@ export default class DeleteCommand extends AwsCommand {
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    clusterName: flags.string({
+    clusterKey: flags.string({
       char: 'c',
       required: true,
     }),
@@ -27,11 +27,11 @@ export default class DeleteCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { taskName }, flags: { clusterName, force = false } } = this.parse(DeleteCommand)
+    const { args: { taskName }, flags: { clusterKey, force = false } } = this.parse(DeleteCommand)
     const { variables } = this.configWithVariables({
-      clusterName,
+      clusterKey,
     })
-    const { region } = variables
+    const { clusterName, region } = variables
     const client = clientBuilder({ region })
 
     // TODO: Verify the task actually exists on the cluster

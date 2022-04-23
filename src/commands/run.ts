@@ -16,7 +16,7 @@ export default class RunCommand extends AwsCommand {
       multiple: true,
       default: [],
     }),
-    clusterName: flags.string({
+    clusterKey: flags.string({
       char: 'c',
       required: true,
     }),
@@ -35,13 +35,17 @@ export default class RunCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { taskName }, flags: { clusterName, dockerTag } } = this.parse(RunCommand)
+    const { args: { taskName }, flags: { clusterKey, dockerTag } } = this.parse(RunCommand)
     const { config, variables, envVars } = this.configWithVariables({
-      clusterName,
+      clusterKey,
       taskName,
       dockerTag,
     })
-    const { accountId, environment, project, region } = variables
+    const { accountId, environment, project, region, clusterName } = variables
+    if (clusterName === undefined) {
+      throw new Error('Could not detect $clusterName')
+    }
+
     const client = this.ecs_client({ region })
 
     // Generate Task Definition

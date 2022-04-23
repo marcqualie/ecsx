@@ -1,10 +1,20 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
-import { Configuration, ConfiguredVariables, KeyValuePairs, Variables } from './types/configuration'
+import { Configuration, ConfigurationClusterDefinition, ConfiguredVariables, KeyValuePairs, Variables } from './types/configuration'
 import { variablesFromCluster } from './utils/variables-from-cluster'
 import { envVarsFromCluster, envVarsFromTask } from './utils/env-vars-from'
 
 const { ECSX_CONFIG_PATH } = process.env
+
+// Find a cluster from this configuration
+// It must match exactly on name and region
+export const findCluster = (config: Configuration, clusterName: string, region: string): ConfigurationClusterDefinition | undefined => {
+  const cluster = Object.entries(config.clusters).find(([clusterKey, cluster]) => {
+    const name = cluster.name || clusterKey
+    return name === clusterName && cluster.region === region
+  })
+  return cluster && cluster[1]
+}
 
 export class Config {
   path: string
@@ -13,7 +23,7 @@ export class Config {
     this.path = path
   }
 
-  parse(variables: Variables & { clusterName?: string, taskName?: string }): { config: Configuration, variables: ConfiguredVariables, envVars: KeyValuePairs } {
+  parse(variables: Variables & { clusterKey?: string, taskName?: string }): { config: Configuration, variables: ConfiguredVariables, envVars: KeyValuePairs } {
     let content = fs.readFileSync(this.path, 'utf-8')
 
     // Read config to get global variables, which can replace other variables
@@ -26,7 +36,7 @@ export class Config {
     const combinedVariables: ConfiguredVariables = {
       ...defaultVariables,
       ...variables,
-      ...(variables.clusterName ? variablesFromCluster(variables.clusterName, data) : {}),
+      ...(variables.clusterKey ? variablesFromCluster(variables.clusterKey, data) : {}),
     }
 
     // Ensure all required variables are present
@@ -34,6 +44,7 @@ export class Config {
       'region',
       'accountId',
       'project',
+      'clusterName',
     ]
     for (const key of requiredVariables) {
       const value = combinedVariables[key] || undefined
@@ -41,6 +52,8 @@ export class Config {
         throw new Error(`Missing required variable: ${key} (Please define globally, or per cluster)`)
       }
     }
+
+    const { region, clusterName } = combinedVariables
 
     // Replace variables in raw content before decoding to YAML
     for (const [key, value] of Object.entries(combinedVariables)) {
@@ -51,7 +64,7 @@ export class Config {
 
     // Environment variables are added to container at runtime
     let envVars = {
-      ...(variables.clusterName ? envVarsFromCluster(variables.clusterName, data) : {}),
+      ...(clusterName ? envVarsFromCluster(clusterName, region, data) : {}),
       ...envVarsFromTask(variables.taskName, data),
     }
     for (const [envKey, envValue] of Object.entries(envVars)) {

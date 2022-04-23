@@ -2,7 +2,7 @@ import { flags } from '@oclif/command'
 
 import { AwsCommand } from '../command'
 
-export default class PsCommand extends AwsCommand {
+export default class ListClustersCommand extends AwsCommand {
   static description = 'Show running services within a cluster'
 
   static flags = {

@@ -10,8 +10,8 @@ describe('ecs', () => {
   describe('task-definition', () => {
     describe('secretsFromConfiguration', () => {
       it('translate secrets to task definition format', () => {
-        const { config } = configWithVariables({ clusterName: 'ecsx-test-cluster' })
-        const output = secretsFromConfiguration('mocha', 'ecsx-test-cluster', config)
+        const { config, variables: { region } } = configWithVariables({ clusterName: 'ecsx-test-cluster' })
+        const output = secretsFromConfiguration('mocha', 'ecsx-test-cluster', config, region)
         expect(output).to.deep.equal([
           {
             name: 'NODE_ENV',

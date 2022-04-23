@@ -1,4 +1,5 @@
 import { CreateServiceCommandInput } from '@aws-sdk/client-ecs'
+import { findCluster } from '../config'
 
 import { Configuration, ConfiguredVariables } from '../types/configuration'
 
@@ -12,9 +13,13 @@ interface Params {
 
 export const serviceFromConfiguration = (params: Params): CreateServiceCommandInput => {
   const { clusterName, taskName, revision, variables, config } = params
-  const { project, environment } = variables
+  const { project, environment, region } = variables
 
-  const clusterConfig = config.clusters[clusterName]
+  const clusterConfig = findCluster(config, clusterName, region)
+  if (clusterConfig === undefined) {
+    throw new Error('Cluster not found')
+  }
+
   const taskConfig = config.tasks[taskName]
   const targetGroups = clusterConfig.targetGroups
   const taskSubnet = taskConfig.subnet

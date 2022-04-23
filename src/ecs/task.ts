@@ -1,4 +1,5 @@
 import { RunTaskCommandInput } from '@aws-sdk/client-ecs'
+import { findCluster } from '../config'
 
 import { Configuration, ConfiguredVariables } from '../types/configuration'
 
@@ -14,9 +15,13 @@ interface Params {
 
 export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
   const { clusterName, taskName, revision, variables, config, alias, enableExecuteCommand = false } = params
-  const { project, environment } = variables
+  const { project, environment, region } = variables
 
-  const clusterConfig = config.clusters[clusterName]
+  const clusterConfig = findCluster(config, clusterName, region)
+  if (clusterConfig === undefined) {
+    throw new Error('Cluster not found')
+  }
+
   const taskConfig = config.tasks[taskName]
   const taskSubnet = taskConfig.subnet
   const subnets = clusterConfig.subnets[taskSubnet]
