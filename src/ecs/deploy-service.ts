@@ -1,4 +1,4 @@
-import { client } from './client'
+import { clientBuilder } from './client'
 import { Configuration, ConfiguredVariables, KeyValuePairs } from '../types/configuration'
 import { taskDefinitionfromConfiguration } from './task-definition'
 import { serviceFromConfiguration } from './service'
@@ -33,6 +33,7 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
     project,
     region,
   } = variables
+  const client = clientBuilder({ region })
 
   // Prevent non-services from being deployed
   const taskConfig = config.tasks[taskName]

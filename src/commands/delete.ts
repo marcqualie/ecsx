@@ -2,8 +2,7 @@ import { flags } from '@oclif/command'
 import { cli } from 'cli-ux'
 
 import { AwsCommand } from '../command'
-import { client } from '../ecs/client'
-import { deployService } from '../ecs/deploy-service'
+import { clientBuilder } from '../ecs/client'
 
 export default class DeleteCommand extends AwsCommand {
   static description = 'Remove a service/task from a cluster'
@@ -29,12 +28,13 @@ export default class DeleteCommand extends AwsCommand {
 
   async run() {
     const { args: { taskName }, flags: { clusterName, force = false } } = this.parse(DeleteCommand)
-    const { config, variables, envVars } = this.configWithVariables({
+    const { variables } = this.configWithVariables({
       clusterName,
     })
+    const { region } = variables
+    const client = clientBuilder({ region })
 
-    // Verify the task actually exists on the cluster
-    // TODO
+    // TODO: Verify the task actually exists on the cluster
 
     // Verify they want to delete
     const confirmed = await cli.confirm(`Do you want to remove ${taskName} from your cluster?`)

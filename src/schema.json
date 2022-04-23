@@ -11,7 +11,7 @@
   ],
   "properties": {
     "version": {
-      "deprcated": true,
+      "deprecated": true,
       "type": "number",
       "description": "Schema version for ecsx"
     },
@@ -35,6 +35,7 @@
         "description": "The key must be the cluster name inside the AWS API",
         "additionalProperties": false,
         "required": [
+          "region",
           "environment",
           "subnets",
           "targetGroups",
@@ -49,6 +50,10 @@
           "region": {
             "type": "string",
             "description": "AWS region where the cluster is hosted"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the cluster. This is only required if the cluster name is different from the config key"
           },
           "project": {
             "type": "string",

@@ -14,15 +14,16 @@ export default class PsCommand extends AwsCommand {
     clusterName: flags.string({
       char: 'c',
       required: true,
+      description: 'Name of the cluster key from the config',
     }),
   }
 
   async run() {
-    const { flags: { clusterName } } = this.parse(PsCommand)
-    const client = this.ecs_client()
-    const { config, variables: { accountId, environment, project, region } } = this.configWithVariables({
-      clusterName,
+    const { flags: { clusterName: clusterNameFlag } } = this.parse(PsCommand)
+    const { config, variables: { accountId, clusterName, environment, project, region } } = this.configWithVariables({
+      clusterName: clusterNameFlag,
     })
+    const client = this.ecs_client({ region })
 
     // Common patterns we can ignore from outputs
     const serviceArnPrefix = `arn:aws:ecs:${region}:${accountId}:service/${project}-${environment}/`
@@ -44,14 +45,14 @@ export default class PsCommand extends AwsCommand {
       ...runningTaskArns,
       ...stoppedTaskArns,
     ]
-    const { tasks: existingTasks = [] } = await client.describeTasks({
+    const { tasks: existingTasks = [] } = allTaskArns.length > 0 ? await client.describeTasks({
       cluster: clusterName,
       tasks: allTaskArns,
-    })
+    }) : { tasks: [] }
 
     // Find all services/tasks defined in local config
     const configServiceNames = Object.entries(config.tasks).filter(([taskName, taskConfig]) => !taskName.startsWith('$') && (taskConfig.service === true || taskConfig.service === undefined)).map(([taskName]) => taskName)
-    const configTaskNames = Object.entries(config.tasks).filter(([taskName, taskConfig]) => !taskName.startsWith('$') && taskConfig.service === false).map(([taskName]) => taskName)
+    // const configTaskNames = Object.entries(config.tasks).filter(([taskName, taskConfig]) => !taskName.startsWith('$') && taskConfig.service === false).map(([taskName]) => taskName)
 
     // Find services within cluster
     // TODO: Remove tasks where service=false

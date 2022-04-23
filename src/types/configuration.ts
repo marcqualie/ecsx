@@ -18,6 +18,8 @@ export interface ConfigurationTaskDefinition {
 export interface ConfigurationClusterDefinition {
   environment: string
   project?: string
+  name?: string
+  region: string
   envVars?: KeyValuePairs
   targetGroups: Array<{
     arn: string

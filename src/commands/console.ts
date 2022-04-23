@@ -31,10 +31,11 @@ export default class ConsoleCommand extends AwsCommand {
 
   async run() {
     const { args: { command }, flags: { clusterName } } = this.parse(ConsoleCommand)
-    const client = this.ecs_client()
     const { config, variables } = this.configWithVariables({
       clusterName,
     })
+    const { region } = variables
+    const client = this.ecs_client({ region })
 
     // Ensure there is a console task defined
     // TODO: If custom console command is specified, definition may not already exist

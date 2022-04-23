@@ -17,5 +17,6 @@ export const variablesFromCluster = (clusterName: string, config: Configuration)
   return pickBy({
     environment: clusterConfig.environment,
     project: clusterConfig.project,
+    clusterName: clusterConfig.name || clusterName,
   }, identity) as VariablesFromCluster
 }

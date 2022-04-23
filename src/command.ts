@@ -1,6 +1,6 @@
 import Command from '@oclif/command'
+import { clientBuilder } from './ecs/client'
 
-import { client } from './ecs/client'
 import { ClusterVariables } from './types/configuration'
 import { configWithVariables } from './utils/config-with-variables'
 
@@ -13,8 +13,8 @@ export class AwsCommand extends Command {
     return configWithVariables(initialVariables)
   }
 
-  ecs_client() {
-    return client
+  ecs_client({ region }: { region?: string }) {
+    return clientBuilder({ region: region || 'eu-central-1' })
   }
 
   variables() {
