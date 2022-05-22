@@ -14,12 +14,20 @@ describe('ecs', () => {
         const output = secretsFromConfiguration('mocha', 'ecsx-test-cluster', config)
         expect(output).to.deep.equal([
           {
+            name: 'CLUSTER_KEY_1',
+            valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:CLUSTER_KEY_1::',
+          },
+          {
             name: 'NODE_ENV',
             valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:NODE_ENV::',
           },
           {
             name: 'SOME_VAR',
             valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:SOME_VAR::',
+          },
+          {
+            name: 'X_CLUSTER_KEY_2',
+            valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:X_CLUSTER_KEY_2::',
           },
         ])
       })

@@ -18,8 +18,12 @@ export const secretsFromConfiguration = (task: string, clusterName: string, conf
   const clusterSecrets = clusterConfig.secrets || {}
   const taskSecrets = taskConfig.secrets || []
   return flatten(taskSecrets.map(entry => {
-    const arn = clusterSecrets[entry.name]
-    return entry.keys.map(key => {
+    const secretDefinition = clusterSecrets[entry.name]
+    const hasClusterKeys = typeof secretDefinition !== 'string'
+    const arn = hasClusterKeys ? secretDefinition.arn : secretDefinition
+    const clusterKeys = hasClusterKeys ? secretDefinition.keys : []
+    const allKeys = [...clusterKeys, ...entry.keys].sort()
+    return allKeys.map(key => {
       return {
         name: key,
         valueFrom: `${arn}:${key}::`,

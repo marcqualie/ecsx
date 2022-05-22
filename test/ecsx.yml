@@ -18,7 +18,11 @@ clusters:
       public: [ subnet-1 ]
       private: []
     secrets:
-      app: arn:aws:secretsmanager:{{ region }}:{{ accountId }}:secret:{{ project }}/app/test-xxx
+      app:
+        arn: arn:aws:secretsmanager:{{ region }}:{{ accountId }}:secret:{{ project }}/app/test-xxx
+        keys:
+          - CLUSTER_KEY_1
+          - X_CLUSTER_KEY_2
 
 tasks:
   web:
