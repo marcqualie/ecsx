@@ -89,11 +89,29 @@
             }
           },
           "secrets": {
-            "type": "object",
-            "description": "List of aws secrets ARNs to register in the cluster",
-            "additionalProperties": {
-              "type": "string"
-            }
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "List of aws secrets ARNs to register in the cluster",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "object",
+                "description": "List of aws secrets ARNs to register in the cluster",
+                "properties": {
+                  "arn": {
+                    "type": "string",
+                    "description": "Full ARN to pull secrets from for this cluster"
+                  },
+                  "keys": {
+                    "type": "array",
+                    "description": "List of keys to assign as environments variables in all services"
+                  }
+                }
+              }
+            ]
           },
           "securityGroups": {
             "type": "array",

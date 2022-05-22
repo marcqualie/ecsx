@@ -18,6 +18,26 @@ clusters:
       public: [ subnet-1 ]
       private: []
     secrets:
+      app:
+        arn: arn:aws:secretsmanager:{{ region }}:{{ accountId }}:secret:{{ project }}/app/test-xxx
+        keys:
+          - CLUSTER_KEY_1
+          - X_CLUSTER_KEY_2
+  ecsx-test-cluster-with-string-secrets:
+    environment: test
+    envVars:
+      CLUSTER_ENV: test2
+      APP_ENV: test2
+    targetGroups:
+      - arn: arn:xxx
+        port: 3000
+        task: mocha
+    securityGroups:
+      - "sg-1"
+    subnets:
+      public: [ subnet-2 ]
+      private: []
+    secrets:
       app: arn:aws:secretsmanager:{{ region }}:{{ accountId }}:secret:{{ project }}/app/test-xxx
 
 tasks:
