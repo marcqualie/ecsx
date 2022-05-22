@@ -74,3 +74,16 @@ tasks:
         keys:
           - NODE_ENV
           - SOME_VAR
+  has-no-secrets:
+    taskRoleArn: 'somerole'
+    executionRoleArn: 'somerole'
+    image: ''
+    command: []
+    cpu: 256
+    memory: 512
+    service: false
+    envVars:
+      APP_ENV: task-test
+      CLUSTER_NAME: "{{ clusterName }}"
+    subnet: private
+    secrets: []
