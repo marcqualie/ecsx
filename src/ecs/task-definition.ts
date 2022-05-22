@@ -29,7 +29,7 @@ export const secretsFromConfiguration = (task: string, clusterName: string, conf
     }
   }
 
-  for (const [name, definition] of Object.entries(clusterSecrets)) {
+  for (const definition of Object.values(clusterSecrets)) {
     const hasClusterKeys = typeof definition !== 'string'
     const arn = hasClusterKeys ? definition.arn : definition
     const keys = hasClusterKeys ? definition.keys : []
