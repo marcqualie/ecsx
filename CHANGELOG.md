@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `list-clusters` command to see which clusters are defined in the config
+- Allow defining secrets at the cluster layer
 
 
 
