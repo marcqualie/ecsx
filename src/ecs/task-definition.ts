@@ -17,19 +17,34 @@ export const secretsFromConfiguration = (task: string, clusterName: string, conf
   const clusterConfig = config.clusters[clusterName]
   const clusterSecrets = clusterConfig.secrets || {}
   const taskSecrets = taskConfig.secrets || []
-  return flatten(taskSecrets.map(entry => {
+  const secretsMap: Record<string, string[]> = {}
+
+  for (const entry of taskSecrets) {
     const secretDefinition = clusterSecrets[entry.name]
     const hasClusterKeys = typeof secretDefinition !== 'string'
     const arn = hasClusterKeys ? secretDefinition.arn : secretDefinition
-    const clusterKeys = hasClusterKeys ? secretDefinition.keys : []
-    const allKeys = [...clusterKeys, ...entry.keys].sort()
-    return allKeys.map(key => {
-      return {
-        name: key,
-        valueFrom: `${arn}:${key}::`,
-      }
-    })
-  }))
+    for (const key of entry.keys) {
+      secretsMap[arn] = secretsMap[arn] || []
+      secretsMap[arn].push(key)
+    }
+  }
+
+  for (const definition of Object.values(clusterSecrets)) {
+    const hasClusterKeys = typeof definition !== 'string'
+    const arn = hasClusterKeys ? definition.arn : definition
+    const keys = hasClusterKeys ? definition.keys : []
+    for (const key of keys) {
+      secretsMap[arn] = secretsMap[arn] || []
+      secretsMap[arn].push(key)
+    }
+  }
+
+  return flatten(Object.entries(secretsMap).map(([arn, keys]) => {
+    return keys.map(key => ({
+      name: key,
+      valueFrom: `${arn}:${key}::`,
+    }))
+  })).sort((a, b) => a.name.localeCompare(b.name))
 }
 
 const portMappingsFromConfiguration = (config: ConfigurationTaskDefinition) => {
