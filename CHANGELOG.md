@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [Unreleased]
+## [0.7.0] - 2022-05-25
 
 ### Added
 
 - `list-clusters` command to see which clusters are defined in the config
+- `verify-config` command to ensure your ecsx.yml file is valid
+- Allow defining secrets at the cluster layer
 
 
 

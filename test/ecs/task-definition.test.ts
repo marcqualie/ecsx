@@ -14,12 +14,50 @@ describe('ecs', () => {
         const output = secretsFromConfiguration('mocha', 'ecsx-test-cluster', config, region)
         expect(output).to.deep.equal([
           {
+            name: 'CLUSTER_KEY_1',
+            valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:CLUSTER_KEY_1::',
+          },
+          {
             name: 'NODE_ENV',
             valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:NODE_ENV::',
           },
           {
             name: 'SOME_VAR',
             valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:SOME_VAR::',
+          },
+          {
+            name: 'X_CLUSTER_KEY_2',
+            valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:X_CLUSTER_KEY_2::',
+          },
+        ])
+      })
+
+      it('translate service only secrets to task definition format', () => {
+        const { config } = configWithVariables({ clusterName: 'ecsx-test-cluster-with-string-secrets' })
+        const output = secretsFromConfiguration('mocha', 'ecsx-test-cluster-with-string-secrets', config)
+        expect(output).to.deep.equal([
+          {
+            name: 'NODE_ENV',
+            valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:NODE_ENV::',
+          },
+          {
+            name: 'SOME_VAR',
+            valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:SOME_VAR::',
+          },
+        ])
+      })
+
+      it('translate cluster only secrets to task definition format', () => {
+        const { config } = configWithVariables({ clusterName: 'ecsx-test-cluster' })
+        const output = secretsFromConfiguration('has-no-secrets', 'ecsx-test-cluster', config)
+        expect(output).to.deep.equal([
+          {
+            name: 'CLUSTER_KEY_1',
+            valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:CLUSTER_KEY_1::',
+          },
+          {
+            name: 'X_CLUSTER_KEY_2',
+            valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:X_CLUSTER_KEY_2::',
           },
         ])
       })

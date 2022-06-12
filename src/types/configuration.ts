@@ -32,7 +32,7 @@ export interface ConfigurationClusterDefinition {
     private: string[]
   }
   secrets?: {
-    [name: string]: string
+    [name: string]: string | { arn: string, keys: string[] }
   }
 }
 
