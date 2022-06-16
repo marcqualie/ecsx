@@ -25,6 +25,7 @@ clusters:
           - X_CLUSTER_KEY_2
   ecsx-test-cluster-with-string-secrets:
     environment: test
+    region: 'eu-central-1'
     envVars:
       CLUSTER_ENV: test2
       APP_ENV: test2

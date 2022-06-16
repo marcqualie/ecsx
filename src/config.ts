@@ -84,7 +84,10 @@ export class Config {
     }
 
     return {
-      config: data,
+      config: {
+        ...data,
+        region,
+      },
       variables: combinedVariables,
       envVars,
     }

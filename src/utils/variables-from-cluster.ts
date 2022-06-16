@@ -17,8 +17,6 @@ export const variablesFromCluster = (clusterKey: string, config: Configuration):
     throw new Error(`Could not locate variables from cluster "${clusterKey}"`)
   }
 
-  console.log('variablesFromCluster', clusterConfig)
-
   return pickBy({
     environment: clusterConfig.environment,
     project: clusterConfig.project,
