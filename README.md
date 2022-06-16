@@ -19,7 +19,7 @@ $ npm install -g ecsx
 $ ecsx COMMAND
 running command...
 $ ecsx (-v|--version|version)
-ecsx/0.7.0 darwin-x64 node-v16.13.2
+ecsx/0.8.0-alpha.0 darwin-x64 node-v16.13.2
 $ ecsx --help [COMMAND]
 USAGE
   $ ecsx COMMAND
@@ -48,13 +48,13 @@ USAGE
   $ ecsx config
 
 OPTIONS
-  -c, --clusterName=clusterName  (required)
-  -h, --help                     show CLI help
+  -c, --clusterKey=clusterKey  (required)
+  -h, --help                   show CLI help
   --taskName=taskName
-  --var=var                      [default: ]
+  --var=var                    [default: ]
 ```
 
-_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.7.0/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0-alpha.0/src/commands/config.ts)_
 
 ## `ecsx console [COMMAND]`
 
@@ -65,11 +65,11 @@ USAGE
   $ ecsx console [COMMAND]
 
 OPTIONS
-  -c, --clusterName=clusterName  (required)
-  -h, --help                     show CLI help
+  -c, --clusterKey=clusterKey  (required)
+  -h, --help                   show CLI help
 ```
 
-_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.7.0/src/commands/console.ts)_
+_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0-alpha.0/src/commands/console.ts)_
 
 ## `ecsx delete TASKNAME`
 
@@ -80,12 +80,12 @@ USAGE
   $ ecsx delete TASKNAME
 
 OPTIONS
-  -c, --clusterName=clusterName  (required)
-  -h, --help                     show CLI help
+  -c, --clusterKey=clusterKey  (required)
+  -h, --help                   show CLI help
   --force
 ```
 
-_See code: [src/commands/delete.ts](https://github.com/marcqualie/ecsx/blob/v0.7.0/src/commands/delete.ts)_
+_See code: [src/commands/delete.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0-alpha.0/src/commands/delete.ts)_
 
 ## `ecsx deploy TASKNAME`
 
@@ -96,13 +96,13 @@ USAGE
   $ ecsx deploy TASKNAME
 
 OPTIONS
-  -c, --clusterName=clusterName  (required)
-  -h, --help                     show CLI help
-  -t, --dockerTag=dockerTag      (required)
-  --var=var                      [default: ]
+  -c, --clusterKey=clusterKey  (required)
+  -h, --help                   show CLI help
+  -t, --dockerTag=dockerTag    (required)
+  --var=var                    [default: ]
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.7.0/src/commands/deploy.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0-alpha.0/src/commands/deploy.ts)_
 
 ## `ecsx help [COMMAND]`
 
@@ -133,7 +133,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/list-clusters.ts](https://github.com/marcqualie/ecsx/blob/v0.7.0/src/commands/list-clusters.ts)_
+_See code: [src/commands/list-clusters.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0-alpha.0/src/commands/list-clusters.ts)_
 
 ## `ecsx ps`
 
@@ -144,11 +144,11 @@ USAGE
   $ ecsx ps
 
 OPTIONS
-  -c, --clusterName=clusterName  (required)
-  -h, --help                     show CLI help
+  -c, --clusterKey=clusterKey  (required) Name of the cluster key from the config
+  -h, --help                   show CLI help
 ```
 
-_See code: [src/commands/ps.ts](https://github.com/marcqualie/ecsx/blob/v0.7.0/src/commands/ps.ts)_
+_See code: [src/commands/ps.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0-alpha.0/src/commands/ps.ts)_
 
 ## `ecsx run TASKNAME`
 
@@ -159,13 +159,13 @@ USAGE
   $ ecsx run TASKNAME
 
 OPTIONS
-  -c, --clusterName=clusterName  (required)
-  -h, --help                     show CLI help
-  -t, --dockerTag=dockerTag      (required)
-  --var=var                      [default: ]
+  -c, --clusterKey=clusterKey  (required)
+  -h, --help                   show CLI help
+  -t, --dockerTag=dockerTag    (required)
+  --var=var                    [default: ]
 ```
 
-_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.7.0/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0-alpha.0/src/commands/run.ts)_
 
 ## `ecsx scale TASK COUNT`
 
@@ -176,11 +176,11 @@ USAGE
   $ ecsx scale TASK COUNT
 
 OPTIONS
-  -c, --clusterName=clusterName  (required)
-  -h, --help                     show CLI help
+  -c, --clusterKey=clusterKey  (required)
+  -h, --help                   show CLI help
 ```
 
-_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.7.0/src/commands/scale.ts)_
+_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0-alpha.0/src/commands/scale.ts)_
 
 ## `ecsx verify-config [CONFIGPATH]`
 
@@ -194,7 +194,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/verify-config.ts](https://github.com/marcqualie/ecsx/blob/v0.7.0/src/commands/verify-config.ts)_
+_See code: [src/commands/verify-config.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0-alpha.0/src/commands/verify-config.ts)_
 <!-- commandsstop -->
 
 
