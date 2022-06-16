@@ -42,9 +42,6 @@ export default class DeployCommand extends AwsCommand {
       throw new Error('Could not detect $clusterName')
     }
 
-    console.log(config)
-    // throw new RangeError('subbid')
-
     const service = await deployService({
       clusterName,
       taskName,

@@ -14,7 +14,6 @@ export const clientBuilder = ({ region }: ClientBuilderParams) => {
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const wrapCommand = <T extends (params: P) => void, P = Parameters<T>, C = any>(name: string, callback: (params: P) => C) => {
     return (params: P): C => {
-      console.log(name, JSON.stringify(params))
       return callback(params)
     }
   }
