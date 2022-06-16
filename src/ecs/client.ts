@@ -1,95 +1,63 @@
-import { CreateServiceCommand, CreateServiceCommandInput, DeleteServiceCommand, DeleteServiceCommandInput, DescribeClustersCommand, DescribeClustersCommandInput, DescribeServicesCommand, DescribeServicesCommandInput, DescribeTasksCommand, DescribeTasksCommandInput, ECSClient, ListServicesCommand, ListServicesCommandInput, ListTaskDefinitionsCommand, ListTasksCommand, ListTasksCommandInput, RegisterTaskDefinitionCommand, RegisterTaskDefinitionCommandInput, RunTaskCommand, RunTaskCommandInput, UpdateServiceCommand, UpdateServiceCommandInput } from '@aws-sdk/client-ecs'
+import { CreateServiceCommand, CreateServiceCommandInput, DeleteServiceCommand, DeleteServiceCommandInput, DescribeClustersCommand, DescribeClustersCommandInput, DescribeServicesCommand, DescribeServicesCommandInput, DescribeTasksCommand, DescribeTasksCommandInput, ECSClient, ListServicesCommand, ListServicesCommandInput, ListTaskDefinitionsCommand, ListTaskDefinitionsCommandInput, ListTasksCommand, ListTasksCommandInput, RegisterTaskDefinitionCommand, RegisterTaskDefinitionCommandInput, RunTaskCommand, RunTaskCommandInput, UpdateServiceCommand, UpdateServiceCommandInput } from '@aws-sdk/client-ecs'
 
-export const AWS_REGION = process.env.AWS_REGION || 'eu-central-1'
-
-export const ecsClient = new ECSClient({
-  region: AWS_REGION,
-  maxAttempts: 5,
-})
-
-export const listTaskDefinitions = (params: any = {}) => {
-  const command = new ListTaskDefinitionsCommand(params)
-  return ecsClient.send(command)
+interface ClientBuilderParams {
+  region: string
 }
 
-export const registerTaskDefinition = (params: RegisterTaskDefinitionCommandInput) => {
-  const command = new RegisterTaskDefinitionCommand(params)
-  return ecsClient.send(command)
-}
-
-export const createService = (params: CreateServiceCommandInput) => {
-  const command = new CreateServiceCommand(params)
-  return ecsClient.send(command)
-}
-
-export const updateService = (params: UpdateServiceCommandInput) => {
-  const command = new UpdateServiceCommand(params)
-  return ecsClient.send(command)
-}
-
-export const runTask = (params: RunTaskCommandInput) => {
-  const command = new RunTaskCommand(params)
-  return ecsClient.send(command)
-}
-
-export const describeClusters = (params: DescribeClustersCommandInput) => {
-  const command = new DescribeClustersCommand(params)
-  return ecsClient.send(command)
-}
-
-export const describeCluster = async (clusterName: string) => {
-  const clusters = await describeClusters({
-    clusters: [
-      clusterName,
-    ],
+export const clientBuilder = ({ region }: ClientBuilderParams) => {
+  const ecsClient = new ECSClient({
+    region,
+    maxAttempts: 5,
   })
 
-  return clusters.clusters && clusters.clusters[0]
-}
+  // Simplifies the command creation since 90% boilerplate
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  const wrapCommand = <T extends (params: P) => void, P = Parameters<T>, C = any>(name: string, callback: (params: P) => C) => {
+    return (params: P): C => {
+      return callback(params)
+    }
+  }
 
-export const describeServices = (params: DescribeServicesCommandInput) => {
-  const command = new DescribeServicesCommand(params)
-  return ecsClient.send(command)
-}
+  const createService = wrapCommand('createService', (params: CreateServiceCommandInput) => ecsClient.send(new CreateServiceCommand(params)))
+  const deleteService = wrapCommand('deleteService', (params: DeleteServiceCommandInput) => ecsClient.send(new DeleteServiceCommand(params)))
+  const describeClusters = wrapCommand('describeClusters', (params: DescribeClustersCommandInput) => ecsClient.send(new DescribeClustersCommand(params)))
+  const describeServices = wrapCommand('describeServices', (params: DescribeServicesCommandInput) => ecsClient.send(new DescribeServicesCommand(params)))
+  const describeTasks = wrapCommand('describeTasks', (params: DescribeTasksCommandInput) => ecsClient.send(new DescribeTasksCommand(params)))
+  const listServices = wrapCommand('listServices', (params: ListServicesCommandInput) => ecsClient.send(new ListServicesCommand(params)))
+  const listTaskDefinitions = wrapCommand('listTaskDefinitions', (params: ListTaskDefinitionsCommandInput) => ecsClient.send(new ListTaskDefinitionsCommand(params)))
+  const listTasks = wrapCommand('listTasks', (params: ListTasksCommandInput) => ecsClient.send(new ListTasksCommand(params)))
+  const registerTaskDefinition = wrapCommand('registerTaskDefinition', (params: RegisterTaskDefinitionCommandInput) => ecsClient.send(new RegisterTaskDefinitionCommand(params)))
+  const runTask = wrapCommand('runTask', (params: RunTaskCommandInput) => ecsClient.send(new RunTaskCommand(params)))
+  const updateService = wrapCommand('updateService', (params: UpdateServiceCommandInput) => ecsClient.send(new UpdateServiceCommand(params)))
 
-export const describeTasks = (params: DescribeTasksCommandInput) => {
-  const command = new DescribeTasksCommand(params)
-  return ecsClient.send(command)
-}
+  const describeTask = async (clusterName: string, taskArn: string) => {
+    const response = await describeTasks({ cluster: clusterName, tasks: [taskArn] })
+    return response.tasks && response.tasks[0]
+  }
 
-export const describeTask = async (clusterName: string, taskArn: string) => {
-  const response = await describeTasks({ cluster: clusterName, tasks: [taskArn] })
-  return response.tasks && response.tasks[0]
-}
+  const describeCluster = async (clusterName: string) => {
+    const clusters = await describeClusters({
+      clusters: [
+        clusterName,
+      ],
+    })
 
-export const listTasks = (params: ListTasksCommandInput) => {
-  const command = new ListTasksCommand(params)
-  return ecsClient.send(command)
-}
+    return clusters.clusters && clusters.clusters[0]
+  }
 
-export const listServices = (params: ListServicesCommandInput) => {
-  const command = new ListServicesCommand(params)
-  return ecsClient.send(command)
-}
-
-export const deleteService = (params: DeleteServiceCommandInput) => {
-  const command = new DeleteServiceCommand(params)
-  return ecsClient.send(command)
-}
-
-export const client = {
-  region: AWS_REGION,
-  createService,
-  deleteService,
-  describeCluster,
-  describeClusters,
-  describeServices,
-  describeTask,
-  describeTasks,
-  listTaskDefinitions,
-  listTasks,
-  listServices,
-  registerTaskDefinition,
-  runTask,
-  updateService,
+  return {
+    createService,
+    deleteService,
+    describeCluster,
+    describeClusters,
+    describeServices,
+    describeTask,
+    describeTasks,
+    listTaskDefinitions,
+    listTasks,
+    listServices,
+    registerTaskDefinition,
+    runTask,
+    updateService,
+  }
 }

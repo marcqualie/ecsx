@@ -12,7 +12,7 @@ export default class DeployCommand extends AwsCommand {
       multiple: true,
       default: [],
     }),
-    clusterName: flags.string({
+    clusterKey: flags.string({
       char: 'c',
       required: true,
     }),
@@ -31,12 +31,16 @@ export default class DeployCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { taskName }, flags: { clusterName, dockerTag } } = this.parse(DeployCommand)
+    const { args: { taskName }, flags: { clusterKey, dockerTag } } = this.parse(DeployCommand)
     const { config, variables, envVars } = this.configWithVariables({
-      clusterName,
+      clusterKey,
       taskName,
       dockerTag,
     })
+    const { clusterName, region } = variables
+    if (clusterName === undefined) {
+      throw new Error('Could not detect $clusterName')
+    }
 
     const service = await deployService({
       clusterName,

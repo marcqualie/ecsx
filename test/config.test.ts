@@ -10,9 +10,10 @@ describe('ecs', () => {
   describe('utils', () => {
     describe('configWithVariables', () => {
       it('parses raw config', () => {
-        const { config } = configWithVariables({ clusterName: 'ecsx-test-cluster', taskName: 'mocha' })
+        const { config, variables } = configWithVariables({ clusterKey: 'ecsx-test-cluster', taskName: 'mocha' })
 
         expect(config.region).to.equal('us-east-1')
+        expect(variables.region).to.equal('us-east-1')
         expect(config.accountId).to.equal(1234)
 
         expect(config.clusters['ecsx-test-cluster'].subnets).to.deep.equal({ public: ['subnet-1'], private: [] })

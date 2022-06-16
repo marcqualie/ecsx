@@ -1,10 +1,10 @@
-region: 'us-east-1'
 accountId: 1234
 project: 'ecsx'
 
 clusters:
   ecsx-test-cluster:
     environment: test
+    region: 'us-east-1'
     envVars:
       CLUSTER_ENV: test
       APP_ENV: test
@@ -25,6 +25,7 @@ clusters:
           - X_CLUSTER_KEY_2
   ecsx-test-cluster-with-string-secrets:
     environment: test
+    region: 'eu-central-1'
     envVars:
       CLUSTER_ENV: test2
       APP_ENV: test2

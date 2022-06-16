@@ -1,5 +1,6 @@
 import { RegisterTaskDefinitionCommandInput } from '@aws-sdk/client-ecs'
 import flatten from 'lodash/flatten'
+import { findCluster } from '../config'
 
 import { Configuration, ConfigurationTaskDefinition, ConfiguredVariables, KeyValuePairs } from '../types/configuration'
 
@@ -12,9 +13,13 @@ const environmentFromEnvVars = (envVars: KeyValuePairs) => {
   ))
 }
 
-export const secretsFromConfiguration = (task: string, clusterName: string, config: Configuration) => {
+export const secretsFromConfiguration = (task: string, clusterName: string, config: Configuration, region: string) => {
   const taskConfig = config.tasks[task]
-  const clusterConfig = config.clusters[clusterName]
+  const clusterConfig = findCluster(config, clusterName, region)
+  if (clusterConfig === undefined) {
+    throw new Error('Cluster not found')
+  }
+
   const clusterSecrets = clusterConfig.secrets || {}
   const taskSecrets = taskConfig.secrets || []
   const secretsMap: Record<string, string[]> = {}
@@ -78,7 +83,7 @@ interface Params {
 
 export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
   const { clusterName, taskName, variables, config, envVars } = params
-  const { project, environment } = variables
+  const { project, environment, region } = variables
   const taskConfig = config.tasks[taskName]
 
   return {
@@ -98,7 +103,7 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
         command: taskConfig.command,
         portMappings: portMappingsFromConfiguration(taskConfig),
         environment: environmentFromEnvVars(envVars),
-        secrets: secretsFromConfiguration(taskName, clusterName, config),
+        secrets: secretsFromConfiguration(taskName, clusterName, config, region),
         logConfiguration: logConfigurationFromConfiguration(taskName, variables),
         essential: true,
         readonlyRootFilesystem: false,

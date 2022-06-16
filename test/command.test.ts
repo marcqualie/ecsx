@@ -9,8 +9,9 @@ describe('ecs', () => {
   describe('utils', () => {
     describe('configWithVariables', () => {
       it('translates cluster level variables into key/value format', () => {
-        const { variables, envVars } = configWithVariables({ clusterName: 'ecsx-test-cluster' })
+        const { variables, envVars } = configWithVariables({ clusterKey: 'ecsx-test-cluster' })
         expect(variables).to.deep.equal({
+          clusterKey: 'ecsx-test-cluster',
           clusterName: 'ecsx-test-cluster',
           environment: 'test',
           project: 'ecsx',
@@ -25,9 +26,10 @@ describe('ecs', () => {
       })
 
       it('translates cluster + task level env vars into key/value format', () => {
-        const { variables, envVars } = configWithVariables({ clusterName: 'ecsx-test-cluster', taskName: 'mocha' })
+        const { variables, envVars } = configWithVariables({ clusterKey: 'ecsx-test-cluster', taskName: 'mocha' })
         expect(variables).to.deep.equal({
           clusterName: 'ecsx-test-cluster',
+          clusterKey: 'ecsx-test-cluster',
           environment: 'test',
           project: 'ecsx',
           region: 'us-east-1',

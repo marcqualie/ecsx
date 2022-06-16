@@ -1,3 +1,4 @@
+import { findCluster } from '../config'
 import { Configuration, KeyValuePairs } from '../types/configuration'
 
 interface VariablesFromCluster {
@@ -6,10 +7,10 @@ interface VariablesFromCluster {
   [key: string]: string | undefined
 }
 
-export const envVarsFromCluster = (clusterName: string, config: Configuration): KeyValuePairs => {
-  const clusterConfig = config.clusters[clusterName]
+export const envVarsFromCluster = (clusterName: string, region: string, config: Configuration): KeyValuePairs => {
+  const clusterConfig = findCluster(config, clusterName, region)
   if (clusterConfig === undefined) {
-    throw new Error(`Could not locate cluster with name "${clusterName}"`)
+    throw new Error(`Could not get envVars from cluster "${clusterName}" { ${clusterName}, ${region} }`)
   }
 
   return clusterConfig.envVars || {}

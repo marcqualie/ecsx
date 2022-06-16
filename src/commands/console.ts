@@ -13,7 +13,7 @@ export default class ConsoleCommand extends AwsCommand {
     help: flags.help({
       char: 'h',
     }),
-    clusterName: flags.string({
+    clusterKey: flags.string({
       char: 'c',
       required: true,
     }),
@@ -30,11 +30,16 @@ export default class ConsoleCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { command }, flags: { clusterName } } = this.parse(ConsoleCommand)
-    const client = this.ecs_client()
+    const { args: { command }, flags: { clusterKey } } = this.parse(ConsoleCommand)
     const { config, variables } = this.configWithVariables({
-      clusterName,
+      clusterKey,
     })
+    const { clusterName, region } = variables
+    if (clusterName === undefined) {
+      throw new Error('Could not detect $clusterName')
+    }
+
+    const client = this.ecs_client({ region })
 
     // Ensure there is a console task defined
     // TODO: If custom console command is specified, definition may not already exist
