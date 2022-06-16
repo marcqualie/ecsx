@@ -5,7 +5,6 @@
   "additionalProperties": false,
   "required": [
     "accountId",
-    "region",
     "clusters",
     "tasks"
   ],
@@ -22,11 +21,6 @@
     "project": {
       "type": "string",
       "description": "Unique for the project. Usually paired with terraform to link to generated infrastructure"
-    },
-    "region": {
-      "deprecated": true,
-      "type": "string",
-      "description": "AWS region to execute commands against"
     },
     "clusters": {
       "type": "object",
