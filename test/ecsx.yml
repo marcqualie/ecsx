@@ -75,6 +75,10 @@ tasks:
         keys:
           - NODE_ENV
           - SOME_VAR
+    ports:
+      - containerPort: 2000
+        protocol: 'udp'
+      - containerPort: 3000
   has-no-secrets:
     taskRoleArn: 'somerole'
     executionRoleArn: 'somerole'
@@ -88,3 +92,6 @@ tasks:
       CLUSTER_NAME: "{{ clusterName }}"
     subnet: private
     secrets: []
+    ports:
+      - 2000
+      - 4000

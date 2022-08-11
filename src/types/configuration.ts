@@ -8,11 +8,16 @@ export interface ConfigurationTaskDefinition {
     name: string
     keys: string[]
   }>
-  ports?: number[]
+  ports?: number[] | PortMapping[]
   taskRoleArn?: string
   executionRoleArn: string
   subnet: 'public' | 'private'
   service?: boolean
+}
+
+interface PortMapping {
+  protocol: string
+  containerPort: number
 }
 
 export interface ConfigurationClusterDefinition {

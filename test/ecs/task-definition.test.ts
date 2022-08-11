@@ -3,7 +3,7 @@ process.env.ECSX_CONFIG_PATH = './test/ecsx.yml'
 import { describe } from 'mocha'
 import { expect } from 'chai'
 
-import { secretsFromConfiguration } from '../../src/ecs/task-definition'
+import { secretsFromConfiguration, portMappingsFromConfiguration } from '../../src/ecs/task-definition'
 import { configWithVariables } from '../../src/utils/config-with-variables'
 
 describe('ecs', () => {
@@ -59,6 +59,25 @@ describe('ecs', () => {
             name: 'X_CLUSTER_KEY_2',
             valueFrom: 'arn:aws:secretsmanager:us-east-1:1234:secret:ecsx/app/test-xxx:X_CLUSTER_KEY_2::',
           },
+        ])
+      })
+    })
+
+    describe('portMappingsFromConfiguration', () => {
+      it('translate portsMappings', () => {
+        const { config } = configWithVariables({ clusterKey: 'ecsx-test-cluster' })
+        const output = portMappingsFromConfiguration(config.tasks.mocha)
+
+        expect(output).to.deep.equal([
+          { containerPort: 2000, protocol: 'udp' },
+          { containerPort: 3000, protocol: 'tcp' },
+        ])
+
+        const output2 = portMappingsFromConfiguration(config.tasks['has-no-secrets'])
+
+        expect(output2).to.deep.equal([
+          { containerPort: 2000 },
+          { containerPort: 4000 },
         ])
       })
     })
