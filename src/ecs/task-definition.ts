@@ -96,6 +96,40 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
   const { project, environment, region } = variables
   const taskConfig = config.tasks[taskName]
 
+  const containerDefinitions = [
+    {
+      name: taskName,
+      image: taskConfig.image,
+      command: taskConfig.command,
+      portMappings: portMappingsFromConfiguration(taskConfig),
+      environment: environmentFromEnvVars(envVars),
+      secrets: secretsFromConfiguration(taskName, clusterName, config, region),
+      logConfiguration: logConfigurationFromConfiguration(taskName, variables),
+      essential: true,
+      readonlyRootFilesystem: false,
+    },
+  ]
+
+  // Hardcoded
+  if (taskName === 'web' && environment === 'loadtesting') {
+    containerDefinitions.push({
+      name: 'xray-daemon',
+      command: [],
+      environment: [],
+      secrets: [],
+      image: 'amazon/aws-xray-daemon',
+      portMappings: [
+        {
+          containerPort: 2000,
+          protocol: 'udp',
+        },
+      ],
+      logConfiguration: logConfigurationFromConfiguration(taskName, variables),
+      essential: true,
+      readonlyRootFilesystem: false,
+    })
+  }
+
   return {
     family: `${project}-${taskName}-${environment}`,
     taskRoleArn: taskConfig.taskRoleArn,
@@ -106,18 +140,6 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
     ],
     cpu: (taskConfig.cpu || 256).toString(),
     memory: (taskConfig.memory || 512).toString(),
-    containerDefinitions: [
-      {
-        name: taskName,
-        image: taskConfig.image,
-        command: taskConfig.command,
-        portMappings: portMappingsFromConfiguration(taskConfig),
-        environment: environmentFromEnvVars(envVars),
-        secrets: secretsFromConfiguration(taskName, clusterName, config, region),
-        logConfiguration: logConfigurationFromConfiguration(taskName, variables),
-        essential: true,
-        readonlyRootFilesystem: false,
-      },
-    ],
+    containerDefinitions,
   }
 }
