@@ -85,6 +85,7 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
   const { clusterName, taskName, variables, config, envVars } = params
   const { project, environment, region } = variables
   const taskConfig = config.tasks[taskName]
+  console.log('taskConfig', taskConfig)
 
   return {
     family: `${project}-${taskName}-${environment}`,

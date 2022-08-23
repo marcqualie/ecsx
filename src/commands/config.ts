@@ -41,7 +41,7 @@ export default class Config extends AwsCommand {
     this.log('$variables', JSON.stringify(variables, undefined, 2))
     this.log('$envVars', JSON.stringify(envVars, undefined, 2))
     this.log(' ')
-    this.log(JSON.stringify(config, undefined, 2))
+    // this.log(JSON.stringify(config, undefined, 2))
     this.log(JSON.stringify(taskDefinitionInput, undefined, 2))
   }
 }
