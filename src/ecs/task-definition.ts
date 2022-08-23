@@ -81,11 +81,30 @@ interface Params {
   envVars: KeyValuePairs
 }
 
-export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
-  const { clusterName, taskName, variables, config, envVars } = params
-  const { project, environment, region } = variables
+export const containerDefinitionFromConfiguration = (params: Params, taskName: string) => {
+  const { clusterName, variables, config, envVars } = params
+  const { region } = variables
   const taskConfig = config.tasks[taskName]
-  console.log('taskConfig', taskConfig)
+
+  return {
+    name: taskName,
+    image: taskConfig.image,
+    command: taskConfig.command,
+    portMappings: portMappingsFromConfiguration(taskConfig),
+    environment: environmentFromEnvVars(envVars),
+    secrets: secretsFromConfiguration(taskName, clusterName, config, region),
+    logConfiguration: logConfigurationFromConfiguration(taskName, variables),
+    essential: true,
+    readonlyRootFilesystem: false,
+  }
+}
+
+export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
+  const { taskName, variables, config } = params
+  const { project, environment } = variables
+  const taskConfig = config.tasks[taskName]
+
+  const containerDefinitions = [taskName, ...taskConfig.sibling_containers].map(name => containerDefinitionFromConfiguration(params, name))
 
   return {
     family: `${project}-${taskName}-${environment}`,
@@ -97,18 +116,6 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
     ],
     cpu: (taskConfig.cpu || 256).toString(),
     memory: (taskConfig.memory || 512).toString(),
-    containerDefinitions: [
-      {
-        name: taskName,
-        image: taskConfig.image,
-        command: taskConfig.command,
-        portMappings: portMappingsFromConfiguration(taskConfig),
-        environment: environmentFromEnvVars(envVars),
-        secrets: secretsFromConfiguration(taskName, clusterName, config, region),
-        logConfiguration: logConfigurationFromConfiguration(taskName, variables),
-        essential: true,
-        readonlyRootFilesystem: false,
-      },
-    ],
+    containerDefinitions,
   }
 }

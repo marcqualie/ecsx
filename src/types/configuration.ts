@@ -9,6 +9,7 @@ export interface ConfigurationTaskDefinition {
     keys: string[]
   }>
   ports?: number[]
+  sibling_containers: string[]
   taskRoleArn?: string
   executionRoleArn: string
   subnet: 'public' | 'private'
