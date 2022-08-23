@@ -81,7 +81,7 @@ interface Params {
   envVars: KeyValuePairs
 }
 
-export const containerDefinitionFromConfiguration = (params: Params, taskName: string) => {
+const containerDefinitionFromConfiguration = (params: Params, taskName: string) => {
   const { clusterName, variables, config, envVars } = params
   const { region } = variables
   const taskConfig = config.tasks[taskName]
@@ -96,6 +96,7 @@ export const containerDefinitionFromConfiguration = (params: Params, taskName: s
     logConfiguration: logConfigurationFromConfiguration(taskName, variables),
     essential: true,
     readonlyRootFilesystem: false,
+    dependsOn: taskConfig.dependsOn,
   }
 }
 
@@ -104,7 +105,8 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
   const { project, environment } = variables
   const taskConfig = config.tasks[taskName]
 
-  const containerDefinitions = [taskName, ...taskConfig.sibling_containers].map(name => containerDefinitionFromConfiguration(params, name))
+  const taskNames = taskConfig.siblingContainers ? [taskName, ...taskConfig.siblingContainers] : [taskName]
+  const containerDefinitions = taskNames.map(name => containerDefinitionFromConfiguration(params, name))
 
   return {
     family: `${project}-${taskName}-${environment}`,

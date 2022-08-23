@@ -1,7 +1,10 @@
 export interface ConfigurationTaskDefinition {
   image: string
   command?: string[]
-  depends_on?: KeyValuePairs[]
+  dependsOn?: Array<{
+    containerName: string
+    condition: string
+  }>
   envVars?: KeyValuePairs
   cpu: 256 | 512 | 1024 | 2048 | 4096
   memory: 512 | 1024 | 2048 | 3072 | 4096 | 5120 | 6144 | 7168 | 8192 | 12_288 | 16_384
@@ -10,7 +13,7 @@ export interface ConfigurationTaskDefinition {
     keys: string[]
   }>
   ports?: number[]
-  sibling_containers?: string[]
+  siblingContainers?: string[]
   taskRoleArn?: string
   executionRoleArn: string
   subnet: 'public' | 'private'

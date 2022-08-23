@@ -37,8 +37,7 @@ export default class Config extends AwsCommand {
       config,
       envVars,
     })
-    const web = config.tasks.web
-    this.log('depends', web.depends_on)
+
     this.log('$variables', JSON.stringify(variables, undefined, 2))
     this.log('$envVars', JSON.stringify(envVars, undefined, 2))
     this.log(' ')
