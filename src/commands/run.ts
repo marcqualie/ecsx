@@ -41,6 +41,7 @@ export default class RunCommand extends AwsCommand {
       taskName,
       dockerTag,
     })
+
     const { accountId, environment, project, region, clusterName } = variables
     if (clusterName === undefined) {
       throw new Error('Could not detect $clusterName')
