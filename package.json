@@ -68,7 +68,7 @@
     "prepack": "tsc -b --clean && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha -r ts-node/register --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md",
-    "postinstall": "tsc"
+    "postinstall": "tsc || echo done."
   },
   "types": "lib/index.d.ts"
 }
