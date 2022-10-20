@@ -167,9 +167,7 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "executionRoleArn",
-          "image",
-          "taskRoleArn"
+          "image"
         ],
         "properties": {
           "image": {
