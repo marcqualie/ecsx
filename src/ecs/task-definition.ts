@@ -86,7 +86,7 @@ const containerDefinitionFromConfiguration = (params: Params, taskName: string) 
   const { region } = variables
   const taskConfig = config.tasks[taskName]
 
-  return {
+  const containerDefinition = {
     name: taskName,
     image: taskConfig.image,
     command: taskConfig.command,
@@ -94,10 +94,15 @@ const containerDefinitionFromConfiguration = (params: Params, taskName: string) 
     environment: environmentFromEnvVars(envVars),
     secrets: secretsFromConfiguration(taskName, clusterName, config, region),
     logConfiguration: logConfigurationFromConfiguration(taskName, variables),
-    essential: true,
+    essential: taskConfig.essential || true,
     readonlyRootFilesystem: false,
     dependsOn: taskConfig.dependsOn,
   }
+
+  return taskConfig.containerMemory ? {
+    ...containerDefinition,
+    memory: taskConfig.containerMemory
+  } : containerDefinition
 }
 
 export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
