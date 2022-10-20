@@ -94,7 +94,7 @@ const containerDefinitionFromConfiguration = (params: Params, taskName: string) 
     environment: environmentFromEnvVars(envVars),
     secrets: secretsFromConfiguration(taskName, clusterName, config, region),
     logConfiguration: logConfigurationFromConfiguration(taskName, variables),
-    essential: taskConfig.essential || true,
+    essential: taskConfig.essential ? taskConfig.essential : true,
     readonlyRootFilesystem: false,
     dependsOn: taskConfig.dependsOn,
   }
