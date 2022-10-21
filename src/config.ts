@@ -44,7 +44,6 @@ export class Config {
       'region',
       'accountId',
       'project',
-      'clusterName',
     ]
     for (const key of requiredVariables) {
       const value = combinedVariables[key] || undefined
