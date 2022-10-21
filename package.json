@@ -1,7 +1,7 @@
 {
   "name": "ecsx",
   "description": "Easily create, manage and deploy ECS based applications",
-  "version": "0.8.0-alpha.0",
+  "version": "0.8.0-alpha.1",
   "author": "Marc Qualie @marcqualie",
   "bin": {
     "ecsx": "./bin/run"
@@ -67,7 +67,8 @@
     "posttest": "yarn lint",
     "prepack": "tsc -b --clean && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha -r ts-node/register --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme && git add README.md",
+    "postinstall": "tsc || echo done."
   },
   "types": "lib/index.d.ts"
 }
