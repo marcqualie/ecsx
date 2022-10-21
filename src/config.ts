@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import yaml from 'js-yaml'
 import { Configuration, ConfigurationClusterDefinition, ConfiguredVariables, KeyValuePairs, Variables } from './types/configuration'
 import { variablesFromCluster } from './utils/variables-from-cluster'

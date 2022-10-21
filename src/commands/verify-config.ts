@@ -1,5 +1,5 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import { Flags } from '@oclif/core'
 import { Validator } from 'jsonschema'
 import YAML from 'js-yaml'
