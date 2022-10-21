@@ -1,14 +1,14 @@
-import { flags } from '@oclif/command'
+import { Flags } from '@oclif/core'
 import { AwsCommand } from '../command'
 
 export default class DeployCommand extends AwsCommand {
   static description = 'Scale services up or down to the desired count'
 
   static flags = {
-    help: flags.help({
+    help: Flags.help({
       char: 'h',
     }),
-    clusterKey: flags.string({
+    clusterKey: Flags.string({
       char: 'c',
       required: true,
     }),
@@ -28,12 +28,12 @@ export default class DeployCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { task, count }, flags: { clusterKey } } = this.parse(DeployCommand)
-    const { variables } = this.configWithVariables({
+    const { args: { task, count }, flags: { clusterKey } } = await this.parse(DeployCommand)
+    const { variables } = await this.configWithVariables({
       clusterKey,
     })
     const { environment, project, region } = variables
-    const client = this.ecs_client({ region })
+    const client = this.ecsClient({ region })
 
     // Find running service matching task name
     const cluster = `${project}-${environment}`

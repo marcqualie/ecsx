@@ -1,4 +1,4 @@
-import { flags } from '@oclif/command'
+import { Flags } from '@oclif/core'
 import { cli } from 'cli-ux'
 
 import { AwsCommand } from '../command'
@@ -8,12 +8,12 @@ export default class DeleteCommand extends AwsCommand {
   static description = 'Remove a service/task from a cluster'
 
   static flags = {
-    help: flags.help({ char: 'h' }),
-    clusterKey: flags.string({
+    help: Flags.help({ char: 'h' }),
+    clusterKey: Flags.string({
       char: 'c',
       required: true,
     }),
-    force: flags.boolean({
+    force: Flags.boolean({
       default: false,
     }),
   }
@@ -27,8 +27,8 @@ export default class DeleteCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { taskName }, flags: { clusterKey, force = false } } = this.parse(DeleteCommand)
-    const { variables } = this.configWithVariables({
+    const { args: { taskName }, flags: { clusterKey, force = false } } = await this.parse(DeleteCommand)
+    const { variables } = await this.configWithVariables({
       clusterKey,
     })
     const { clusterName, region } = variables

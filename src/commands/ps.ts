@@ -1,4 +1,4 @@
-import { flags } from '@oclif/command'
+import { Flags } from '@oclif/core'
 import cli from 'cli-ux'
 import uniq from 'lodash/uniq'
 
@@ -8,10 +8,10 @@ export default class PsCommand extends AwsCommand {
   static description = 'Show running services within a cluster'
 
   static flags = {
-    help: flags.help({
+    help: Flags.help({
       char: 'h',
     }),
-    clusterKey: flags.string({
+    clusterKey: Flags.string({
       char: 'c',
       required: true,
       description: 'Name of the cluster key from the config',
@@ -19,11 +19,11 @@ export default class PsCommand extends AwsCommand {
   }
 
   async run() {
-    const { flags: { clusterKey } } = this.parse(PsCommand)
-    const { config, variables: { accountId, clusterName, environment, project, region } } = this.configWithVariables({
+    const { flags: { clusterKey } } = await this.parse(PsCommand)
+    const { config, variables: { accountId, clusterName, environment, project, region } } = await this.configWithVariables({
       clusterKey,
     })
-    const client = this.ecs_client({ region })
+    const client = this.ecsClient({ region })
 
     // Common patterns we can ignore from outputs
     const serviceArnPrefix = `arn:aws:ecs:${region}:${accountId}:service/${project}-${environment}/`
