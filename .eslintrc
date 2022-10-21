@@ -5,6 +5,7 @@
     "oclif-typescript"
   ],
   "rules": {
+    "node/shebang": "off",
     "node/no-missing-import": "off",
     "@typescript-eslint/member-delimiter-style": "off",
     "@typescript-eslint/no-unused-vars": [
