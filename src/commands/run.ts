@@ -46,7 +46,7 @@ export default class RunCommand extends AwsCommand {
       throw new Error('Could not detect $clusterName')
     }
 
-    const client = this.ecs_client({ region })
+    const client = this.ecsClient({ region })
 
     // Generate Task Definition
     const taskDefinitionInput = taskDefinitionfromConfiguration({

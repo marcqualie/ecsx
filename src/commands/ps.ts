@@ -23,7 +23,7 @@ export default class PsCommand extends AwsCommand {
     const { config, variables: { accountId, clusterName, environment, project, region } } = await this.configWithVariables({
       clusterKey,
     })
-    const client = this.ecs_client({ region })
+    const client = this.ecsClient({ region })
 
     // Common patterns we can ignore from outputs
     const serviceArnPrefix = `arn:aws:ecs:${region}:${accountId}:service/${project}-${environment}/`

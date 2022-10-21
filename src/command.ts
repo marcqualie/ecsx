@@ -13,7 +13,7 @@ export class AwsCommand extends Command {
     return configWithVariables(initialVariables)
   }
 
-  ecs_client({ region }: { region?: string }) {
+  ecsClient({ region }: { region?: string }) {
     return clientBuilder({ region: region || 'eu-central-1' })
   }
 

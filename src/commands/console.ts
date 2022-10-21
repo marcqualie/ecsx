@@ -39,7 +39,7 @@ export default class ConsoleCommand extends AwsCommand {
       throw new Error('Could not detect $clusterName')
     }
 
-    const client = this.ecs_client({ region })
+    const client = this.ecsClient({ region })
 
     // Ensure there is a console task defined
     // TODO: If custom console command is specified, definition may not already exist

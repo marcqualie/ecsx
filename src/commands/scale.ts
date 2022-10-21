@@ -33,7 +33,7 @@ export default class DeployCommand extends AwsCommand {
       clusterKey,
     })
     const { environment, project, region } = variables
-    const client = this.ecs_client({ region })
+    const client = this.ecsClient({ region })
 
     // Find running service matching task name
     const cluster = `${project}-${environment}`
