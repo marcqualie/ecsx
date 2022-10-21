@@ -11,7 +11,6 @@ export const clientBuilder = ({ region }: ClientBuilderParams) => {
   })
 
   // Simplifies the command creation since 90% boilerplate
-  // eslint-disable-next-line unicorn/consistent-function-scoping
   const wrapCommand = <T extends (params: P) => void, P = Parameters<T>, C = any>(name: string, callback: (params: P) => C) => {
     return (params: P): C => {
       return callback(params)
