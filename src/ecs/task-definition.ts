@@ -115,6 +115,28 @@ export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDef
   const containerDefinitions = taskNames.map(name => containerDefinitionFromConfiguration(params, name))
 
   return {
+    name: taskName,
+    image: taskConfig.image,
+    command: taskConfig.command,
+    portMappings: portMappingsFromConfiguration(taskConfig),
+    environment: environmentFromEnvVars(envVars),
+    secrets: secretsFromConfiguration(taskName, clusterName, config, region),
+    logConfiguration: logConfigurationFromConfiguration(taskName, variables),
+    essential: true,
+    readonlyRootFilesystem: false,
+    dependsOn: taskConfig.dependsOn,
+  }
+}
+
+export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
+  const { taskName, variables, config } = params
+  const { project, environment } = variables
+  const taskConfig = config.tasks[taskName]
+
+  const taskNames = taskConfig.siblingContainers ? [taskName, ...taskConfig.siblingContainers] : [taskName]
+  const containerDefinitions = taskNames.map(name => containerDefinitionFromConfiguration(params, name))
+
+  return {
     family: `${project}-${taskName}-${environment}`,
     taskRoleArn: taskConfig.taskRoleArn,
     executionRoleArn: taskConfig.executionRoleArn,
