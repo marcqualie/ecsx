@@ -1,25 +1,25 @@
-import { flags } from '@oclif/command'
+import { Flags } from '@oclif/core'
 import { AwsCommand } from '../command'
 
 export default class Config extends AwsCommand {
   static description = 'Print out current configuration'
 
   static flags = {
-    help: flags.help({ char: 'h' }),
-    var: flags.string({
+    help: Flags.help({ char: 'h' }),
+    var: Flags.string({
       multiple: true,
       default: [],
     }),
-    clusterKey: flags.string({
+    clusterKey: Flags.string({
       char: 'c',
       required: true,
     }),
-    taskName: flags.string(),
+    taskName: Flags.string(),
   }
 
   async run() {
-    const { flags: { clusterKey, taskName } } = this.parse(Config)
-    const { config, variables, envVars } = this.configWithVariables({
+    const { flags: { clusterKey, taskName } } = await this.parse(Config)
+    const { config, variables, envVars } = await this.configWithVariables({
       clusterKey,
       taskName,
     })

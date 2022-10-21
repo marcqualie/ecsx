@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { Task } from '@aws-sdk/client-ecs'
-import { flags } from '@oclif/command'
+import { Flags } from '@oclif/core'
 import cli from 'cli-ux'
 
 import { AwsCommand } from '../command'
@@ -10,10 +10,10 @@ export default class ConsoleCommand extends AwsCommand {
   static description = 'Launch a temporary interactive container'
 
   static flags = {
-    help: flags.help({
+    help: Flags.help({
       char: 'h',
     }),
-    clusterKey: flags.string({
+    clusterKey: Flags.string({
       char: 'c',
       required: true,
     }),
@@ -30,8 +30,8 @@ export default class ConsoleCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { command }, flags: { clusterKey } } = this.parse(ConsoleCommand)
-    const { config, variables } = this.configWithVariables({
+    const { args: { command }, flags: { clusterKey } } = await this.parse(ConsoleCommand)
+    const { config, variables } = await this.configWithVariables({
       clusterKey,
     })
     const { clusterName, region } = variables

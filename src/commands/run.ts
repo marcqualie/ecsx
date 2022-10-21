@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { flags } from '@oclif/command'
+import { Flags } from '@oclif/core'
 import { Task } from '@aws-sdk/client-ecs'
 import cli from 'cli-ux'
 
@@ -11,16 +11,16 @@ export default class RunCommand extends AwsCommand {
   static description = 'Run a one off task on the cluster'
 
   static flags = {
-    help: flags.help({ char: 'h' }),
-    var: flags.string({
+    help: Flags.help({ char: 'h' }),
+    var: Flags.string({
       multiple: true,
       default: [],
     }),
-    clusterKey: flags.string({
+    clusterKey: Flags.string({
       char: 'c',
       required: true,
     }),
-    dockerTag: flags.string({
+    dockerTag: Flags.string({
       char: 't',
       required: true,
     }),
@@ -35,8 +35,8 @@ export default class RunCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { taskName }, flags: { clusterKey, dockerTag } } = this.parse(RunCommand)
-    const { config, variables, envVars } = this.configWithVariables({
+    const { args: { taskName }, flags: { clusterKey, dockerTag } } = await this.parse(RunCommand)
+    const { config, variables, envVars } = await this.configWithVariables({
       clusterKey,
       taskName,
       dockerTag,

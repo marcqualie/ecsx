@@ -1,4 +1,4 @@
-import { flags } from '@oclif/command'
+import { Flags } from '@oclif/core'
 
 import { AwsCommand } from '../command'
 import { deployService } from '../ecs/deploy-service'
@@ -7,16 +7,16 @@ export default class DeployCommand extends AwsCommand {
   static description = 'Create a task definition then deploy it as a service'
 
   static flags = {
-    help: flags.help({ char: 'h' }),
-    var: flags.string({
+    help: Flags.help({ char: 'h' }),
+    var: Flags.string({
       multiple: true,
       default: [],
     }),
-    clusterKey: flags.string({
+    clusterKey: Flags.string({
       char: 'c',
       required: true,
     }),
-    dockerTag: flags.string({
+    dockerTag: Flags.string({
       char: 't',
       required: true,
     }),
@@ -31,8 +31,8 @@ export default class DeployCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { taskName }, flags: { clusterKey, dockerTag } } = this.parse(DeployCommand)
-    const { config, variables, envVars } = this.configWithVariables({
+    const { args: { taskName }, flags: { clusterKey, dockerTag } } = await this.parse(DeployCommand)
+    const { config, variables, envVars } = await this.configWithVariables({
       clusterKey,
       taskName,
       dockerTag,
