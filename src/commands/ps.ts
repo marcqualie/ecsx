@@ -34,9 +34,10 @@ export default class PsCommand extends AwsCommand {
       const client = this.ecsClient({ region })
 
       // Common patterns we can ignore from outputs
-      const serviceArnPrefix = `arn:aws:ecs:${region}:${accountId}:service/${project}-${environment}/`
-      const taskArnPrefix = `arn:aws:ecs:${config.region}:${config.accountId}:task/${project}-${environment}/`
-      const ecrRepoPrefix = `${config.accountId}.dkr.ecr.${config.region}.amazonaws.com/${project}:`
+      const serviceArnPrefix = `arn:aws:ecs:${region}:${accountId}:service/${clusterName}/`
+      const taskArnPrefix = `arn:aws:ecs:${region}:${accountId}:task/${clusterName}/`
+      const ecrAccountPrefix = `${accountId}.dkr.ecr.${region}.amazonaws.com/`
+      const ecrRepoPrefix = `${ecrAccountPrefix}${project}:`
 
       // Find all tasks within cluster
       const { taskArns: runningTaskArns = [] } = await client.listTasks({
@@ -77,11 +78,9 @@ export default class PsCommand extends AwsCommand {
       })
 
       // Cluster overview
-      if (!primaryClusterKey) {
-        this.log(' ')
-        this.log(` ${clusterKey} (${project}, ${region})`)
-        this.log(' ')
-      }
+      this.log(' ')
+      this.log(` ${clusterKey} (${project}, ${region})`)
+      this.log(' ')
 
       // Output table of services
       const servicesData = allServiceNames.map(serviceName => {
@@ -90,7 +89,7 @@ export default class PsCommand extends AwsCommand {
         const serviceTasks = existingTasks.filter(task =>  task.group === `service:${service?.serviceName}`)
         const task = serviceTasks.sort((a, b) => (a.startedAt || 0) < (b.startedAt || 0) ? 1 : -1)[0]
         const container = task?.containers ? task.containers[0] : undefined
-        const image = container?.image?.replace(ecrRepoPrefix, '') || ''
+        const image = container?.image?.replace(ecrRepoPrefix, '')?.replace(ecrAccountPrefix, '')?.replace(new RegExp(`${accountId}\.dkr\.ecr\.[^.]+\.amazonaws\.com\/`), '') || ''
 
         return {
           count: `[${service?.runningCount || 0}/${service?.desiredCount === undefined ? '-' : service?.desiredCount}] `,
