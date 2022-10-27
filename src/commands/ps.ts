@@ -16,10 +16,13 @@ export default class PsCommand extends AwsCommand {
       char: 'c',
       description: 'Name of the cluster key from the config',
     }),
+    showTasks: Flags.boolean({
+      description: 'Show recent tasks',
+    }),
   }
 
   async run() {
-    const { flags: { clusterKey: primaryClusterKey } } = await this.parse(PsCommand)
+    const { flags: { clusterKey: primaryClusterKey, showTasks } } = await this.parse(PsCommand)
     const { config } = await this.configWithVariables({
       clusterKey: primaryClusterKey,
     })
@@ -127,48 +130,50 @@ export default class PsCommand extends AwsCommand {
       this.log(' ')
 
       // Find all tasks in cluster
-      const allNonServiceTaskArns = existingTasks.filter(task => task.group?.startsWith('service:') === false).map(task => task.taskArn || '')
-      const allTaskNames = uniq([
-        ...allNonServiceTaskArns.map(arn => arn.replace(taskArnPrefix, '')),
-        // ...configTaskNames, // TODO: These don't actually add much value in output
-      ])
+      if (showTasks) {
+        const allNonServiceTaskArns = existingTasks.filter(task => task.group?.startsWith('service:') === false).map(task => task.taskArn || '')
+        const allTaskNames = uniq([
+          ...allNonServiceTaskArns.map(arn => arn.replace(taskArnPrefix, '')),
+          // ...configTaskNames, // TODO: These don't actually add much value in output
+        ])
 
-      // LIst out any tasks that are not linked to services
-      const tasksData = allTaskNames.map(taskName => {
-        const task = existingTasks.find(task => task.taskArn === `${taskArnPrefix}${taskName}`)
-        const container = task?.containers ? task.containers[0] : undefined
-        const image = container?.image?.replace(ecrRepoPrefix, '')
-        const revision = task?.taskDefinitionArn?.split(':').pop()
+        // LIst out any tasks that are not linked to services
+        const tasksData = allTaskNames.map(taskName => {
+          const task = existingTasks.find(task => task.taskArn === `${taskArnPrefix}${taskName}`)
+          const container = task?.containers ? task.containers[0] : undefined
+          const image = container?.image?.replace(ecrRepoPrefix, '')
+          const revision = task?.taskDefinitionArn?.split(':').pop()
 
-        return {
-          id: task?.taskArn?.replace(taskArnPrefix, '') || '',
-          status: container?.lastStatus || task?.lastStatus || '',
-          group: task?.group?.replace('task:', '') || '',
-          image,
-          revision,
-          error: container?.reason ? `[${container?.exitCode}] ${container?.reason}` : '',
-        }
-      })
-      cli.table(
-        tasksData,
-        {
-          id: {
-            header: 'ID',
-            minWidth: 8,
-            get: row => row.id.slice(0, 7),
+          return {
+            id: task?.taskArn?.replace(taskArnPrefix, '') || '',
+            status: container?.lastStatus || task?.lastStatus || '',
+            group: task?.group?.replace('task:', '') || '',
+            image,
+            revision,
+            error: container?.reason ? `[${container?.exitCode}] ${container?.reason}` : '',
+          }
+        })
+        cli.table(
+          tasksData,
+          {
+            id: {
+              header: 'ID',
+              minWidth: 8,
+              get: row => row.id.slice(0, 7),
+            },
+            status: {
+              minWidth: 10,
+            },
+            group: {},
+            image: {},
+            revision: {},
+            error: {},
           },
-          status: {
-            minWidth: 10,
+          {
+            printLine: this.log.bind(this),
           },
-          group: {},
-          image: {},
-          revision: {},
-          error: {},
-        },
-        {
-          printLine: this.log.bind(this),
-        },
-      )
+        )
+      }
     }
   }
 }
