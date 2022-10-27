@@ -37,7 +37,6 @@ export default class PsCommand extends AwsCommand {
       const serviceArnPrefix = `arn:aws:ecs:${region}:${accountId}:service/${clusterName}/`
       const taskArnPrefix = `arn:aws:ecs:${region}:${accountId}:task/${clusterName}/`
       const ecrAccountPrefix = `${accountId}.dkr.ecr.${region}.amazonaws.com/`
-      const ecrRepoPrefix = `${ecrAccountPrefix}${project}:`
 
       // Find all tasks within cluster
       const { taskArns: runningTaskArns = [] } = await client.listTasks({
@@ -71,7 +70,7 @@ export default class PsCommand extends AwsCommand {
       const allServiceNames = uniq([
         ...existingServiceArns.map(arn => arn.replace(serviceArnPrefix, '')),
         ...configServiceNames,
-      ])
+      ]).sort()
       const { services: existingServices = [] } = await client.describeServices({
         cluster: clusterName,
         services: allServiceNames,
@@ -89,7 +88,7 @@ export default class PsCommand extends AwsCommand {
         const serviceTasks = existingTasks.filter(task =>  task.group === `service:${service?.serviceName}`)
         const task = serviceTasks.sort((a, b) => (a.startedAt || 0) < (b.startedAt || 0) ? 1 : -1)[0]
         const container = task?.containers ? task.containers[0] : undefined
-        const image = container?.image?.replace(ecrRepoPrefix, '')?.replace(ecrAccountPrefix, '')?.replace(new RegExp(`${accountId}\.dkr\.ecr\.[^.]+\.amazonaws\.com\/`), '') || ''
+        const image = container?.image?.replace(ecrAccountPrefix, 'ecr/')?.replace(new RegExp(`${accountId}.dkr.ecr.[^.]+.amazonaws.com/`), 'ecr/') || ''
 
         return {
           count: `[${service?.runningCount || 0}/${service?.desiredCount === undefined ? '-' : service?.desiredCount}] `,
@@ -140,7 +139,7 @@ export default class PsCommand extends AwsCommand {
         const tasksData = allTaskNames.map(taskName => {
           const task = existingTasks.find(task => task.taskArn === `${taskArnPrefix}${taskName}`)
           const container = task?.containers ? task.containers[0] : undefined
-          const image = container?.image?.replace(ecrRepoPrefix, '')
+          const image = container?.image?.replace(ecrAccountPrefix, 'ecr/').replace(new RegExp(`${accountId}.dkr.ecr.[^.]+.amazonaws.com/`), 'ecr/')
           const revision = task?.taskDefinitionArn?.split(':').pop()
 
           return {
