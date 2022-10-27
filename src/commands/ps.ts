@@ -2,8 +2,12 @@
 import { Flags } from '@oclif/core'
 import cli from 'cli-ux'
 import uniq from 'lodash/uniq'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { AwsCommand } from '../command'
+
+dayjs.extend(relativeTime)
 
 export default class PsCommand extends AwsCommand {
   static description = 'Show running services within a cluster'
@@ -94,6 +98,7 @@ export default class PsCommand extends AwsCommand {
           count: `[${service?.runningCount || 0}/${service?.desiredCount === undefined ? '-' : service?.desiredCount}] `,
           status: container?.lastStatus || service?.status || '',
           name: serviceName,
+          uptime: task?.startedAt ? dayjs(task.startedAt).fromNow(true) : '',
           image,
           ports,
           cpu: task?.cpu || '',
@@ -110,6 +115,7 @@ export default class PsCommand extends AwsCommand {
           status: {
             minWidth: 10,
           },
+          uptime: {},
           name: {},
           image: {},
           ports: {

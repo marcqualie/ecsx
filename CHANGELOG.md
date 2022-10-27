@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `ecsx ps` now shows uptime for services
 - `ecsx ps` will now show all clusters by default [#89](https://github.com/marcqualie/ecsx/pull/89)
 
 ### Changed
