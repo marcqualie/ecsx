@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+
+## Unreleased
+
+### Added
+
+- `ecsx ps` will now show all clusters by default [#89](https://github.com/marcqualie/ecsx/pull/89)
+
+### Changed
+
+- `ecsx ps` has improved output formatting for multiple regions/projects [#89](https://github.com/marcqualie/ecsx/pull/89)
+- `ecsx ps` will how hide tasks by default, use `--showTasks` to see them [#89](https://github.com/marcqualie/ecsx/pull/89)
+
+
+
 ## [0.8.0-alpha.2]
 
 
