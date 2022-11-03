@@ -1,24 +1,24 @@
-import Command from '@oclif/command'
+import { Command } from '@oclif/core'
 import { clientBuilder } from './ecs/client'
 
 import { ClusterVariables } from './types/configuration'
 import { configWithVariables } from './utils/config-with-variables'
 
 export class AwsCommand extends Command {
-  configWithVariables(variables: ClusterVariables) {
+  async configWithVariables(variables: ClusterVariables) {
     const initialVariables = {
-      ...this.variables(),
+      ...(await this.variables()),
       ...variables,
     }
     return configWithVariables(initialVariables)
   }
 
-  ecs_client({ region }: { region?: string }) {
+  ecsClient({ region }: { region?: string }) {
     return clientBuilder({ region: region || 'eu-central-1' })
   }
 
-  variables() {
-    const { flags } = this.parse() as any
+  async variables() {
+    const { flags } = await this.parse()
     const flagVars = flags.var || []
 
     const variables: { [key: string]: string } = {}

@@ -13,7 +13,6 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 14.x # until 2023-04-30
           - 16.x # until 2024-04-30
           - 18.x # until 2025-04-30
 
@@ -36,4 +35,4 @@ jobs:
         with:
           node-version: 16.x
       - run: yarn install
-      - run: bin/ecsx verify-config ./test/ecsx.yml
+      - run: bin/run verify-config ./test/ecsx.yml

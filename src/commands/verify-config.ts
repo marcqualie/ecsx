@@ -1,6 +1,6 @@
-import fs from 'fs'
-import path from 'path'
-import { flags } from '@oclif/command'
+import fs from 'node:fs'
+import path from 'node:path'
+import { Flags } from '@oclif/core'
 import { Validator } from 'jsonschema'
 import YAML from 'js-yaml'
 
@@ -12,7 +12,7 @@ export default class VerifyConfigCommand extends AwsCommand {
   static description = 'Scale services up or down to the desired count'
 
   static flags = {
-    help: flags.help({
+    help: Flags.help({
       char: 'h',
     }),
   }
@@ -26,7 +26,7 @@ export default class VerifyConfigCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { configPath: configPathArg } } = this.parse(VerifyConfigCommand)
+    const { args: { configPath: configPathArg } } = await this.parse(VerifyConfigCommand)
 
     // Determine schema file path
     const configPath = configPathArg || './ecsx.yml'
