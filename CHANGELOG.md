@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.8.2]
+
+### Fixed
+
+- Log group is now based on clustername instead of `{project}-{environment}` [#93](https://github.com/marcqualie/ecsx/pull/93)
+
+
+
 ## [0.8.1]
 
 ### Fixed
