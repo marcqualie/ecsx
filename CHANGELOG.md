@@ -9,9 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- `ecsx scale` only supported `{project}-{environment}` naming convention [#92](https://github.com/marcqualie/ecsx/pull/92)
+
+
 ### Added
 
-- `ecsx ps` now shows uptime for services
+- `ecsx ps` now shows uptime for services [#89](https://github.com/marcqualie/ecsx/pull/89)
 - `ecsx ps` will now show all clusters by default [#89](https://github.com/marcqualie/ecsx/pull/89)
 
 ### Changed
@@ -131,7 +136,7 @@ NOTE: This version has a bug where `envVars` will not populate container env. Co
 
 ## [0.4.0] - 2021-05-25
 
-### Added
+### Added
 
 - Feature: Console command to launch temporary interactive containers.
 
