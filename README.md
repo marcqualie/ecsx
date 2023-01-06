@@ -19,7 +19,7 @@ $ npm install -g ecsx
 $ ecsx COMMAND
 running command...
 $ ecsx (-v|--version|version)
-ecsx/0.8.0 darwin-x64 node-v18.8.0
+ecsx/0.8.1 darwin-x64 node-v18.8.0
 $ ecsx --help [COMMAND]
 USAGE
   $ ecsx COMMAND
@@ -36,7 +36,7 @@ USAGE
 * [`ecsx list-clusters`](#ecsx-list-clusters)
 * [`ecsx ps`](#ecsx-ps)
 * [`ecsx run TASKNAME`](#ecsx-run-taskname)
-* [`ecsx scale TASK COUNT`](#ecsx-scale-task-count)
+* [`ecsx scale TASKNAME COUNT`](#ecsx-scale-taskname-count)
 * [`ecsx verify-config [CONFIGPATH]`](#ecsx-verify-config-configpath)
 
 ## `ecsx config`
@@ -54,7 +54,7 @@ OPTIONS
   --var=var                    [default: ]
 ```
 
-_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.8.1/src/commands/config.ts)_
 
 ## `ecsx console [COMMAND]`
 
@@ -69,7 +69,7 @@ OPTIONS
   -h, --help                   Show CLI help.
 ```
 
-_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0/src/commands/console.ts)_
+_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.8.1/src/commands/console.ts)_
 
 ## `ecsx delete TASKNAME`
 
@@ -85,7 +85,7 @@ OPTIONS
   --force
 ```
 
-_See code: [src/commands/delete.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0/src/commands/delete.ts)_
+_See code: [src/commands/delete.ts](https://github.com/marcqualie/ecsx/blob/v0.8.1/src/commands/delete.ts)_
 
 ## `ecsx deploy TASKNAME`
 
@@ -102,7 +102,7 @@ OPTIONS
   --var=var                    [default: ]
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0/src/commands/deploy.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.8.1/src/commands/deploy.ts)_
 
 ## `ecsx help [COMMAND]`
 
@@ -119,7 +119,7 @@ OPTIONS
   -n, --nested-commands  Include all nested commands in the output.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.16/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.22/src/commands/help.ts)_
 
 ## `ecsx list-clusters`
 
@@ -133,7 +133,7 @@ OPTIONS
   -h, --help  Show CLI help.
 ```
 
-_See code: [src/commands/list-clusters.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0/src/commands/list-clusters.ts)_
+_See code: [src/commands/list-clusters.ts](https://github.com/marcqualie/ecsx/blob/v0.8.1/src/commands/list-clusters.ts)_
 
 ## `ecsx ps`
 
@@ -149,7 +149,7 @@ OPTIONS
   --showTasks                  Show recent tasks
 ```
 
-_See code: [src/commands/ps.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0/src/commands/ps.ts)_
+_See code: [src/commands/ps.ts](https://github.com/marcqualie/ecsx/blob/v0.8.1/src/commands/ps.ts)_
 
 ## `ecsx run TASKNAME`
 
@@ -166,22 +166,22 @@ OPTIONS
   --var=var                    [default: ]
 ```
 
-_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.8.1/src/commands/run.ts)_
 
-## `ecsx scale TASK COUNT`
+## `ecsx scale TASKNAME COUNT`
 
 Scale services up or down to the desired count
 
 ```
 USAGE
-  $ ecsx scale TASK COUNT
+  $ ecsx scale TASKNAME COUNT
 
 OPTIONS
   -c, --clusterKey=clusterKey  (required)
   -h, --help                   Show CLI help.
 ```
 
-_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0/src/commands/scale.ts)_
+_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.8.1/src/commands/scale.ts)_
 
 ## `ecsx verify-config [CONFIGPATH]`
 
@@ -195,7 +195,7 @@ OPTIONS
   -h, --help  Show CLI help.
 ```
 
-_See code: [src/commands/verify-config.ts](https://github.com/marcqualie/ecsx/blob/v0.8.0/src/commands/verify-config.ts)_
+_See code: [src/commands/verify-config.ts](https://github.com/marcqualie/ecsx/blob/v0.8.1/src/commands/verify-config.ts)_
 <!-- commandsstop -->
 
 

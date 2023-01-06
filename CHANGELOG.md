@@ -9,13 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
+
+## [0.8.1]
+
 ### Fixed
 
 - `ecsx scale` only supported `{project}-{environment}` naming convention [#92](https://github.com/marcqualie/ecsx/pull/92)
 
 
+
+## [0.8.0]
+
 ### Added
 
+- Regional cluster support [#71](https://github.com/marcqualie/ecsx/pull/71)
+- Add siblingContainers and dependsOn options to the task definitions [dbl-works/#1](https://github.com/dbl-works/ecsx/pull/1)
 - `ecsx ps` now shows uptime for services [#89](https://github.com/marcqualie/ecsx/pull/89)
 - `ecsx ps` will now show all clusters by default [#89](https://github.com/marcqualie/ecsx/pull/89)
 
@@ -23,16 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `ecsx ps` has improved output formatting for multiple regions/projects [#89](https://github.com/marcqualie/ecsx/pull/89)
 - `ecsx ps` will how hide tasks by default, use `--showTasks` to see them [#89](https://github.com/marcqualie/ecsx/pull/89)
-
-
-
-## [0.8.0-alpha.2]
-
-
-### Added
-
-- Regional cluster support #71
-- Add siblingContainers and dependsOn options to the task definitions [dbl-works/#1](https://github.com/dbl-works/ecsx/pull/1)
 
 ### Removed
 
