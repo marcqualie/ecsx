@@ -16,7 +16,7 @@ export default class DeployCommand extends AwsCommand {
 
   static args = [
     {
-      name: 'task',
+      name: 'taskName',
       type: 'string',
       required: true,
     },
@@ -28,25 +28,29 @@ export default class DeployCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { task, count }, flags: { clusterKey } } = await this.parse(DeployCommand)
+    const { args: { taskName, count }, flags: { clusterKey } } = await this.parse(DeployCommand)
     const { variables } = await this.configWithVariables({
       clusterKey,
+      taskName,
     })
-    const { environment, project, region } = variables
+    const { clusterName, environment, project, region } = variables
+    if (clusterName === undefined) {
+      throw new Error('Could not detect $clusterName')
+    }
+
     const client = this.ecsClient({ region })
 
     // Find running service matching task name
-    const cluster = `${project}-${environment}`
     const { services: existingServices = [] } = await client.describeServices({
-      cluster,
+      cluster: clusterName,
       services: [
-        task,
+        taskName,
       ],
     })
     const activeService = existingServices.find(service => service.status === 'ACTIVE')
     const service = activeService
     if (service === undefined) {
-      this.error(`Could not find service matching name ${task}`)
+      this.error(`Could not find service matching name ${taskName}`)
     }
 
     // Set desired count to the running service
@@ -64,7 +68,7 @@ export default class DeployCommand extends AwsCommand {
       serviceArn: updatedService.serviceArn,
       taskDefinitionArn: updatedService?.taskDefinition,
       desiredCount: updatedService.desiredCount,
-      url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${task}/health?region=${region}`,
+      url: `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/services/${taskName}/health?region=${region}`,
     }, undefined, 2))
   }
 }
