@@ -167,9 +167,7 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "executionRoleArn",
-          "image",
-          "taskRoleArn"
+          "image"
         ],
         "properties": {
           "image": {
@@ -188,6 +186,13 @@
           },
           "memory": {
             "type": "integer"
+          },
+          "containerMemory": {
+            "type": "integer"
+          },
+          "essential": {
+            "type": "boolean",
+            "default": true
           },
           "command": {
             "type": "array",

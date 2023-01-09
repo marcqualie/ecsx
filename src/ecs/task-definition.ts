@@ -1,5 +1,6 @@
 import { RegisterTaskDefinitionCommandInput } from '@aws-sdk/client-ecs'
 import flatten from 'lodash/flatten'
+import isNil from 'lodash/isNil'
 import { findCluster } from '../config'
 
 import { Configuration, ConfigurationTaskDefinition, ConfiguredVariables, KeyValuePairs } from '../types/configuration'
@@ -85,6 +86,33 @@ const containerDefinitionFromConfiguration = (params: Params, taskName: string) 
   const { clusterName, variables, config, envVars } = params
   const { region } = variables
   const taskConfig = config.tasks[taskName]
+
+  const containerDefinition = {
+    name: taskName,
+    image: taskConfig.image,
+    command: taskConfig.command,
+    portMappings: portMappingsFromConfiguration(taskConfig),
+    environment: environmentFromEnvVars(envVars),
+    secrets: secretsFromConfiguration(taskName, clusterName, config, region),
+    logConfiguration: logConfigurationFromConfiguration(taskName, variables),
+    essential: isNil(taskConfig.essential) ? true : taskConfig.essential,
+    readonlyRootFilesystem: false,
+    dependsOn: taskConfig.dependsOn,
+  }
+
+  return taskConfig.containerMemory ? {
+    ...containerDefinition,
+    memory: taskConfig.containerMemory
+  } : containerDefinition
+}
+
+export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
+  const { taskName, variables, config } = params
+  const { project, environment } = variables
+  const taskConfig = config.tasks[taskName]
+
+  const taskNames = taskConfig.siblingContainers ? [taskName, ...taskConfig.siblingContainers] : [taskName]
+  const containerDefinitions = taskNames.map(name => containerDefinitionFromConfiguration(params, name))
 
   return {
     name: taskName,
