@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install
       - run: yarn build
       - run: yarn test
@@ -35,5 +36,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
+          cache: yarn
       - run: yarn install
       - run: bin/run verify-config ./test/ecsx.yml
