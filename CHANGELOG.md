@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Updated to oclif v4 (#109)
+
 
 
 ## [0.9.0] - 2025-08-03
