@@ -30,7 +30,7 @@ interface ClientBuilderParams {
 
 // Simplifies the command creation since 90% boilerplate
 const wrapCommand = <T extends (params: P) => void, P = Parameters<T>, C = any>(
-  name: string,
+  _name: string,
   callback: (params: P) => C,
 ) => {
   return (params: P): C => {
@@ -101,7 +101,7 @@ export const clientBuilder = ({ region }: ClientBuilderParams) => {
       cluster: clusterName,
       tasks: [taskArn],
     })
-    return response.tasks && response.tasks[0]
+    return response.tasks?.[0]
   }
 
   const describeCluster = async (clusterName: string) => {
@@ -109,7 +109,7 @@ export const clientBuilder = ({ region }: ClientBuilderParams) => {
       clusters: [clusterName],
     })
 
-    return clusters.clusters && clusters.clusters[0]
+    return clusters?.clusters?.[0]
   }
 
   return {

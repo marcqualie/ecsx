@@ -1,5 +1,3 @@
-/* eslint-disable no-await-in-loop */
-
 import { Flags } from '@oclif/core'
 import cli from 'cli-ux'
 
@@ -121,7 +119,7 @@ export default class RunCommand extends AwsCommand {
     cli.action.stop(taskStatus)
 
     // If we did not get RUNNING then the console could not started properly, this should show why
-    const firstContainer = taskDetails?.containers && taskDetails.containers[0]
+    const firstContainer = taskDetails?.containers?.[0]
     if (firstContainer === undefined) {
       this.error('Could not locate container definition')
     }

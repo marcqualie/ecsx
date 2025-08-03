@@ -2,12 +2,6 @@ import { findCluster } from '../config'
 
 import type { Configuration, KeyValuePairs } from '../types/configuration'
 
-interface VariablesFromCluster {
-  environment: string
-  project?: string
-  [key: string]: string | undefined
-}
-
 export const envVarsFromCluster = (
   clusterName: string,
   region: string,

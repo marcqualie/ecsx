@@ -27,7 +27,7 @@ export const findCluster = (
       return name === clusterName && cluster.region === region
     },
   )
-  return cluster && cluster[1]
+  return cluster?.[1]
 }
 
 export class Config {

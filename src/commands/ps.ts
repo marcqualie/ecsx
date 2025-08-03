@@ -37,7 +37,7 @@ export default class PsCommand extends AwsCommand {
     for (const clusterKey of clusterKeys) {
       const {
         config,
-        variables: { accountId, clusterName, environment, project, region },
+        variables: { accountId, clusterName, project, region },
       } = await this.configWithVariables({
         clusterKey,
       })
