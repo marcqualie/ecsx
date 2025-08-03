@@ -1,8 +1,8 @@
 import { Flags } from '@oclif/core'
-import cli from 'cli-ux'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import uniq from 'lodash/uniq'
+import Table from 'tty-table'
 
 import { AwsCommand } from '../command'
 
@@ -24,7 +24,7 @@ export default class PsCommand extends AwsCommand {
     }),
   }
 
-  static args = []
+  static args = {}
 
   async run() {
     const {
@@ -140,31 +140,24 @@ export default class PsCommand extends AwsCommand {
               : '',
         }
       })
-      cli.table(
-        servicesData,
-        {
-          count: {
-            minWidth: 8,
-          },
-          status: {
-            minWidth: 10,
-          },
-          uptime: {},
-          name: {},
-          image: {},
-          ports: {
-            get: (row) => (row.ports || []).join(','),
-          },
-          cpu: {
-            header: 'vCPU',
-          },
-          memory: {},
-          error: {},
-        },
-        {
-          printLine: this.log.bind(this),
-        },
+      const servicesTable = Table(
+        [
+          { value: 'count', width: 8 },
+          { value: 'status', width: 10 },
+          { value: 'uptime' },
+          { value: 'name' },
+          { value: 'image' },
+          { value: 'ports' },
+          { value: 'cpu', alias: 'vCPU' },
+          { value: 'memory' },
+          { value: 'error' },
+        ],
+        servicesData.map((row) => ({
+          ...row,
+          ports: (row.ports || []).join(','),
+        })),
       )
+      this.log(servicesTable.render())
       this.log(' ')
 
       // Find all tasks in cluster
@@ -202,26 +195,21 @@ export default class PsCommand extends AwsCommand {
               : '',
           }
         })
-        cli.table(
-          tasksData,
-          {
-            id: {
-              header: 'ID',
-              minWidth: 8,
-              get: (row) => row.id.slice(0, 7),
-            },
-            status: {
-              minWidth: 10,
-            },
-            group: {},
-            image: {},
-            revision: {},
-            error: {},
-          },
-          {
-            printLine: this.log.bind(this),
-          },
+        const tasksTable = Table(
+          [
+            { value: 'id', alias: 'ID', width: 8 },
+            { value: 'status', width: 10 },
+            { value: 'group' },
+            { value: 'image' },
+            { value: 'revision' },
+            { value: 'error' },
+          ],
+          tasksData.map((row) => ({
+            ...row,
+            id: row.id.slice(0, 7),
+          })),
         )
+        this.log(tasksTable.render())
       }
     }
   }

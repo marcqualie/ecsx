@@ -1,4 +1,4 @@
-import { Flags } from '@oclif/core'
+import { Args, Flags } from '@oclif/core'
 
 import { AwsCommand } from '../command'
 import { deployService } from '../ecs/deploy-service'
@@ -22,13 +22,12 @@ export default class DeployCommand extends AwsCommand {
     }),
   }
 
-  static args = [
-    {
-      name: 'taskName',
-      type: 'string',
+  static args = {
+    taskName: Args.string({
+      description: 'Name of the task to deploy',
       required: true,
-    },
-  ]
+    }),
+  }
 
   async run() {
     const {

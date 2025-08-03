@@ -1,5 +1,5 @@
-import { Flags } from '@oclif/core'
-import { cli } from 'cli-ux'
+import { confirm } from '@inquirer/prompts'
+import { Args, Flags } from '@oclif/core'
 
 import { AwsCommand } from '../command'
 import { clientBuilder } from '../ecs/client'
@@ -18,13 +18,12 @@ export default class DeleteCommand extends AwsCommand {
     }),
   }
 
-  static args = [
-    {
-      name: 'taskName',
-      type: 'string',
+  static args = {
+    taskName: Args.string({
+      description: 'Name of the task to delete',
       required: true,
-    },
-  ]
+    }),
+  }
 
   async run() {
     const {
@@ -40,9 +39,9 @@ export default class DeleteCommand extends AwsCommand {
     // TODO: Verify the task actually exists on the cluster
 
     // Verify they want to delete
-    const confirmed = await cli.confirm(
-      `Do you want to remove ${taskName} from your cluster?`,
-    )
+    const confirmed = await confirm({
+      message: `Do you want to remove ${taskName} from your cluster?`,
+    })
     if (confirmed === false) {
       this.warn('Nothing was altered on your cluster.')
       return

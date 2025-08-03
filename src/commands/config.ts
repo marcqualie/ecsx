@@ -18,7 +18,7 @@ export default class Config extends AwsCommand {
     taskName: Flags.string(),
   }
 
-  static args = []
+  static args = {}
 
   async run() {
     const {

@@ -1,5 +1,4 @@
-import { Flags } from '@oclif/core'
-import cli from 'cli-ux'
+import { Args, Flags, ux } from '@oclif/core'
 
 import { AwsCommand } from '../command'
 import { taskFromConfiguration } from '../ecs/task'
@@ -26,13 +25,12 @@ export default class RunCommand extends AwsCommand {
     }),
   }
 
-  static args = [
-    {
-      name: 'taskName',
-      type: 'string',
+  static args = {
+    taskName: Args.string({
+      description: 'Name of the task to run',
       required: true,
-    },
-  ]
+    }),
+  }
 
   async run() {
     const {
@@ -99,7 +97,7 @@ export default class RunCommand extends AwsCommand {
     // Keep polling for updates
     let taskStatus: string | undefined
     let taskDetails: Task | undefined = firstTask
-    cli.action.start('', taskStatus)
+    ux.action.start('', taskStatus)
     while (taskStatus !== 'STOPPED') {
       taskDetails = await client.describeTask(clusterName, firstTask.taskArn)
       if (taskDetails === undefined) {
@@ -109,14 +107,14 @@ export default class RunCommand extends AwsCommand {
       }
 
       taskStatus = taskDetails.lastStatus
-      cli.action.start('', taskStatus)
+      ux.action.start('', taskStatus)
 
       await new Promise((resolve) => {
         setTimeout(resolve, 10_000)
       })
     }
 
-    cli.action.stop(taskStatus)
+    ux.action.stop(taskStatus)
 
     // If we did not get RUNNING then the console could not started properly, this should show why
     const firstContainer = taskDetails?.containers?.[0]
