@@ -24,6 +24,8 @@ export default class PsCommand extends AwsCommand {
     }),
   }
 
+  static args = []
+
   async run() {
     const {
       flags: { clusterKey: primaryClusterKey, showTasks },

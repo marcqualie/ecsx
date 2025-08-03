@@ -10,7 +10,7 @@
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.859.0",
     "@oclif/core": "^1.26.2",
-    "@oclif/plugin-help": "^5.2.20",
+    "@oclif/plugin-help": "~5.1.23",
     "@oclif/plugin-plugins": "^2.4.7",
     "cli-ux": "^6.0.9",
     "dayjs": "^1.11.13",

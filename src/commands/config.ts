@@ -18,6 +18,8 @@ export default class Config extends AwsCommand {
     taskName: Flags.string(),
   }
 
+  static args = []
+
   async run() {
     const {
       flags: { clusterKey, taskName },

@@ -11,6 +11,8 @@ export default class ListClustersCommand extends AwsCommand {
     }),
   }
 
+  static args = []
+
   async run() {
     const { config } = await this.configWithVariables({})
     for (const [clusterName] of Object.entries(config.clusters)) {
