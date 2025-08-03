@@ -1,5 +1,4 @@
-import { Flags } from '@oclif/core'
-import cli from 'cli-ux'
+import { Args, Flags, ux } from '@oclif/core'
 
 import { AwsCommand } from '../command'
 import { taskFromConfiguration } from '../ecs/task'
@@ -19,13 +18,12 @@ export default class ConsoleCommand extends AwsCommand {
     }),
   }
 
-  static args = [
-    {
-      name: 'command',
-      type: 'array',
-      default: ['/bin/sh'],
-    },
-  ]
+  static args = {
+    command: Args.string({
+      description: 'Command to run in the console',
+      default: '/bin/sh',
+    }),
+  }
 
   async run() {
     const {
@@ -104,7 +102,7 @@ export default class ConsoleCommand extends AwsCommand {
     let taskStatus: string | undefined = consoleTask.lastStatus
     let errorReason: string | undefined
     let stopCode: string | undefined
-    cli.action.start('', taskStatus)
+    ux.action.start('', taskStatus)
     while (
       taskStatus === undefined ||
       taskStatus === 'PROVISIONING' ||
@@ -123,11 +121,11 @@ export default class ConsoleCommand extends AwsCommand {
 
       if (taskStatus !== taskDetails.lastStatus) {
         taskStatus = taskDetails.lastStatus
-        cli.action.start('', taskStatus)
+        ux.action.start('', taskStatus)
       }
     }
 
-    cli.action.stop(taskStatus)
+    ux.action.stop(taskStatus)
 
     // If we did not get RUNNING then the console could not started properly, this should show why
     if (taskStatus !== 'RUNNING') {

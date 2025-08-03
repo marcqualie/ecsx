@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { Flags } from '@oclif/core'
+import { Args, Flags } from '@oclif/core'
 import YAML from 'js-yaml'
 import { Validator } from 'jsonschema'
 
@@ -16,13 +16,12 @@ export default class VerifyConfigCommand extends AwsCommand {
     }),
   }
 
-  static args = [
-    {
-      name: 'configPath',
-      type: 'string',
+  static args = {
+    configPath: Args.string({
+      description: 'Path to the configuration file',
       required: false,
-    },
-  ]
+    }),
+  }
 
   async run() {
     const {

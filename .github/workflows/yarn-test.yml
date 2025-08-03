@@ -40,4 +40,4 @@ jobs:
           cache: yarn
       - run: yarn install
       - run: bin/run verify-config ./test/ecsx.yml
-      - run: yarn oclif-dev readme
+      - run: yarn oclif readme

@@ -1,4 +1,4 @@
-import { Flags } from '@oclif/core'
+import { Args, Flags } from '@oclif/core'
 
 import { AwsCommand } from '../command'
 
@@ -15,18 +15,16 @@ export default class DeployCommand extends AwsCommand {
     }),
   }
 
-  static args = [
-    {
-      name: 'taskName',
-      type: 'string',
+  static args = {
+    taskName: Args.string({
+      description: 'Name of the task to scale',
       required: true,
-    },
-    {
-      name: 'count',
-      type: 'integer',
+    }),
+    count: Args.integer({
+      description: 'Number of instances to scale to',
       required: true,
-    },
-  ]
+    }),
+  }
 
   async run() {
     const {
@@ -61,7 +59,7 @@ export default class DeployCommand extends AwsCommand {
     const updateServiceResponse = await client.updateService({
       service: service.serviceName,
       cluster: service.clusterArn,
-      desiredCount: Number.parseInt(count, 10),
+      desiredCount: count,
     })
     const { service: updatedService } = updateServiceResponse
     if (updatedService === undefined) {
