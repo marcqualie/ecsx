@@ -40,7 +40,7 @@ export default class DeployCommand extends AwsCommand {
       taskName,
       dockerTag,
     })
-    const { clusterName, region } = variables
+    const { clusterName } = variables
     if (clusterName === undefined) {
       throw new Error('Could not detect $clusterName')
     }
