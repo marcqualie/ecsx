@@ -1,8 +1,3 @@
-process.env.ECSX_CONFIG_PATH = './test/ecsx.yml'
-
-import { describe } from 'mocha'
-import { expect } from 'chai'
-
 import { configWithVariables } from '../src/utils/config-with-variables'
 
 describe('ecs', () => {
@@ -10,7 +5,7 @@ describe('ecs', () => {
     describe('configWithVariables', () => {
       it('translates cluster level variables into key/value format', () => {
         const { variables, envVars } = configWithVariables({ clusterKey: 'ecsx-test-cluster' })
-        expect(variables).to.deep.equal({
+        expect(variables).toEqual({
           clusterKey: 'ecsx-test-cluster',
           clusterName: 'ecsx-test-cluster',
           environment: 'test',
@@ -19,7 +14,7 @@ describe('ecs', () => {
           accountId: 1234,
         })
 
-        expect(envVars).to.deep.equal({
+        expect(envVars).toEqual({
           CLUSTER_ENV: 'test',
           APP_ENV: 'test',
         })
@@ -27,7 +22,7 @@ describe('ecs', () => {
 
       it('translates cluster + task level env vars into key/value format', () => {
         const { variables, envVars } = configWithVariables({ clusterKey: 'ecsx-test-cluster', taskName: 'mocha' })
-        expect(variables).to.deep.equal({
+        expect(variables).toEqual({
           clusterName: 'ecsx-test-cluster',
           clusterKey: 'ecsx-test-cluster',
           environment: 'test',
@@ -37,7 +32,7 @@ describe('ecs', () => {
           taskName: 'mocha',
         })
 
-        expect(envVars).to.deep.equal({
+        expect(envVars).toEqual({
           CLUSTER_ENV: 'test',
           CLUSTER_NAME: 'ecsx-test-cluster',
           APP_ENV: 'task-test',

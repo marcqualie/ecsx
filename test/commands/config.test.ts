@@ -1,13 +1,19 @@
-import { expect, test } from '@oclif/test'
+import Config from '../../src/commands/config'
 
 describe('command', () => {
   describe('config', () => {
-    test
-    .timeout(5000)
-    .stdout()
-    .command(['config', '-c', 'ecsx-test-cluster'])
-    .it('sets the correct region', async function (ctx) {
-      expect(ctx.stdout).to.contain('"region": "us-east-1",')
-    })
+    it('sets the correct region', async () => {
+      // Mock the log method to capture output
+      const logs: string[] = []
+      const config = new Config(['-c', 'ecsx-test-cluster'], {} as any)
+      const originalLog = config.log
+      config.log = (...args: any[]) => {
+        logs.push(args.join(' '))
+      }
+
+      await config.run()
+      const output = logs.join('\n')
+      expect(output).toContain('"region": "us-east-1",')
+    }, 5000)
   })
 })
