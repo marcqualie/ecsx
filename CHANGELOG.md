@@ -11,6 +11,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.9.0] - 2025-08-03
+
+Maintenance upgrade for minor dependencies and security patches.
+
+### Changed
+
+- Added support for Node 20 + 22 (#100)
+- TypeScript 4.9 -> 5.9 (#105)
+- Migrated from ESLint to Biome for linting (#102)
+- Updated to use Jest for testing instead of mocha/chai/nyc (#106)
+- Updated all minor + patch versions of dependencies (#98)
+
+### Removed
+
+- Dropped support for Node 16 + 18 (#99)
+
+
+
 ## [0.8.2] - 2023-01-06
 
 ### Fixed
