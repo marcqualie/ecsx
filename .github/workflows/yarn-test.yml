@@ -16,7 +16,6 @@ jobs:
         node-version:
           - 20.x # until 2026-04-30
           - 22.x # until 2027-04-30
-          - 24.x # until 2028-04-30
 
     steps:
       - uses: actions/checkout@v2
