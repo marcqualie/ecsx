@@ -1,8 +1,23 @@
-import { RegisterTaskDefinitionCommandInput } from '@aws-sdk/client-ecs'
+import { RegisterTaskDefinitionCommandInput, ContainerCondition, LogDriver } from '@aws-sdk/client-ecs'
 import flatten from 'lodash/flatten'
 import { findCluster } from '../config'
 
 import { Configuration, ConfigurationTaskDefinition, ConfiguredVariables, KeyValuePairs } from '../types/configuration'
+
+const convertToContainerCondition = (condition: string): ContainerCondition => {
+  switch (condition.toUpperCase()) {
+  case 'START':
+    return ContainerCondition.START
+  case 'COMPLETE':
+    return ContainerCondition.COMPLETE
+  case 'SUCCESS':
+    return ContainerCondition.SUCCESS
+  case 'HEALTHY':
+    return ContainerCondition.HEALTHY
+  default:
+    return ContainerCondition.START
+  }
+}
 
 const environmentFromEnvVars = (envVars: KeyValuePairs) => {
   return Object.entries(envVars).map(([key, value]) => (
@@ -62,7 +77,7 @@ const portMappingsFromConfiguration = (config: ConfigurationTaskDefinition) => {
 
 const logConfigurationFromConfiguration = (task: string, variables: ConfiguredVariables) => {
   return {
-    logDriver: 'awslogs',
+    logDriver: LogDriver.AWSLOGS,
     secretOptions: [],
     options: {
       'awslogs-create-group': 'true',
@@ -96,7 +111,10 @@ const containerDefinitionFromConfiguration = (params: Params, taskName: string) 
     logConfiguration: logConfigurationFromConfiguration(taskName, variables),
     essential: true,
     readonlyRootFilesystem: false,
-    dependsOn: taskConfig.dependsOn,
+    dependsOn: taskConfig.dependsOn?.map(dep => ({
+      containerName: dep.containerName,
+      condition: convertToContainerCondition(dep.condition),
+    })),
   }
 }
 
