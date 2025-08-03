@@ -1,9 +1,8 @@
-/* eslint-disable no-await-in-loop */
 import { Flags } from '@oclif/core'
 import cli from 'cli-ux'
-import uniq from 'lodash/uniq'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import uniq from 'lodash/uniq'
 
 import { AwsCommand } from '../command'
 
@@ -26,13 +25,20 @@ export default class PsCommand extends AwsCommand {
   }
 
   async run() {
-    const { flags: { clusterKey: primaryClusterKey, showTasks } } = await this.parse(PsCommand)
+    const {
+      flags: { clusterKey: primaryClusterKey, showTasks },
+    } = await this.parse(PsCommand)
     const { config } = await this.configWithVariables({
       clusterKey: primaryClusterKey,
     })
-    const clusterKeys = primaryClusterKey ? [primaryClusterKey] : Object.keys(config.clusters)
+    const clusterKeys = primaryClusterKey
+      ? [primaryClusterKey]
+      : Object.keys(config.clusters)
     for (const clusterKey of clusterKeys) {
-      const { config, variables: { accountId, clusterName, environment, project, region } } = await this.configWithVariables({
+      const {
+        config,
+        variables: { accountId, clusterName, environment, project, region },
+      } = await this.configWithVariables({
         clusterKey,
       })
       const client = this.ecsClient({ region })
@@ -53,32 +59,41 @@ export default class PsCommand extends AwsCommand {
         desiredStatus: 'STOPPED',
         maxResults: 20,
       })
-      const allTaskArns = [
-        ...runningTaskArns,
-        ...stoppedTaskArns,
-      ]
-      const { tasks: existingTasks = [] } = allTaskArns.length > 0 ? await client.describeTasks({
-        cluster: clusterName,
-        tasks: allTaskArns,
-      }) : { tasks: [] }
+      const allTaskArns = [...runningTaskArns, ...stoppedTaskArns]
+      const { tasks: existingTasks = [] } =
+        allTaskArns.length > 0
+          ? await client.describeTasks({
+              cluster: clusterName,
+              tasks: allTaskArns,
+            })
+          : { tasks: [] }
 
       // Find all services/tasks defined in local config
-      const configServiceNames = Object.entries(config.tasks).filter(([taskName, taskConfig]) => !taskName.startsWith('$') && (taskConfig.service === true || taskConfig.service === undefined)).map(([taskName]) => taskName)
+      const configServiceNames = Object.entries(config.tasks)
+        .filter(
+          ([taskName, taskConfig]) =>
+            !taskName.startsWith('$') &&
+            (taskConfig.service === true || taskConfig.service === undefined),
+        )
+        .map(([taskName]) => taskName)
       // const configTaskNames = Object.entries(config.tasks).filter(([taskName, taskConfig]) => !taskName.startsWith('$') && taskConfig.service === false).map(([taskName]) => taskName)
 
       // Find services within cluster
       // TODO: Remove tasks where service=false
-      const { serviceArns: existingServiceArns = [] } = await client.listServices({
-        cluster: clusterName,
-      })
+      const { serviceArns: existingServiceArns = [] } =
+        await client.listServices({
+          cluster: clusterName,
+        })
       const allServiceNames = uniq([
-        ...existingServiceArns.map(arn => arn.replace(serviceArnPrefix, '')),
+        ...existingServiceArns.map((arn) => arn.replace(serviceArnPrefix, '')),
         ...configServiceNames,
       ]).sort()
-      const { services: existingServices = [] } = await client.describeServices({
-        cluster: clusterName,
-        services: allServiceNames,
-      })
+      const { services: existingServices = [] } = await client.describeServices(
+        {
+          cluster: clusterName,
+          services: allServiceNames,
+        },
+      )
 
       // Cluster overview
       this.log(' ')
@@ -86,13 +101,27 @@ export default class PsCommand extends AwsCommand {
       this.log(' ')
 
       // Output table of services
-      const servicesData = allServiceNames.map(serviceName => {
-        const service = existingServices.find(service => service.serviceName === serviceName)
-        const ports = (service?.loadBalancers || []).map(loadBalancer => loadBalancer.containerPort)
-        const serviceTasks = existingTasks.filter(task =>  task.group === `service:${service?.serviceName}`)
-        const task = serviceTasks.sort((a, b) => (a.startedAt || 0) < (b.startedAt || 0) ? 1 : -1)[0]
+      const servicesData = allServiceNames.map((serviceName) => {
+        const service = existingServices.find(
+          (service) => service.serviceName === serviceName,
+        )
+        const ports = (service?.loadBalancers || []).map(
+          (loadBalancer) => loadBalancer.containerPort,
+        )
+        const serviceTasks = existingTasks.filter(
+          (task) => task.group === `service:${service?.serviceName}`,
+        )
+        const task = serviceTasks.sort((a, b) =>
+          (a.startedAt || 0) < (b.startedAt || 0) ? 1 : -1,
+        )[0]
         const container = task?.containers ? task.containers[0] : undefined
-        const image = container?.image?.replace(ecrAccountPrefix, 'ecr/')?.replace(new RegExp(`${accountId}.dkr.ecr.[^.]+.amazonaws.com/`), 'ecr/') || ''
+        const image =
+          container?.image
+            ?.replace(ecrAccountPrefix, 'ecr/')
+            ?.replace(
+              new RegExp(`${accountId}.dkr.ecr.[^.]+.amazonaws.com/`),
+              'ecr/',
+            ) || ''
 
         return {
           count: `[${service?.runningCount || 0}/${service?.desiredCount === undefined ? '-' : service?.desiredCount}] `,
@@ -103,7 +132,10 @@ export default class PsCommand extends AwsCommand {
           ports,
           cpu: task?.cpu || '',
           memory: task?.memory || '',
-          error: task?.stoppedReason || task?.stopCode ? `[${task.stopCode}] ${container?.reason || task?.stoppedReason}` : '',
+          error:
+            task?.stoppedReason || task?.stopCode
+              ? `[${task.stopCode}] ${container?.reason || task?.stoppedReason}`
+              : '',
         }
       })
       cli.table(
@@ -119,7 +151,7 @@ export default class PsCommand extends AwsCommand {
           name: {},
           image: {},
           ports: {
-            get: row => (row.ports || []).join(','),
+            get: (row) => (row.ports || []).join(','),
           },
           cpu: {
             header: 'vCPU',
@@ -135,17 +167,26 @@ export default class PsCommand extends AwsCommand {
 
       // Find all tasks in cluster
       if (showTasks) {
-        const allNonServiceTaskArns = existingTasks.filter(task => task.group?.startsWith('service:') === false).map(task => task.taskArn || '')
+        const allNonServiceTaskArns = existingTasks
+          .filter((task) => task.group?.startsWith('service:') === false)
+          .map((task) => task.taskArn || '')
         const allTaskNames = uniq([
-          ...allNonServiceTaskArns.map(arn => arn.replace(taskArnPrefix, '')),
+          ...allNonServiceTaskArns.map((arn) => arn.replace(taskArnPrefix, '')),
           // ...configTaskNames, // TODO: These don't actually add much value in output
         ])
 
         // LIst out any tasks that are not linked to services
-        const tasksData = allTaskNames.map(taskName => {
-          const task = existingTasks.find(task => task.taskArn === `${taskArnPrefix}${taskName}`)
+        const tasksData = allTaskNames.map((taskName) => {
+          const task = existingTasks.find(
+            (task) => task.taskArn === `${taskArnPrefix}${taskName}`,
+          )
           const container = task?.containers ? task.containers[0] : undefined
-          const image = container?.image?.replace(ecrAccountPrefix, 'ecr/').replace(new RegExp(`${accountId}.dkr.ecr.[^.]+.amazonaws.com/`), 'ecr/')
+          const image = container?.image
+            ?.replace(ecrAccountPrefix, 'ecr/')
+            .replace(
+              new RegExp(`${accountId}.dkr.ecr.[^.]+.amazonaws.com/`),
+              'ecr/',
+            )
           const revision = task?.taskDefinitionArn?.split(':').pop()
 
           return {
@@ -154,7 +195,9 @@ export default class PsCommand extends AwsCommand {
             group: task?.group?.replace('task:', '') || '',
             image,
             revision,
-            error: container?.reason ? `[${container?.exitCode}] ${container?.reason}` : '',
+            error: container?.reason
+              ? `[${container?.exitCode}] ${container?.reason}`
+              : '',
           }
         })
         cli.table(
@@ -163,7 +206,7 @@ export default class PsCommand extends AwsCommand {
             id: {
               header: 'ID',
               minWidth: 8,
-              get: row => row.id.slice(0, 7),
+              get: (row) => row.id.slice(0, 7),
             },
             status: {
               minWidth: 10,

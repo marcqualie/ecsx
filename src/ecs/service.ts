@@ -1,7 +1,7 @@
-import { CreateServiceCommandInput } from '@aws-sdk/client-ecs'
 import { findCluster } from '../config'
 
-import { Configuration, ConfiguredVariables } from '../types/configuration'
+import type { CreateServiceCommandInput } from '@aws-sdk/client-ecs'
+import type { Configuration, ConfiguredVariables } from '../types/configuration'
 
 interface Params {
   clusterName: string
@@ -11,7 +11,9 @@ interface Params {
   config: Configuration
 }
 
-export const serviceFromConfiguration = (params: Params): CreateServiceCommandInput => {
+export const serviceFromConfiguration = (
+  params: Params,
+): CreateServiceCommandInput => {
   const { clusterName, taskName, revision, variables, config } = params
   const { project, environment, region } = variables
 
@@ -33,11 +35,13 @@ export const serviceFromConfiguration = (params: Params): CreateServiceCommandIn
     taskDefinition: `${project}-${taskName}-${environment}:${revision}`,
     desiredCount: 1,
     launchType: 'FARGATE',
-    loadBalancers: targetGroups.filter(targetGroup => targetGroup.task === taskName).map(targetGroup => ({
-      containerName: targetGroup.task,
-      containerPort: targetGroup.port,
-      targetGroupArn: targetGroup.arn,
-    })),
+    loadBalancers: targetGroups
+      .filter((targetGroup) => targetGroup.task === taskName)
+      .map((targetGroup) => ({
+        containerName: targetGroup.task,
+        containerPort: targetGroup.port,
+        targetGroupArn: targetGroup.arn,
+      })),
     networkConfiguration: {
       awsvpcConfiguration: {
         subnets,

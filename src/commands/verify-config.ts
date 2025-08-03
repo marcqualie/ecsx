@@ -1,11 +1,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { Flags } from '@oclif/core'
-import { Validator } from 'jsonschema'
 import YAML from 'js-yaml'
+import { Validator } from 'jsonschema'
 
 import { AwsCommand } from '../command'
-
 import schema from '../schema.json'
 
 export default class VerifyConfigCommand extends AwsCommand {
@@ -26,7 +25,9 @@ export default class VerifyConfigCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { configPath: configPathArg } } = await this.parse(VerifyConfigCommand)
+    const {
+      args: { configPath: configPathArg },
+    } = await this.parse(VerifyConfigCommand)
 
     // Determine schema file path
     const configPath = configPathArg || './ecsx.yml'

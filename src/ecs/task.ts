@@ -1,7 +1,7 @@
-import { RunTaskCommandInput } from '@aws-sdk/client-ecs'
 import { findCluster } from '../config'
 
-import { Configuration, ConfiguredVariables } from '../types/configuration'
+import type { RunTaskCommandInput } from '@aws-sdk/client-ecs'
+import type { Configuration, ConfiguredVariables } from '../types/configuration'
 
 interface Params {
   clusterName: string
@@ -14,7 +14,15 @@ interface Params {
 }
 
 export const taskFromConfiguration = (params: Params): RunTaskCommandInput => {
-  const { clusterName, taskName, revision, variables, config, alias, enableExecuteCommand = false } = params
+  const {
+    clusterName,
+    taskName,
+    revision,
+    variables,
+    config,
+    alias,
+    enableExecuteCommand = false,
+  } = params
   const { project, environment, region } = variables
 
   const clusterConfig = findCluster(config, clusterName, region)

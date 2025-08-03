@@ -1,7 +1,12 @@
 import { clientBuilder } from './client'
-import { Configuration, ConfiguredVariables, KeyValuePairs } from '../types/configuration'
-import { taskDefinitionfromConfiguration } from './task-definition'
 import { serviceFromConfiguration } from './service'
+import { taskDefinitionfromConfiguration } from './task-definition'
+
+import type {
+  Configuration,
+  ConfiguredVariables,
+  KeyValuePairs,
+} from '../types/configuration'
 
 interface StartServiceInput {
   clusterName: string
@@ -20,19 +25,11 @@ interface StartServiceResponse {
 }
 
 // Starts a new service, or updates a running one with the pass in config
-export const deployService = async (params: StartServiceInput): Promise<StartServiceResponse> => {
-  const {
-    clusterName,
-    taskName,
-    variables,
-    config,
-    envVars,
-  } = params
-  const {
-    environment,
-    project,
-    region,
-  } = variables
+export const deployService = async (
+  params: StartServiceInput,
+): Promise<StartServiceResponse> => {
+  const { clusterName, taskName, variables, config, envVars } = params
+  const { environment, project, region } = variables
   const client = clientBuilder({ region })
 
   // Prevent non-services from being deployed
@@ -49,10 +46,13 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
     config,
     envVars,
   })
-  const taskDefinitionResponse = await client.registerTaskDefinition(taskDefinitionInput)
+  const taskDefinitionResponse =
+    await client.registerTaskDefinition(taskDefinitionInput)
   const { taskDefinition } = taskDefinitionResponse
   if (taskDefinition === undefined) {
-    throw new Error(`Could not create task definition: ${taskDefinitionResponse}`)
+    throw new Error(
+      `Could not create task definition: ${taskDefinitionResponse}`,
+    )
   }
 
   // Check if a service already exists
@@ -66,11 +66,11 @@ export const deployService = async (params: StartServiceInput): Promise<StartSer
   })
   const { services: existingServices = [] } = await client.describeServices({
     cluster: clusterName,
-    services: [
-      serviceInput.serviceName || '',
-    ],
+    services: [serviceInput.serviceName || ''],
   })
-  const serviceIsActive = existingServices.some(service => service.status === 'ACTIVE')
+  const serviceIsActive = existingServices.some(
+    (service) => service.status === 'ACTIVE',
+  )
 
   // Create a new service
   if (serviceIsActive === false) {
