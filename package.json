@@ -27,7 +27,7 @@
     "@types/js-yaml": "^4.0.9",
     "@types/lodash": "^4.17.20",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^18.19.121",
+    "@types/node": "^22",
     "chai": "^4.5.0",
     "mocha": "^10.8.2",
     "nyc": "^15.1.0",
