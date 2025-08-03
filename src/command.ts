@@ -1,8 +1,9 @@
 import { Command } from '@oclif/core'
-import { clientBuilder } from './ecs/client'
 
-import { ClusterVariables } from './types/configuration'
+import { clientBuilder } from './ecs/client'
 import { configWithVariables } from './utils/config-with-variables'
+
+import type { ClusterVariables } from './types/configuration'
 
 export class AwsCommand extends Command {
   async configWithVariables(variables: ClusterVariables) {

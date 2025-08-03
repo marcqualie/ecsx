@@ -27,7 +27,10 @@ export default class DeleteCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { taskName }, flags: { clusterKey, force = false } } = await this.parse(DeleteCommand)
+    const {
+      args: { taskName },
+      flags: { clusterKey, force = false },
+    } = await this.parse(DeleteCommand)
     const { variables } = await this.configWithVariables({
       clusterKey,
     })
@@ -37,7 +40,9 @@ export default class DeleteCommand extends AwsCommand {
     // TODO: Verify the task actually exists on the cluster
 
     // Verify they want to delete
-    const confirmed = await cli.confirm(`Do you want to remove ${taskName} from your cluster?`)
+    const confirmed = await cli.confirm(
+      `Do you want to remove ${taskName} from your cluster?`,
+    )
     if (confirmed === false) {
       this.warn('Nothing was altered on your cluster.')
       return
@@ -50,9 +55,13 @@ export default class DeleteCommand extends AwsCommand {
       force,
     })
     if (response.$metadata.httpStatusCode === 200) {
-      this.log(`The task "${taskName}" has been removed from your cluster. This could take a few minutes to drain.`)
+      this.log(
+        `The task "${taskName}" has been removed from your cluster. This could take a few minutes to drain.`,
+      )
     } else {
-      this.error(`The task "${taskName}" could not be removed from your cluster. Please try again.`)
+      this.error(
+        `The task "${taskName}" could not be removed from your cluster. Please try again.`,
+      )
     }
   }
 }

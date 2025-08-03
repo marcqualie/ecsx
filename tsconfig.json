@@ -6,9 +6,7 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "module": "commonjs",
-    "lib": [
-      "ES2015"
-    ],
+    "lib": ["ES2015"],
     "outDir": "lib",
     "resolveJsonModule": true,
     "rootDir": "src",
@@ -16,12 +14,6 @@
     "strict": true,
     "target": "es2017"
   },
-  "include": [
-    "src/**/*",
-    "src/schema.json"
-  ],
-  "exclude": [
-    "node_modules",
-    "node_modules/**/*"
-  ]
+  "include": ["src/**/*", "src/schema.json"],
+  "exclude": ["node_modules", "node_modules/**/*"]
 }

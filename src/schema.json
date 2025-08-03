@@ -3,11 +3,7 @@
   "title": "ECSX Configuration File",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "accountId",
-    "clusters",
-    "tasks"
-  ],
+  "required": ["accountId", "clusters", "tasks"],
   "properties": {
     "version": {
       "deprecated": true,
@@ -62,10 +58,7 @@
           },
           "subnets": {
             "type": "object",
-            "required": [
-              "private",
-              "public"
-            ],
+            "required": ["private", "public"],
             "properties": {
               "private": {
                 "type": "array",
@@ -102,10 +95,7 @@
                 "additionalProperties": {
                   "type": "object",
                   "additionalProperties": false,
-                  "required": [
-                    "arn",
-                    "keys"
-                  ],
+                  "required": ["arn", "keys"],
                   "properties": {
                     "arn": {
                       "type": "string",
@@ -146,11 +136,7 @@
       "TargetGroup": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "arn",
-          "port",
-          "task"
-        ],
+        "required": ["arn", "port", "task"],
         "properties": {
           "arn": {
             "type": "string"
@@ -166,11 +152,7 @@
       "Task": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "executionRoleArn",
-          "image",
-          "taskRoleArn"
-        ],
+        "required": ["executionRoleArn", "image", "taskRoleArn"],
         "properties": {
           "image": {
             "type": "string",
@@ -218,10 +200,7 @@
           },
           "subnet": {
             "type": "string",
-            "enum": [
-              "public",
-              "private"
-            ],
+            "enum": ["public", "private"],
             "description": "Assigns task to a cluster defined subnet and allocates a publically routabe IP if set to \"public\".",
             "default": "public"
           },
@@ -230,10 +209,7 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": [
-                "keys",
-                "name"
-              ],
+              "required": ["keys", "name"],
               "properties": {
                 "name": {
                   "type": "string",

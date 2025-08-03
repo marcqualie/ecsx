@@ -1,11 +1,13 @@
 /* eslint-disable no-await-in-loop */
+
 import { Flags } from '@oclif/core'
-import { Task } from '@aws-sdk/client-ecs'
 import cli from 'cli-ux'
 
 import { AwsCommand } from '../command'
-import { taskDefinitionfromConfiguration } from '../ecs/task-definition'
 import { taskFromConfiguration } from '../ecs/task'
+import { taskDefinitionfromConfiguration } from '../ecs/task-definition'
+
+import type { Task } from '@aws-sdk/client-ecs'
 
 export default class RunCommand extends AwsCommand {
   static description = 'Run a one off task on the cluster'
@@ -35,7 +37,10 @@ export default class RunCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { taskName }, flags: { clusterKey, dockerTag } } = await this.parse(RunCommand)
+    const {
+      args: { taskName },
+      flags: { clusterKey, dockerTag },
+    } = await this.parse(RunCommand)
     const { config, variables, envVars } = await this.configWithVariables({
       clusterKey,
       taskName,
@@ -56,10 +61,13 @@ export default class RunCommand extends AwsCommand {
       config,
       envVars,
     })
-    const taskDefinitionResponse = await client.registerTaskDefinition(taskDefinitionInput)
+    const taskDefinitionResponse =
+      await client.registerTaskDefinition(taskDefinitionInput)
     const { taskDefinition } = taskDefinitionResponse
     if (taskDefinition === undefined) {
-      this.error(`Could not create task definition: ${JSON.stringify(taskDefinitionResponse)}`)
+      this.error(
+        `Could not create task definition: ${JSON.stringify(taskDefinitionResponse)}`,
+      )
     }
 
     // Run task using created definition
@@ -81,7 +89,10 @@ export default class RunCommand extends AwsCommand {
       this.error('Task does not have an ARN. Please try again.')
     }
 
-    const taskId = firstTask.taskArn?.replace(`arn:aws:ecs:${region}:${accountId}:task/${project}-${environment}/`, '')
+    const taskId = firstTask.taskArn?.replace(
+      `arn:aws:ecs:${region}:${accountId}:task/${project}-${environment}/`,
+      '',
+    )
     const taskUrl = `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${project}-${environment}/tasks/${taskId}/logs?region=${region}`
     this.log(`> Image: ${dockerTag}`)
     this.log(`> Task: ${firstTask.taskArn}`)
@@ -94,13 +105,15 @@ export default class RunCommand extends AwsCommand {
     while (taskStatus !== 'STOPPED') {
       taskDetails = await client.describeTask(clusterName, firstTask.taskArn)
       if (taskDetails === undefined) {
-        this.error(`Could not find task details for taskArn "${firstTask.taskArn}"`)
+        this.error(
+          `Could not find task details for taskArn "${firstTask.taskArn}"`,
+        )
       }
 
       taskStatus = taskDetails.lastStatus
       cli.action.start('', taskStatus)
 
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         setTimeout(resolve, 10_000)
       })
     }
@@ -119,7 +132,9 @@ export default class RunCommand extends AwsCommand {
     const containerReason = firstContainer.reason
     const errorReason = taskDetails.stoppedReason
     if (exitCode !== 0 || stopCode) {
-      this.error(`Execution failed: [${stopCode || exitCode}] ${containerReason || errorReason}`)
+      this.error(
+        `Execution failed: [${stopCode || exitCode}] ${containerReason || errorReason}`,
+      )
     }
 
     this.log('Success!')

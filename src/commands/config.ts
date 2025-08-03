@@ -1,4 +1,5 @@
 import { Flags } from '@oclif/core'
+
 import { AwsCommand } from '../command'
 
 export default class Config extends AwsCommand {
@@ -18,7 +19,9 @@ export default class Config extends AwsCommand {
   }
 
   async run() {
-    const { flags: { clusterKey, taskName } } = await this.parse(Config)
+    const {
+      flags: { clusterKey, taskName },
+    } = await this.parse(Config)
     const { config, variables, envVars } = await this.configWithVariables({
       clusterKey,
       taskName,

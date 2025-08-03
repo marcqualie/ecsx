@@ -1,5 +1,6 @@
 import { findCluster } from '../config'
-import { Configuration, KeyValuePairs } from '../types/configuration'
+
+import type { Configuration, KeyValuePairs } from '../types/configuration'
 
 interface VariablesFromCluster {
   environment: string
@@ -7,16 +8,25 @@ interface VariablesFromCluster {
   [key: string]: string | undefined
 }
 
-export const envVarsFromCluster = (clusterName: string, region: string, config: Configuration): KeyValuePairs => {
+export const envVarsFromCluster = (
+  clusterName: string,
+  region: string,
+  config: Configuration,
+): KeyValuePairs => {
   const clusterConfig = findCluster(config, clusterName, region)
   if (clusterConfig === undefined) {
-    throw new Error(`Could not get envVars from cluster "${clusterName}" { ${clusterName}, ${region} }`)
+    throw new Error(
+      `Could not get envVars from cluster "${clusterName}" { ${clusterName}, ${region} }`,
+    )
   }
 
   return clusterConfig.envVars || {}
 }
 
-export const envVarsFromTask = (taskName: string | undefined, config: Configuration): KeyValuePairs => {
+export const envVarsFromTask = (
+  taskName: string | undefined,
+  config: Configuration,
+): KeyValuePairs => {
   if (taskName === undefined) return {}
 
   const taskConfig = config.tasks[taskName]

@@ -31,7 +31,10 @@ export default class DeployCommand extends AwsCommand {
   ]
 
   async run() {
-    const { args: { taskName }, flags: { clusterKey, dockerTag } } = await this.parse(DeployCommand)
+    const {
+      args: { taskName },
+      flags: { clusterKey, dockerTag },
+    } = await this.parse(DeployCommand)
     const { config, variables, envVars } = await this.configWithVariables({
       clusterKey,
       taskName,

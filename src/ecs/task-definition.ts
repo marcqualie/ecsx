@@ -1,34 +1,47 @@
-import { RegisterTaskDefinitionCommandInput, ContainerCondition, LogDriver } from '@aws-sdk/client-ecs'
+import {
+  ContainerCondition,
+  LogDriver,
+  type RegisterTaskDefinitionCommandInput,
+} from '@aws-sdk/client-ecs'
 import flatten from 'lodash/flatten'
+
 import { findCluster } from '../config'
 
-import { Configuration, ConfigurationTaskDefinition, ConfiguredVariables, KeyValuePairs } from '../types/configuration'
+import type {
+  Configuration,
+  ConfigurationTaskDefinition,
+  ConfiguredVariables,
+  KeyValuePairs,
+} from '../types/configuration'
 
 const convertToContainerCondition = (condition: string): ContainerCondition => {
   switch (condition.toUpperCase()) {
-  case 'START':
-    return ContainerCondition.START
-  case 'COMPLETE':
-    return ContainerCondition.COMPLETE
-  case 'SUCCESS':
-    return ContainerCondition.SUCCESS
-  case 'HEALTHY':
-    return ContainerCondition.HEALTHY
-  default:
-    return ContainerCondition.START
+    case 'START':
+      return ContainerCondition.START
+    case 'COMPLETE':
+      return ContainerCondition.COMPLETE
+    case 'SUCCESS':
+      return ContainerCondition.SUCCESS
+    case 'HEALTHY':
+      return ContainerCondition.HEALTHY
+    default:
+      return ContainerCondition.START
   }
 }
 
 const environmentFromEnvVars = (envVars: KeyValuePairs) => {
-  return Object.entries(envVars).map(([key, value]) => (
-    {
-      name: key,
-      value,
-    }
-  ))
+  return Object.entries(envVars).map(([key, value]) => ({
+    name: key,
+    value,
+  }))
 }
 
-export const secretsFromConfiguration = (task: string, clusterName: string, config: Configuration, region: string) => {
+export const secretsFromConfiguration = (
+  task: string,
+  clusterName: string,
+  config: Configuration,
+  region: string,
+) => {
   const taskConfig = config.tasks[task]
   const clusterConfig = findCluster(config, clusterName, region)
   if (clusterConfig === undefined) {
@@ -59,23 +72,28 @@ export const secretsFromConfiguration = (task: string, clusterName: string, conf
     }
   }
 
-  return flatten(Object.entries(secretsMap).map(([arn, keys]) => {
-    return keys.map(key => ({
-      name: key,
-      valueFrom: `${arn}:${key}::`,
-    }))
-  })).sort((a, b) => a.name.localeCompare(b.name))
+  return flatten(
+    Object.entries(secretsMap).map(([arn, keys]) => {
+      return keys.map((key) => ({
+        name: key,
+        valueFrom: `${arn}:${key}::`,
+      }))
+    }),
+  ).sort((a, b) => a.name.localeCompare(b.name))
 }
 
 const portMappingsFromConfiguration = (config: ConfigurationTaskDefinition) => {
   if (config.ports) {
-    return config.ports.map(port => ({
+    return config.ports.map((port) => ({
       containerPort: port,
     }))
   }
 }
 
-const logConfigurationFromConfiguration = (task: string, variables: ConfiguredVariables) => {
+const logConfigurationFromConfiguration = (
+  task: string,
+  variables: ConfiguredVariables,
+) => {
   return {
     logDriver: LogDriver.AWSLOGS,
     secretOptions: [],
@@ -96,7 +114,10 @@ interface Params {
   envVars: KeyValuePairs
 }
 
-const containerDefinitionFromConfiguration = (params: Params, taskName: string) => {
+const containerDefinitionFromConfiguration = (
+  params: Params,
+  taskName: string,
+) => {
   const { clusterName, variables, config, envVars } = params
   const { region } = variables
   const taskConfig = config.tasks[taskName]
@@ -111,29 +132,33 @@ const containerDefinitionFromConfiguration = (params: Params, taskName: string) 
     logConfiguration: logConfigurationFromConfiguration(taskName, variables),
     essential: true,
     readonlyRootFilesystem: false,
-    dependsOn: taskConfig.dependsOn?.map(dep => ({
+    dependsOn: taskConfig.dependsOn?.map((dep) => ({
       containerName: dep.containerName,
       condition: convertToContainerCondition(dep.condition),
     })),
   }
 }
 
-export const taskDefinitionfromConfiguration = (params: Params): RegisterTaskDefinitionCommandInput => {
+export const taskDefinitionfromConfiguration = (
+  params: Params,
+): RegisterTaskDefinitionCommandInput => {
   const { taskName, variables, config } = params
   const { project, environment } = variables
   const taskConfig = config.tasks[taskName]
 
-  const taskNames = taskConfig.siblingContainers ? [taskName, ...taskConfig.siblingContainers] : [taskName]
-  const containerDefinitions = taskNames.map(name => containerDefinitionFromConfiguration(params, name))
+  const taskNames = taskConfig.siblingContainers
+    ? [taskName, ...taskConfig.siblingContainers]
+    : [taskName]
+  const containerDefinitions = taskNames.map((name) =>
+    containerDefinitionFromConfiguration(params, name),
+  )
 
   return {
     family: `${project}-${taskName}-${environment}`,
     taskRoleArn: taskConfig.taskRoleArn,
     executionRoleArn: taskConfig.executionRoleArn,
     networkMode: 'awsvpc',
-    requiresCompatibilities: [
-      'FARGATE',
-    ],
+    requiresCompatibilities: ['FARGATE'],
     cpu: (taskConfig.cpu || 256).toString(),
     memory: (taskConfig.memory || 512).toString(),
     containerDefinitions,
