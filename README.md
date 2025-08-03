@@ -18,7 +18,7 @@ Easily create, manage and deploy ECS based applications
 $ npm install -g ecsx
 $ ecsx COMMAND
 running command...
-$ ecsx (-v|--version|version)
+$ ecsx (--version)
 ecsx/0.9.0 darwin-arm64 node-v22.17.1
 $ ecsx --help [COMMAND]
 USAGE
@@ -45,13 +45,16 @@ Print out current configuration
 
 ```
 USAGE
-  $ ecsx config
+  $ ecsx config -c <value> [-h] [--var <value>...] [--taskName <value>]
 
-OPTIONS
-  -c, --clusterKey=clusterKey  (required)
-  -h, --help                   Show CLI help.
-  --taskName=taskName
-  --var=var                    [default: ]
+FLAGS
+  -c, --clusterKey=<value>  (required)
+  -h, --help                Show CLI help.
+  --taskName=<value>
+      --var=<value>...      [default: ]
+
+DESCRIPTION
+  Print out current configuration
 ```
 
 _See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/config.ts)_
@@ -62,11 +65,17 @@ Launch a temporary interactive container
 
 ```
 USAGE
-  $ ecsx console [COMMAND]
+  $ ecsx console [COMMAND] -c <value> [-h]
 
-OPTIONS
-  -c, --clusterKey=clusterKey  (required)
-  -h, --help                   Show CLI help.
+ARGUMENTS
+  COMMAND  [default: /bin/sh] Command to run in the console
+
+FLAGS
+  -c, --clusterKey=<value>  (required)
+  -h, --help                Show CLI help.
+
+DESCRIPTION
+  Launch a temporary interactive container
 ```
 
 _See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/console.ts)_
@@ -77,12 +86,18 @@ Remove a service/task from a cluster
 
 ```
 USAGE
-  $ ecsx delete TASKNAME
+  $ ecsx delete TASKNAME -c <value> [-h] [--force]
 
-OPTIONS
-  -c, --clusterKey=clusterKey  (required)
-  -h, --help                   Show CLI help.
+ARGUMENTS
+  TASKNAME  Name of the task to delete
+
+FLAGS
+  -c, --clusterKey=<value>  (required)
+  -h, --help                Show CLI help.
   --force
+
+DESCRIPTION
+  Remove a service/task from a cluster
 ```
 
 _See code: [src/commands/delete.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/delete.ts)_
@@ -93,13 +108,19 @@ Create a task definition then deploy it as a service
 
 ```
 USAGE
-  $ ecsx deploy TASKNAME
+  $ ecsx deploy TASKNAME -c <value> -t <value> [-h] [--var <value>...]
 
-OPTIONS
-  -c, --clusterKey=clusterKey  (required)
-  -h, --help                   Show CLI help.
-  -t, --dockerTag=dockerTag    (required)
-  --var=var                    [default: ]
+ARGUMENTS
+  TASKNAME  Name of the task to deploy
+
+FLAGS
+  -c, --clusterKey=<value>  (required)
+  -h, --help                Show CLI help.
+  -t, --dockerTag=<value>   (required)
+      --var=<value>...      [default: ]
+
+DESCRIPTION
+  Create a task definition then deploy it as a service
 ```
 
 _See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/deploy.ts)_
@@ -110,16 +131,19 @@ Display help for ecsx.
 
 ```
 USAGE
-  $ ecsx help [COMMAND]
+  $ ecsx help [COMMAND...] [-n]
 
 ARGUMENTS
-  COMMAND  Command to show help for.
+  COMMAND...  Command to show help for.
 
-OPTIONS
+FLAGS
   -n, --nested-commands  Include all nested commands in the output.
+
+DESCRIPTION
+  Display help for ecsx.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.23/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.32/src/commands/help.ts)_
 
 ## `ecsx list-clusters`
 
@@ -127,10 +151,13 @@ Show running services within a cluster
 
 ```
 USAGE
-  $ ecsx list-clusters
+  $ ecsx list-clusters [-h]
 
-OPTIONS
+FLAGS
   -h, --help  Show CLI help.
+
+DESCRIPTION
+  Show running services within a cluster
 ```
 
 _See code: [src/commands/list-clusters.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/list-clusters.ts)_
@@ -141,12 +168,15 @@ Show running services within a cluster
 
 ```
 USAGE
-  $ ecsx ps
+  $ ecsx ps [-h] [-c <value>] [--showTasks]
 
-OPTIONS
-  -c, --clusterKey=clusterKey  Name of the cluster key from the config
-  -h, --help                   Show CLI help.
-  --showTasks                  Show recent tasks
+FLAGS
+  -c, --clusterKey=<value>  Name of the cluster key from the config
+  -h, --help                Show CLI help.
+      --showTasks           Show recent tasks
+
+DESCRIPTION
+  Show running services within a cluster
 ```
 
 _See code: [src/commands/ps.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/ps.ts)_
@@ -157,13 +187,19 @@ Run a one off task on the cluster
 
 ```
 USAGE
-  $ ecsx run TASKNAME
+  $ ecsx run TASKNAME -c <value> -t <value> [-h] [--var <value>...]
 
-OPTIONS
-  -c, --clusterKey=clusterKey  (required)
-  -h, --help                   Show CLI help.
-  -t, --dockerTag=dockerTag    (required)
-  --var=var                    [default: ]
+ARGUMENTS
+  TASKNAME  Name of the task to run
+
+FLAGS
+  -c, --clusterKey=<value>  (required)
+  -h, --help                Show CLI help.
+  -t, --dockerTag=<value>   (required)
+      --var=<value>...      [default: ]
+
+DESCRIPTION
+  Run a one off task on the cluster
 ```
 
 _See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/run.ts)_
@@ -174,11 +210,18 @@ Scale services up or down to the desired count
 
 ```
 USAGE
-  $ ecsx scale TASKNAME COUNT
+  $ ecsx scale TASKNAME COUNT -c <value> [-h]
 
-OPTIONS
-  -c, --clusterKey=clusterKey  (required)
-  -h, --help                   Show CLI help.
+ARGUMENTS
+  TASKNAME  Name of the task to scale
+  COUNT     Number of instances to scale to
+
+FLAGS
+  -c, --clusterKey=<value>  (required)
+  -h, --help                Show CLI help.
+
+DESCRIPTION
+  Scale services up or down to the desired count
 ```
 
 _See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/scale.ts)_
@@ -189,10 +232,16 @@ Scale services up or down to the desired count
 
 ```
 USAGE
-  $ ecsx verify-config [CONFIGPATH]
+  $ ecsx verify-config [CONFIGPATH] [-h]
 
-OPTIONS
+ARGUMENTS
+  CONFIGPATH  Path to the configuration file
+
+FLAGS
   -h, --help  Show CLI help.
+
+DESCRIPTION
+  Scale services up or down to the desired count
 ```
 
 _See code: [src/commands/verify-config.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/verify-config.ts)_
@@ -229,7 +278,7 @@ yarn build # to ensure the projcet builds properly and outputs
 Then, manually bump version in `package.json`. Once the version is updated:
 
 ```shell
-yarn oclif-dev readme # updates the readme with new version
+yarn oclif readme # updates the readme with new version
 git commit -am "release v1.2.3"
 git tag v1.2.3
 git push && git push --tags
