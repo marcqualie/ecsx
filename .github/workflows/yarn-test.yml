@@ -16,6 +16,7 @@ jobs:
         node-version:
           - 20.x # until 2026-04-30
           - 22.x # until 2027-04-30
+          - 24.x # until 2028-04-30
 
     steps:
       - uses: actions/checkout@v4
@@ -33,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js 22.x
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 24.x
           cache: yarn
       - run: yarn install
       - run: bin/run verify-config ./test/ecsx.yml
