@@ -1,10 +1,10 @@
 import { Flags } from '@oclif/core'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import uniq from 'lodash/uniq'
 import Table from 'tty-table'
 
 import { AwsCommand } from '../command'
+import { uniq } from '../utils/uniq'
 
 dayjs.extend(relativeTime)
 

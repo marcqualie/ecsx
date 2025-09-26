@@ -1,6 +1,5 @@
 
 import { configWithVariables } from '../src/utils/config-with-variables'
-import { eq } from 'lodash'
 
 describe('ecs', () => {
   describe('utils', () => {
