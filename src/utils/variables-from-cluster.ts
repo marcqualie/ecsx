@@ -1,5 +1,5 @@
-import identity from 'lodash/identity'
-import pickBy from 'lodash/pickBy'
+import { identity } from './identity'
+import { pickBy } from './pick-by'
 
 import type { Configuration } from '../types/configuration'
 

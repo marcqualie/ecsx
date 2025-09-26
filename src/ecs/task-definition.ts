@@ -3,9 +3,9 @@ import {
   LogDriver,
   type RegisterTaskDefinitionCommandInput,
 } from '@aws-sdk/client-ecs'
-import flatten from 'lodash/flatten'
 
 import { findCluster } from '../config'
+import { flatten } from '../utils/flatten'
 
 import type {
   Configuration,
