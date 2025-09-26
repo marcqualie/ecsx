@@ -29,7 +29,11 @@ interface ClientBuilderParams {
 }
 
 // Simplifies the command creation since 90% boilerplate
-const wrapCommand = <T extends (params: P) => void, P = Parameters<T>, C = any>(
+const wrapCommand = <
+  T extends (params: P) => void,
+  P = Parameters<T>,
+  C = unknown,
+>(
   _name: string,
   callback: (params: P) => C,
 ) => {

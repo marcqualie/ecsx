@@ -45,7 +45,7 @@ export class Config {
     let content = fs.readFileSync(this.path, 'utf-8')
 
     // Read config to get global variables, which can replace other variables
-    let data = yaml.load(content) as any
+    let data = yaml.load(content) as Configuration
     const defaultVariables = {
       region: data.region || 'us-east-1',
       accountId: data.accountId,
@@ -101,7 +101,7 @@ export class Config {
 
     // Re-parse and apply defaults
     // TODO: Find a cleaner way of applying all defaults as pre schema.json definitions
-    data = yaml.load(content)
+    data = yaml.load(content) as Configuration
     for (const taskName of Object.keys(data.tasks)) {
       data.tasks[taskName].subnet = data.tasks[taskName].subnet || 'public'
     }
