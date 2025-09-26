@@ -1,6 +1,3 @@
-import { identity } from './identity'
-import { pickBy } from './pick-by'
-
 import type { Configuration } from '../types/configuration'
 
 interface VariablesFromCluster {
@@ -21,13 +18,12 @@ export const variablesFromCluster = (
     throw new Error(`Could not locate variables from cluster "${clusterKey}"`)
   }
 
-  return pickBy(
-    {
-      environment: clusterConfig.environment,
+  return {
+    environment: clusterConfig.environment,
+    clusterName: clusterConfig.name || clusterKey,
+    region: clusterConfig.region,
+    ...(clusterConfig.project !== undefined && {
       project: clusterConfig.project,
-      clusterName: clusterConfig.name || clusterKey,
-      region: clusterConfig.region,
-    },
-    identity,
-  ) as VariablesFromCluster
+    }),
+  } as VariablesFromCluster
 }
