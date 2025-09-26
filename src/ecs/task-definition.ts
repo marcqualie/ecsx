@@ -5,7 +5,6 @@ import {
 } from '@aws-sdk/client-ecs'
 
 import { findCluster } from '../config'
-import { flatten } from '../utils/flatten'
 
 import type {
   Configuration,
@@ -72,14 +71,14 @@ export const secretsFromConfiguration = (
     }
   }
 
-  return flatten(
-    Object.entries(secretsMap).map(([arn, keys]) => {
+  return Object.entries(secretsMap)
+    .flatMap(([arn, keys]) => {
       return keys.map((key) => ({
         name: key,
         valueFrom: `${arn}:${key}::`,
       }))
-    }),
-  ).sort((a, b) => a.name.localeCompare(b.name))
+    })
+    .sort((a, b) => a.name.localeCompare(b.name))
 }
 
 const portMappingsFromConfiguration = (config: ConfigurationTaskDefinition) => {
