@@ -9,6 +9,7 @@
   "bugs": "https://github.com/marcqualie/ecsx/issues",
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.896.0",
+    "@inquirer/prompts": "^8.2.0",
     "@oclif/core": "^4.5.4",
     "@oclif/plugin-help": "^6.2.33",
     "@oclif/plugin-plugins": "^5.4.47",
