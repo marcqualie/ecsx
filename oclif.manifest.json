@@ -42,7 +42,11 @@
       "pluginType": "core",
       "strict": true,
       "isESM": false,
-      "relativePath": ["lib", "commands", "config.js"]
+      "relativePath": [
+        "lib",
+        "commands",
+        "config.js"
+      ]
     },
     "console": {
       "aliases": [],
@@ -79,7 +83,11 @@
       "pluginType": "core",
       "strict": true,
       "isESM": false,
-      "relativePath": ["lib", "commands", "console.js"]
+      "relativePath": [
+        "lib",
+        "commands",
+        "console.js"
+      ]
     },
     "delete": {
       "aliases": [],
@@ -121,7 +129,11 @@
       "pluginType": "core",
       "strict": true,
       "isESM": false,
-      "relativePath": ["lib", "commands", "delete.js"]
+      "relativePath": [
+        "lib",
+        "commands",
+        "delete.js"
+      ]
     },
     "deploy": {
       "aliases": [],
@@ -173,7 +185,11 @@
       "pluginType": "core",
       "strict": true,
       "isESM": false,
-      "relativePath": ["lib", "commands", "deploy.js"]
+      "relativePath": [
+        "lib",
+        "commands",
+        "deploy.js"
+      ]
     },
     "list-clusters": {
       "aliases": [],
@@ -196,7 +212,11 @@
       "pluginType": "core",
       "strict": true,
       "isESM": false,
-      "relativePath": ["lib", "commands", "list-clusters.js"]
+      "relativePath": [
+        "lib",
+        "commands",
+        "list-clusters.js"
+      ]
     },
     "ps": {
       "aliases": [],
@@ -233,7 +253,11 @@
       "pluginType": "core",
       "strict": true,
       "isESM": false,
-      "relativePath": ["lib", "commands", "ps.js"]
+      "relativePath": [
+        "lib",
+        "commands",
+        "ps.js"
+      ]
     },
     "run": {
       "aliases": [],
@@ -285,7 +309,11 @@
       "pluginType": "core",
       "strict": true,
       "isESM": false,
-      "relativePath": ["lib", "commands", "run.js"]
+      "relativePath": [
+        "lib",
+        "commands",
+        "run.js"
+      ]
     },
     "scale": {
       "aliases": [],
@@ -327,7 +355,11 @@
       "pluginType": "core",
       "strict": true,
       "isESM": false,
-      "relativePath": ["lib", "commands", "scale.js"]
+      "relativePath": [
+        "lib",
+        "commands",
+        "scale.js"
+      ]
     },
     "verify-config": {
       "aliases": [],
@@ -356,7 +388,11 @@
       "pluginType": "core",
       "strict": true,
       "isESM": false,
-      "relativePath": ["lib", "commands", "verify-config.js"]
+      "relativePath": [
+        "lib",
+        "commands",
+        "verify-config.js"
+      ]
     }
   },
   "version": "0.9.0"
