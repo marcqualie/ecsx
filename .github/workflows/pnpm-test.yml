@@ -2,9 +2,9 @@ name: pnpm test
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -29,18 +29,5 @@ jobs:
       - run: pnpm install
       - run: pnpm lint
       - run: pnpm build
-      - run: pnpm test
-
-  verify-test-config:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - name: Use Node.js 24.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24.x
-          cache: pnpm
-      - run: pnpm install
       - run: bin/run verify-config ./test/ecsx.yml
-      - run: pnpm oclif readme
+      - run: pnpm test
