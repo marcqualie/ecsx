@@ -9,6 +9,7 @@
   "bugs": "https://github.com/marcqualie/ecsx/issues",
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.896.0",
+    "@inquirer/prompts": "^8.2.0",
     "@oclif/core": "^4.5.4",
     "@oclif/plugin-help": "^6.2.33",
     "@oclif/plugin-plugins": "^5.4.47",
@@ -54,19 +55,20 @@
       "@oclif/plugin-help"
     ]
   },
+  "packageManager": "pnpm@10.29.2",
   "repository": "marcqualie/ecsx",
   "scripts": {
     "build": "tsc",
+    "check-types": "tsc --noEmit",
     "clean": "tsc --build --clean",
     "dev": "./bin/dev",
     "lint": "biome check",
     "lint:fix": "biome check --fix",
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "yarn lint",
+    "posttest": "pnpm lint",
     "prepack": "tsc -b --clean && tsc -b && oclif manifest && oclif readme",
     "test": "jest",
-    "version": "oclif readme && git add README.md",
-    "postinstall": "tsc || echo done."
+    "version": "oclif readme && git add README.md"
   },
   "types": "lib/index.d.ts"
 }

@@ -1,0 +1,399 @@
+{
+  "commands": {
+    "config": {
+      "aliases": [],
+      "args": {},
+      "description": "Print out current configuration",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "var": {
+          "name": "var",
+          "default": [],
+          "hasDynamicHelp": false,
+          "multiple": true,
+          "type": "option"
+        },
+        "clusterKey": {
+          "char": "c",
+          "name": "clusterKey",
+          "required": true,
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "taskName": {
+          "name": "taskName",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "config",
+      "pluginAlias": "ecsx",
+      "pluginName": "ecsx",
+      "pluginType": "core",
+      "strict": true,
+      "isESM": false,
+      "relativePath": [
+        "lib",
+        "commands",
+        "config.js"
+      ]
+    },
+    "console": {
+      "aliases": [],
+      "args": {
+        "command": {
+          "default": "/bin/sh",
+          "description": "Command to run in the console",
+          "name": "command"
+        }
+      },
+      "description": "Launch a temporary interactive container",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "clusterKey": {
+          "char": "c",
+          "name": "clusterKey",
+          "required": true,
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "console",
+      "pluginAlias": "ecsx",
+      "pluginName": "ecsx",
+      "pluginType": "core",
+      "strict": true,
+      "isESM": false,
+      "relativePath": [
+        "lib",
+        "commands",
+        "console.js"
+      ]
+    },
+    "delete": {
+      "aliases": [],
+      "args": {
+        "taskName": {
+          "description": "Name of the task to delete",
+          "name": "taskName",
+          "required": true
+        }
+      },
+      "description": "Remove a service/task from a cluster",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "clusterKey": {
+          "char": "c",
+          "name": "clusterKey",
+          "required": true,
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "force": {
+          "name": "force",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "delete",
+      "pluginAlias": "ecsx",
+      "pluginName": "ecsx",
+      "pluginType": "core",
+      "strict": true,
+      "isESM": false,
+      "relativePath": [
+        "lib",
+        "commands",
+        "delete.js"
+      ]
+    },
+    "deploy": {
+      "aliases": [],
+      "args": {
+        "taskName": {
+          "description": "Name of the task to deploy",
+          "name": "taskName",
+          "required": true
+        }
+      },
+      "description": "Create a task definition then deploy it as a service",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "var": {
+          "name": "var",
+          "default": [],
+          "hasDynamicHelp": false,
+          "multiple": true,
+          "type": "option"
+        },
+        "clusterKey": {
+          "char": "c",
+          "name": "clusterKey",
+          "required": true,
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "dockerTag": {
+          "char": "t",
+          "name": "dockerTag",
+          "required": true,
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "deploy",
+      "pluginAlias": "ecsx",
+      "pluginName": "ecsx",
+      "pluginType": "core",
+      "strict": true,
+      "isESM": false,
+      "relativePath": [
+        "lib",
+        "commands",
+        "deploy.js"
+      ]
+    },
+    "list-clusters": {
+      "aliases": [],
+      "args": {},
+      "description": "Show running services within a cluster",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "list-clusters",
+      "pluginAlias": "ecsx",
+      "pluginName": "ecsx",
+      "pluginType": "core",
+      "strict": true,
+      "isESM": false,
+      "relativePath": [
+        "lib",
+        "commands",
+        "list-clusters.js"
+      ]
+    },
+    "ps": {
+      "aliases": [],
+      "args": {},
+      "description": "Show running services within a cluster",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "clusterKey": {
+          "char": "c",
+          "description": "Name of the cluster key from the config",
+          "name": "clusterKey",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "showTasks": {
+          "description": "Show recent tasks",
+          "name": "showTasks",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "ps",
+      "pluginAlias": "ecsx",
+      "pluginName": "ecsx",
+      "pluginType": "core",
+      "strict": true,
+      "isESM": false,
+      "relativePath": [
+        "lib",
+        "commands",
+        "ps.js"
+      ]
+    },
+    "run": {
+      "aliases": [],
+      "args": {
+        "taskName": {
+          "description": "Name of the task to run",
+          "name": "taskName",
+          "required": true
+        }
+      },
+      "description": "Run a one off task on the cluster",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "var": {
+          "name": "var",
+          "default": [],
+          "hasDynamicHelp": false,
+          "multiple": true,
+          "type": "option"
+        },
+        "clusterKey": {
+          "char": "c",
+          "name": "clusterKey",
+          "required": true,
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "dockerTag": {
+          "char": "t",
+          "name": "dockerTag",
+          "required": true,
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "run",
+      "pluginAlias": "ecsx",
+      "pluginName": "ecsx",
+      "pluginType": "core",
+      "strict": true,
+      "isESM": false,
+      "relativePath": [
+        "lib",
+        "commands",
+        "run.js"
+      ]
+    },
+    "scale": {
+      "aliases": [],
+      "args": {
+        "taskName": {
+          "description": "Name of the task to scale",
+          "name": "taskName",
+          "required": true
+        },
+        "count": {
+          "description": "Number of instances to scale to",
+          "name": "count",
+          "required": true
+        }
+      },
+      "description": "Scale services up or down to the desired count",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "clusterKey": {
+          "char": "c",
+          "name": "clusterKey",
+          "required": true,
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "scale",
+      "pluginAlias": "ecsx",
+      "pluginName": "ecsx",
+      "pluginType": "core",
+      "strict": true,
+      "isESM": false,
+      "relativePath": [
+        "lib",
+        "commands",
+        "scale.js"
+      ]
+    },
+    "verify-config": {
+      "aliases": [],
+      "args": {
+        "configPath": {
+          "description": "Path to the configuration file",
+          "name": "configPath",
+          "required": false
+        }
+      },
+      "description": "Scale services up or down to the desired count",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help.",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "verify-config",
+      "pluginAlias": "ecsx",
+      "pluginName": "ecsx",
+      "pluginType": "core",
+      "strict": true,
+      "isESM": false,
+      "relativePath": [
+        "lib",
+        "commands",
+        "verify-config.js"
+      ]
+    }
+  },
+  "version": "0.9.0"
+}

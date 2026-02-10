@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["src/**/*", "*.js", "*.json"],
+    "includes": ["src/**/*", "*.js", "*.json", "!oclif.manifest.json"],
     "ignoreUnknown": false
   },
   "formatter": {

@@ -1,10 +1,10 @@
-name: yarn test
+name: pnpm test
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -20,26 +20,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: yarn
-      - run: npx depdedupe
-      - run: yarn install
-      - run: yarn lint
-      - run: yarn build
-      - run: yarn test
-
-  verify-test-config:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 24.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24.x
-          cache: yarn
-      - run: yarn install
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm lint
+      - run: pnpm build
       - run: bin/run verify-config ./test/ecsx.yml
-      - run: yarn oclif readme
+      - run: pnpm test
