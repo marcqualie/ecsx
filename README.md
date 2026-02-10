@@ -19,7 +19,7 @@ $ npm install -g ecsx
 $ ecsx COMMAND
 running command...
 $ ecsx (--version)
-ecsx/0.9.0 darwin-arm64 node-v22.17.1
+ecsx/0.9.0 darwin-arm64 node-v24.13.0
 $ ecsx --help [COMMAND]
 USAGE
   $ ecsx COMMAND
@@ -143,7 +143,7 @@ DESCRIPTION
   Display help for ecsx.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.32/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.33/src/commands/help.ts)_
 
 ## `ecsx list-clusters`
 
