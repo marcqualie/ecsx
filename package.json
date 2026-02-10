@@ -55,19 +55,20 @@
       "@oclif/plugin-help"
     ]
   },
+  "packageManager": "pnpm@10.29.2",
   "repository": "marcqualie/ecsx",
   "scripts": {
     "build": "tsc",
+    "check-types": "tsc --noEmit",
     "clean": "tsc --build --clean",
     "dev": "./bin/dev",
     "lint": "biome check",
     "lint:fix": "biome check --fix",
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "yarn lint",
+    "posttest": "pnpm lint",
     "prepack": "tsc -b --clean && tsc -b && oclif manifest && oclif readme",
     "test": "jest",
-    "version": "oclif readme && git add README.md",
-    "postinstall": "tsc || echo done."
+    "version": "oclif readme && git add README.md"
   },
   "types": "lib/index.d.ts"
 }
