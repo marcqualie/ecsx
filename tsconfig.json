@@ -12,7 +12,8 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "types": ["node", "jest"]
   },
   "include": ["src/**/*", "src/schema.json"],
   "exclude": ["node_modules", "node_modules/**/*"]
