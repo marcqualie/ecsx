@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated to oclif v4 (#109)
+- Node 24 support (#111)
+- Upgraded all dependencies to latest versions
+- Migrate from yarn to pnpm for package management (#117)
 
 
 
