@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Replace `js-yaml` with `yaml` package for better YAML spec compliance and built-in TypeScript types
+
 
 
 ## [0.9.1] - 2026-04-17
