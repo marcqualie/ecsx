@@ -36,7 +36,9 @@ export default class VerifyConfigCommand extends AwsCommand {
     }
 
     // Load schema
-    const config = parse(fs.readFileSync(configPathAbsolute, 'utf8'))
+    const config = parse(fs.readFileSync(configPathAbsolute, 'utf8'), {
+      merge: true,
+    })
     const validator = new Validator()
     const valid = validator.validate(config, schema)
 
