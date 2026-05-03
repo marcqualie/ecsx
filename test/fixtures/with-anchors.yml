@@ -1,0 +1,53 @@
+accountId: 5555
+project: 'anchored-app'
+
+x-cluster-defaults: &cluster_defaults
+  environment: production
+  region: 'us-west-2'
+  envVars:
+    APP_ENV: production
+    LOG_LEVEL: info
+  targetGroups:
+    - arn: arn:aws:targetgroup:default
+      port: 3000
+      task: web
+  securityGroups:
+    - "sg-shared"
+  subnets:
+    public: [ subnet-public-1 ]
+    private: [ subnet-private-1 ]
+
+x-task-defaults: &task_defaults
+  taskRoleArn: 'arn:aws:iam::role/shared-task'
+  executionRoleArn: 'arn:aws:iam::role/shared-execution'
+  image: 'shared:latest'
+  command: []
+  cpu: 256
+  memory: 512
+  envVars:
+    APP_ENV: task-shared
+    CLUSTER_NAME: "{{ clusterName }}"
+
+clusters:
+  primary-cluster:
+    <<: *cluster_defaults
+  secondary-cluster:
+    <<: *cluster_defaults
+    region: 'eu-central-1'
+    envVars:
+      APP_ENV: staging
+      LOG_LEVEL: debug
+    subnets:
+      public: [ subnet-public-2 ]
+      private: [ subnet-private-2 ]
+
+tasks:
+  web:
+    <<: *task_defaults
+    service: true
+  worker:
+    <<: *task_defaults
+    service: false
+    subnet: private
+    cpu: 512
+    memory: 1024
