@@ -1,0 +1,52 @@
+accountId: 9876
+project: 'simple-app'
+
+clusters:
+  simple-cluster:
+    environment: production
+    region: 'us-east-1'
+    envVars:
+      APP_ENV: production
+    targetGroups:
+      - arn: arn:aws:targetgroup:simple
+        port: 3000
+        task: web
+    securityGroups:
+      - "sg-simple"
+    subnets:
+      public: [ subnet-aaa, subnet-bbb ]
+      private: [ subnet-ccc ]
+    secrets:
+      app:
+        arn: arn:aws:secretsmanager:{{ region }}:{{ accountId }}:secret:{{ project }}/app/prod-xxx
+        keys:
+          - DATABASE_URL
+
+tasks:
+  web:
+    taskRoleArn: 'arn:aws:iam::role/web-task'
+    executionRoleArn: 'arn:aws:iam::role/web-execution'
+    image: 'nginx:latest'
+    command: []
+    cpu: 256
+    memory: 512
+    service: true
+    envVars:
+      APP_ENV: task-production
+      CLUSTER_NAME: "{{ clusterName }}"
+      PROJECT_NAME: "{{ project }}"
+    secrets:
+      - name: 'app'
+        keys:
+          - DATABASE_URL
+  worker:
+    taskRoleArn: 'arn:aws:iam::role/worker-task'
+    executionRoleArn: 'arn:aws:iam::role/worker-execution'
+    image: 'worker:latest'
+    command: ['node', 'worker.js']
+    cpu: 512
+    memory: 1024
+    service: false
+    subnet: private
+    envVars:
+      APP_ENV: task-production
