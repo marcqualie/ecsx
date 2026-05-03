@@ -9,10 +9,10 @@
   "bugs": "https://github.com/marcqualie/ecsx/issues",
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.1031.0",
-    "@inquirer/prompts": "^8.4.1",
+    "@inquirer/prompts": "^8.4.2",
     "@oclif/core": "^4.10.5",
-    "@oclif/plugin-help": "^6.2.44",
-    "@oclif/plugin-plugins": "^5.4.61",
+    "@oclif/plugin-help": "^6.2.46",
+    "@oclif/plugin-plugins": "^5.4.63",
     "dayjs": "^1.11.20",
     "js-yaml": "^4.1.1",
     "jsonschema": "^1.5.0",
@@ -20,7 +20,7 @@
     "tty-table": "^5.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.12",
+    "@biomejs/biome": "^2.4.14",
     "@oclif/test": "^4.1.18",
     "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.9",
