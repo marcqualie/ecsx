@@ -1,8 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { Args, Flags } from '@oclif/core'
-import YAML from 'js-yaml'
 import { Validator } from 'jsonschema'
+import { parse } from 'yaml'
 
 import { AwsCommand } from '../command'
 import schema from '../schema.json'
@@ -36,7 +36,9 @@ export default class VerifyConfigCommand extends AwsCommand {
     }
 
     // Load schema
-    const config = YAML.load(fs.readFileSync(configPathAbsolute, 'utf8'))
+    const config = parse(fs.readFileSync(configPathAbsolute, 'utf8'), {
+      merge: true,
+    })
     const validator = new Validator()
     const valid = validator.validate(config, schema)
 
