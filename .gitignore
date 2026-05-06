@@ -8,3 +8,4 @@
 node_modules
 ecsx.yml
 tsconfig.tsbuildinfo
+oclif.manifest.json
