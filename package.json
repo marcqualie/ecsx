@@ -52,7 +52,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "packageManager": "pnpm@10.33.4",
+  "packageManager": "pnpm@11.0.6",
   "repository": "marcqualie/ecsx",
   "scripts": {
     "build": "tsc",
