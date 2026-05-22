@@ -14,6 +14,8 @@ jobs:
       matrix:
         # https://github.com/nodejs/release#release-schedule
         node-version:
+          - 22.x # until 2027-04-30
+          - 24.x # until 2028-04-30
           - 26.x
 
     steps:
