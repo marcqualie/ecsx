@@ -23,7 +23,7 @@
     "@biomejs/biome": "^2.4.15",
     "@oclif/test": "^4.1.18",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24",
+    "@types/node": "^25",
     "jest": "^30.4.2",
     "oclif": "^4.23.7",
     "ts-jest": "^29.4.11",
