@@ -171,6 +171,15 @@
           "memory": {
             "type": "integer"
           },
+          "containerMemory": {
+            "type": "integer",
+            "description": "Hard memory limit (MiB) for this container. Useful for capping individual containers within a multi-container (sibling) task."
+          },
+          "essential": {
+            "type": "boolean",
+            "default": true,
+            "description": "If true, the whole task stops when this container stops. Set false for sidecars that may exit independently. At least one container per task must be essential."
+          },
           "command": {
             "type": "array",
             "items": {
