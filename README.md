@@ -19,7 +19,7 @@ $ npm install -g ecsx
 $ ecsx COMMAND
 running command...
 $ ecsx (--version)
-ecsx/0.9.0 darwin-arm64 node-v24.13.0
+ecsx/0.9.1 darwin-arm64 node-v26.1.0
 $ ecsx --help [COMMAND]
 USAGE
   $ ecsx COMMAND
@@ -35,6 +35,7 @@ USAGE
 * [`ecsx help [COMMAND]`](#ecsx-help-command)
 * [`ecsx list-clusters`](#ecsx-list-clusters)
 * [`ecsx ps`](#ecsx-ps)
+* [`ecsx redeploy TASKNAME`](#ecsx-redeploy-taskname)
 * [`ecsx run TASKNAME`](#ecsx-run-taskname)
 * [`ecsx scale TASKNAME COUNT`](#ecsx-scale-taskname-count)
 * [`ecsx verify-config [CONFIGPATH]`](#ecsx-verify-config-configpath)
@@ -57,7 +58,7 @@ DESCRIPTION
   Print out current configuration
 ```
 
-_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/marcqualie/ecsx/blob/v0.9.1/src/commands/config.ts)_
 
 ## `ecsx console [COMMAND]`
 
@@ -68,7 +69,7 @@ USAGE
   $ ecsx console [COMMAND] -c <value> [-h]
 
 ARGUMENTS
-  COMMAND  [default: /bin/sh] Command to run in the console
+  [COMMAND]  [default: /bin/sh] Command to run in the console
 
 FLAGS
   -c, --clusterKey=<value>  (required)
@@ -78,7 +79,7 @@ DESCRIPTION
   Launch a temporary interactive container
 ```
 
-_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/console.ts)_
+_See code: [src/commands/console.ts](https://github.com/marcqualie/ecsx/blob/v0.9.1/src/commands/console.ts)_
 
 ## `ecsx delete TASKNAME`
 
@@ -100,7 +101,7 @@ DESCRIPTION
   Remove a service/task from a cluster
 ```
 
-_See code: [src/commands/delete.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/delete.ts)_
+_See code: [src/commands/delete.ts](https://github.com/marcqualie/ecsx/blob/v0.9.1/src/commands/delete.ts)_
 
 ## `ecsx deploy TASKNAME`
 
@@ -123,7 +124,7 @@ DESCRIPTION
   Create a task definition then deploy it as a service
 ```
 
-_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/deploy.ts)_
+_See code: [src/commands/deploy.ts](https://github.com/marcqualie/ecsx/blob/v0.9.1/src/commands/deploy.ts)_
 
 ## `ecsx help [COMMAND]`
 
@@ -134,7 +135,7 @@ USAGE
   $ ecsx help [COMMAND...] [-n]
 
 ARGUMENTS
-  COMMAND...  Command to show help for.
+  [COMMAND...]  Command to show help for.
 
 FLAGS
   -n, --nested-commands  Include all nested commands in the output.
@@ -143,7 +144,7 @@ DESCRIPTION
   Display help for ecsx.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.33/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/6.2.50/src/commands/help.ts)_
 
 ## `ecsx list-clusters`
 
@@ -160,7 +161,7 @@ DESCRIPTION
   Show running services within a cluster
 ```
 
-_See code: [src/commands/list-clusters.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/list-clusters.ts)_
+_See code: [src/commands/list-clusters.ts](https://github.com/marcqualie/ecsx/blob/v0.9.1/src/commands/list-clusters.ts)_
 
 ## `ecsx ps`
 
@@ -179,7 +180,29 @@ DESCRIPTION
   Show running services within a cluster
 ```
 
-_See code: [src/commands/ps.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/ps.ts)_
+_See code: [src/commands/ps.ts](https://github.com/marcqualie/ecsx/blob/v0.9.1/src/commands/ps.ts)_
+
+## `ecsx redeploy TASKNAME`
+
+Redeploy a service using its currently running tag, recycling the containers
+
+```
+USAGE
+  $ ecsx redeploy TASKNAME -c <value> [-h] [--var <value>...]
+
+ARGUMENTS
+  TASKNAME  Name of the task to redeploy
+
+FLAGS
+  -c, --clusterKey=<value>  (required)
+  -h, --help                Show CLI help.
+      --var=<value>...      [default: ]
+
+DESCRIPTION
+  Redeploy a service using its currently running tag, recycling the containers
+```
+
+_See code: [src/commands/redeploy.ts](https://github.com/marcqualie/ecsx/blob/v0.9.1/src/commands/redeploy.ts)_
 
 ## `ecsx run TASKNAME`
 
@@ -202,7 +225,7 @@ DESCRIPTION
   Run a one off task on the cluster
 ```
 
-_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/marcqualie/ecsx/blob/v0.9.1/src/commands/run.ts)_
 
 ## `ecsx scale TASKNAME COUNT`
 
@@ -224,7 +247,7 @@ DESCRIPTION
   Scale services up or down to the desired count
 ```
 
-_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/scale.ts)_
+_See code: [src/commands/scale.ts](https://github.com/marcqualie/ecsx/blob/v0.9.1/src/commands/scale.ts)_
 
 ## `ecsx verify-config [CONFIGPATH]`
 
@@ -235,7 +258,7 @@ USAGE
   $ ecsx verify-config [CONFIGPATH] [-h]
 
 ARGUMENTS
-  CONFIGPATH  Path to the configuration file
+  [CONFIGPATH]  Path to the configuration file
 
 FLAGS
   -h, --help  Show CLI help.
@@ -244,7 +267,7 @@ DESCRIPTION
   Scale services up or down to the desired count
 ```
 
-_See code: [src/commands/verify-config.ts](https://github.com/marcqualie/ecsx/blob/v0.9.0/src/commands/verify-config.ts)_
+_See code: [src/commands/verify-config.ts](https://github.com/marcqualie/ecsx/blob/v0.9.1/src/commands/verify-config.ts)_
 <!-- commandsstop -->
 
 
