@@ -125,11 +125,12 @@ const containerDefinitionFromConfiguration = (
     name: taskName,
     image: taskConfig.image,
     command: taskConfig.command,
+    memory: taskConfig.containerMemory,
     portMappings: portMappingsFromConfiguration(taskConfig),
     environment: environmentFromEnvVars(envVars),
     secrets: secretsFromConfiguration(taskName, clusterName, config, region),
     logConfiguration: logConfigurationFromConfiguration(taskName, variables),
-    essential: true,
+    essential: taskConfig.essential ?? true,
     readonlyRootFilesystem: false,
     dependsOn: taskConfig.dependsOn?.map((dep) => ({
       containerName: dep.containerName,

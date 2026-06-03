@@ -88,3 +88,15 @@ tasks:
       CLUSTER_NAME: "{{ clusterName }}"
     subnet: private
     secrets: []
+  sidecar:
+    taskRoleArn: 'somerole'
+    executionRoleArn: 'somerole'
+    image: ''
+    command: []
+    cpu: 256
+    memory: 512
+    service: false
+    essential: false
+    containerMemory: 256
+    subnet: private
+    secrets: []

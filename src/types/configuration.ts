@@ -19,6 +19,8 @@ export interface ConfigurationTaskDefinition {
     | 8192
     | 12_288
     | 16_384
+  containerMemory?: number
+  essential?: boolean
   secrets?: Array<{
     name: string
     keys: string[]

@@ -1,9 +1,29 @@
 
-import { secretsFromConfiguration } from '../../src/ecs/task-definition'
+import { secretsFromConfiguration, taskDefinitionfromConfiguration } from '../../src/ecs/task-definition'
 import { configWithVariables } from '../../src/utils/config-with-variables'
 
 describe('ecs', () => {
   describe('task-definition', () => {
+    describe('taskDefinitionfromConfiguration', () => {
+      const clusterName = 'ecsx-test-cluster'
+
+      it('defaults essential to true and omits container memory', () => {
+        const { config, variables } = configWithVariables({ clusterKey: clusterName })
+        const output = taskDefinitionfromConfiguration({ clusterName, taskName: 'web', variables, config, envVars: {} })
+        const [container] = output.containerDefinitions ?? []
+        expect(container.essential).toBe(true)
+        expect(container.memory).toBeUndefined()
+      })
+
+      it('passes through essential and containerMemory when configured', () => {
+        const { config, variables } = configWithVariables({ clusterKey: clusterName })
+        const output = taskDefinitionfromConfiguration({ clusterName, taskName: 'sidecar', variables, config, envVars: {} })
+        const [container] = output.containerDefinitions ?? []
+        expect(container.essential).toBe(false)
+        expect(container.memory).toBe(256)
+      })
+    })
+
     describe('secretsFromConfiguration', () => {
       it('translate secrets to task definition format', () => {
         const { config, variables: { region } } = configWithVariables({ clusterKey: 'ecsx-test-cluster' })
