@@ -23,4 +23,4 @@ jobs:
       - run: pnpm install
       - run: pnpm run build
       - run: pnpm test
-      - run: pnpm publish --no-git-checks
+      - run: pnpm stage publish --no-git-checks --provenance
