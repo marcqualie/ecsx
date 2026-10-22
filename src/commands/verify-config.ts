@@ -40,7 +40,10 @@ export default class VerifyConfigCommand extends AwsCommand {
       merge: true,
     })
     const validator = new Validator()
-    const valid = validator.validate(config, schema)
+    // An absolute base is required for $ref resolution on Node >= 24.20 (ada 4)
+    const valid = validator.validate(config, schema, {
+      base: 'https://ecsx.local/schema.json',
+    })
 
     // Print success message or errors
     if (valid.errors.length === 0) {
