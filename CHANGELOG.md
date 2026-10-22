@@ -11,6 +11,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.9.3] - 2026-10-22
+
+### Fixed
+
+- `verify-config` failing with `TypeError: Invalid URL` on Node 24.20+ and 26.10+ (#154)
+
+### Changed
+
+- Upgraded patch and minor dependencies, including `@oclif/core` 4.14 (#155, #156)
+- Pinned GitHub Actions to commit SHAs and upgraded to their latest versions (#157)
+- Use staged npm publishing in release workflow (#152)
+
+
+
 ## [0.9.2] - 2026-06-03
 
 ### Changed
