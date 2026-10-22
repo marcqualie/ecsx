@@ -20,7 +20,7 @@
     "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
+    "@biomejs/biome": "^2.6.2",
     "@oclif/test": "^4.2.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^25",
