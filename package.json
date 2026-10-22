@@ -61,7 +61,6 @@
     "dev": "./bin/dev",
     "lint": "biome check",
     "lint:fix": "biome check --fix",
-    "postpack": "rm -f oclif.manifest.json",
     "posttest": "pnpm lint",
     "prepack": "tsc -b --clean && tsc -b && oclif manifest && oclif readme",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
