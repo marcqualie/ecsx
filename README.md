@@ -303,7 +303,18 @@ Then, manually bump version in `package.json`. Once the version is updated:
 ```shell
 pnpm oclif readme # updates the readme with new version
 git commit -am "release v1.2.3"
+# create a pull request with the version bump
+# once merged you can tage the commit on main to release
 git tag v1.2.3
-git push && git push --tags
-npm publish
+git push && git push origin v1.2.3
 ```
+
+Pushing the `v*` tag triggers the [publish workflow](./.github/workflows/publish.yml),
+which builds, tests and then **stages** the release to npm via trusted publishing
+(OIDC) rather than publishing it directly.
+
+The staged release is not live yet. A maintainer must review and approve it with
+2FA before it becomes available:
+
+See the
+[npm staged publishing docs](https://docs.npmjs.com/staged-publishing) for full details.
